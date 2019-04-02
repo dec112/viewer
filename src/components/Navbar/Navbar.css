@@ -1,0 +1,33 @@
+@import "../../colors.css";
+@import "../../transitions.css";
+@import "../../animations.css";
+
+.Nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.Title {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 1.5em;
+    color: var(--gray);
+    transition: var(--t-color);
+}
+
+.Title:hover {
+    color: var(--black);
+}
+
+.AlertMode .Title::after {
+    content: " ";
+    display: inline-block;
+    height: 0.75em;
+    width: 0.75em;
+    margin-left: 1em;
+    border-radius: 100%;
+    animation: var(--a-pulsing-error-bg);
+}

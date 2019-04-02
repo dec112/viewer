@@ -1,0 +1,38 @@
+.ButtonContainer{
+    position: relative !important;
+}
+
+.Loading{
+    position: absolute !important;
+    width: 100%;
+    display: block !important;
+    font-size: 20px;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    height: 50%;
+}
+
+.Disabled{
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.LoadingAnimation{
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+.Hidden{
+    display: none !important;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}

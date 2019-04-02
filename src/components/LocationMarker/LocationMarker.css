@@ -1,0 +1,16 @@
+@import '../../colors.css';
+@import '../../transitions.css';
+
+.MapMarker {
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: var(--t-color);
+}
+
+.MapMarker:hover:not(.CurrentLocation){ 
+  color: var(--black);
+}
+
+.CurrentLocation {
+  color: var(--map-marker-color);
+}

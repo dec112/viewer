@@ -1,0 +1,54 @@
+@import './colors.css';
+@import './transitions.css';
+
+html * {
+    font-family: Roboto, Helvetica, Arial;
+    font-weight: 300;
+}
+
+html, body, :global(#root) {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--ligher-light-grey) !important;
+}
+
+:global(.panel) {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+}
+
+:global(.glyphicon--btn) {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--light-gray);
+    transition: var(--t-color);
+}
+
+:global(.glyphicon--btn:hover) {
+    color: var(--black);
+}
+
+@media print {  
+    :global(#root) {
+        height: auto;
+    }
+
+    :global(.hidePrint) {
+        visibility: hidden;
+    }
+
+    :global(.noPrint) {
+        display: none;
+    }
+
+    :global(.panel) {
+        border: 1px solid var(--dark-gray) !important;
+    }
+
+    :global(.table-bordered td:last-of-type) {
+        border-right: 1px solid var(--dark-gray) !important;
+    }
+}

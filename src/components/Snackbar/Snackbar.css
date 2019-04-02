@@ -1,0 +1,62 @@
+@import "../../colors.css";
+@import "../../transitions.css";
+
+.snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    color: var(--white);
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 30px;
+    bottom: 30px;
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+.show {
+    visibility: visible; /* Show the snackbar */
+    animation: fadein 0.5s;
+}
+
+.fadeOut {
+  animation: fadeout 0.5s;
+}
+
+.iconLeft {
+    margin-right: 1em;
+}
+
+.iconRight {
+    margin-left: 1em;
+    transition: var(--t-color);
+    cursor: pointer;
+}
+
+.iconRight:hover {
+    color: var(--black);
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/* ------------ TYPES ----------- */
+
+.success {
+    background-color: var(--bg-success);
+}
+
+.error {
+    background-color: var(--bg-error);
+}
+
+.default {
+    background-color:var(--light-black);
+}

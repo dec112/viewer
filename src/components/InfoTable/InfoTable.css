@@ -1,0 +1,12 @@
+.copyToClipboardColumn {
+  /* lowest possible width */
+  width: 1px;
+}
+
+th {
+  font-weight: bold;
+}
+
+td {
+  word-break: break-all;
+}

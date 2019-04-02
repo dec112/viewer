@@ -1,0 +1,21 @@
+.loginPanel {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.Clock{
+    text-align: right;
+    display: inline-block;
+}
+
+.Heading{
+    display: inline-block;
+    font-weight: bold;
+}
+
+.Header{
+    justify-content: space-between;
+    display: flex;
+}

@@ -1,0 +1,238 @@
+{
+  "appName": {
+    "id": "appName",
+    "defaultMessage": "DEC112 - Deaf Emergency Call 112"
+  },
+  "messages": {
+    "id": "messages",
+    "defaultMessage": "Nachrichten"
+  },
+  "message": {
+    "id": "message",
+    "defaultMessage": "Nachricht"
+  },
+  "map": {
+    "id": "map",
+    "defaultMessage": "Karte"
+  },
+  "basicInformation": {
+    "id": "basicInformation",
+    "defaultMessage": "Informationen"
+  },
+  "clear": {
+    "id": "clear",
+    "defaultMessage": "Löschen"
+  },
+  "print": {
+    "id": "print",
+    "defaultMessage": "Drucken"
+  },
+  "centerMap": {
+    "id": "centerMap",
+    "defaultMessage": "Zeige aktuellste Position"
+  },
+  "showAllLocationsOnMap": {
+    "id": "showAllLocationsOnMap",
+    "defaultMessage": "Alle Positionsdaten auf Karte anzeigen"
+  },
+  "send": {
+    "id": "send",
+    "defaultMessage": "Senden"
+  },
+  "noAdditionalInformation": {
+    "id": "noAdditionalInformation",
+    "defaultMessage": "Keine Informationen verfügbar"
+  },
+  "information": {
+    "id": "information",
+    "defaultMessage": "Informationen"
+  },
+  "yes": {
+    "id": "yes",
+    "defaultMessage": "Ja"
+  },
+  "no": {
+    "id": "no",
+    "defaultMessage": "Nein"
+  },
+  "ok": {
+    "id": "ok",
+    "defaultMessage": "Ok"
+  },
+  "endEmergencyCall":{
+    "id":"endEmergencyCall",
+    "defaultMessage": "Notruf beenden"
+  },
+  "endEmergencyCallMessage":{
+    "id": "endEmergencyCallMessage",
+    "defaultMessage": "Wollen Sie den Notruf wirklich beenden?"
+  },
+  "notes":{
+    "id":"notes",
+    "defaultMessage": "Persönliche Informationen"
+  },
+  "adr":{
+    "id":"adr",
+    "defaultMessage": "Wohnadresse"
+  },
+  "generalData":{
+    "id":"generalData",
+    "defaultMessage": "Kontaktdaten"
+  },
+  "tel":{
+    "id":"tel",
+    "defaultMessage": "Telefon"
+  },
+  "email":{
+    "id":"email",
+    "defaultMessage": "E-Mail"
+  },
+  "name":{
+    "id":"name",
+    "defaultMessage": "Name"
+  },
+  "country":{
+    "id":"country",
+    "defaultMessage": "Land"
+  },
+  "code":{
+    "id":"code",
+    "defaultMessage": "PLZ"
+  },
+  "region":{
+    "id":"region",
+    "defaultMessage": "Region"
+  },
+  "locality":{
+    "id":"locality",
+    "defaultMessage": "Stadt"
+  },
+  "street":{
+    "id":"street",
+    "defaultMessage": "Straße"
+  },
+  "noLocation":{
+    "id":"noLocation",
+    "defaultMessage": "Position derzeit nicht verfügbar"
+  },
+  "callIdentifier":{
+    "id":"callIdentifier",
+    "defaultMessage": "Notruf Identifikation"
+  },
+  "callTime":{
+    "id":"callTime",
+    "defaultMessage": "Notruf Zeitpunkt"
+  },
+  "callState":{
+    "id":"callState",
+    "defaultMessage": "Status"
+  },
+  "callerUri":{
+    "id":"callerUri",
+    "defaultMessage": "Anrufer Uri"
+  },
+  "messageState.undefined":{
+    "id":"messageState.undefined",
+    "defaultMessage": "Nicht bekannt"
+  },
+  "messageState.newCall":{
+    "id":"messageState.newCall",
+    "defaultMessage": "Neu"
+  },
+  "messageState.inCall":{
+    "id":"messageState.inCall",
+    "defaultMessage": "Im Arbeit"
+  },
+  "messageState.stale": {
+    "id": "messageState.stale",
+    "defaultMessage": "Schlecht"
+  },
+  "messageState.closedByCaller":{
+    "id":"messageState.closedByCaller",
+    "defaultMessage": "Vom Anrufer beendet"
+  },
+  "messageState.closedByCenter":{
+    "id":"messageState.closedByCenter",
+    "defaultMessage": "Von der Leitstelle beendet"
+  },
+  "messageState.closedBySystem":{
+    "id":"messageState.closedBySystem",
+    "defaultMessage": "Vom System beendet"
+  },
+  "messageState.error":{
+    "id":"messageState.error",
+    "defaultMessage": "Fehlerhaft"
+  },
+  "searchCallId":{
+    "id":"searchCallId",
+    "defaultMessage": "Call Id eingeben..."
+  },
+  "search":{
+    "id":"search",
+    "defaultMessage": "Suchen"
+  },
+  "searchCallIdPanelHeader":{
+    "id":"searchCallIdPanelHeader",
+    "defaultMessage": "Notruf suchen"
+  },
+  "emergencyCallsPanelHeader":{
+    "id": "emergencyCallsPanelHeader",
+    "defaultMessage": "Aktuelle Notrufe"
+  },
+  "openCall":{
+    "id": "openCall",
+    "defaultMessage": "Notruf öffnen"
+  },
+  "username":{
+    "id": "username",
+    "defaultMessage": "Benutzername"
+  },
+  "password":{
+    "id": "password",
+    "defaultMessage": "Passwort"
+  },
+  "login":{
+    "id": "login",
+    "defaultMessage": "Anmelden"
+  },
+  "logout":{
+    "id": "logout",
+    "defaultMessage": "Abmelden"
+  },
+  "connectionState.error": {
+    "id": "connectionState.error",
+    "defaultMessage": "Mit dem angegebenen API Key konnte keine Verbindung zum Server hergestellt werden"
+  },
+  "connectionState.unknown": {
+    "id": "connectionState.unknown",
+    "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten"
+  },
+  "displayedLocationNotLatest": {
+    "id": "displayedLocationNotLatest",
+    "defaultMessage": "Es werden nicht alle Positionsdaten angezeigt!"
+  },
+  "location": {
+    "id": "location",
+    "defaultMessage": "Position"
+  },
+  "copyToClipboard.success": {
+    "id": "copyToClipboard.success",
+    "defaultMessage": "{message} wurde in die Zwischenablage kopiert."
+  },
+  "copyToClipboard.error": {
+    "id": "copyToClipboard.error",
+    "defaultMessage": "Kopieren fehlgeschlagen."
+  },
+  "newTab": {
+    "id": "newTab",
+    "defaultMessage": "Neuer Tab"
+  },
+  "locationAccuracy": {
+    "id": "locationAccuracy",
+    "defaultMessage": "Genauigkeit: {radius}m"
+  },
+  "latestSignal": {
+    "id": "latestSignal",
+    "defaultMessage": "Letztes Signal: {value}"
+  }
+}

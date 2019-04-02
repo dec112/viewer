@@ -1,0 +1,20 @@
+@import '../../colors.css';
+@import '../../animations.css';
+
+.Table th{
+    font-weight: bold;
+}
+
+.CallRow{
+    cursor: pointer;
+    animation: var(--a-pulsing-error-bg);
+    animation-iteration-count: 60; /* means blinking for 30s */
+}
+
+.CallRow:hover{
+    background: var(--lighter-gray);
+}
+
+.Center {
+    text-align: center;
+}

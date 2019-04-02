@@ -1,0 +1,75 @@
+@import '../../colors.css';
+
+.MessageButtonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.MessageButtonGroup {
+    margin-top: 10px;
+}
+
+.MessageButton:not(:last-of-type) {
+    margin-right: 5px;
+}
+
+.Footer {
+    flex-shrink: 0;
+    background-color: var(--light-earth);
+}
+
+.Panel,
+.PanelWrapper{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin-bottom: 0;
+}
+
+.noBorder {
+    border: none;
+}
+
+.PanelBody {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.TextInput {
+    resize: none;
+}
+
+.MessageWrapper {
+    padding: 15px 0;
+}
+
+.Title {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-around;
+    padding: 5px;
+}
+
+.closedByCaller,
+.closedBySystem,
+.closedByCenter,
+.inCall {
+    background: var(--light-green);
+}
+
+.newCall {
+    background: var(--darker-light-blue);
+}
+
+.undefined,
+.error,
+.stale {
+    background: var(--light-salmon);
+}
+
+@media print {
+    .PanelBody{
+        overflow-y: auto;
+    }
+}

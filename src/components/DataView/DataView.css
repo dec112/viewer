@@ -1,0 +1,9 @@
+.noBorder{
+    border: none;
+}
+
+.JsonTree{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+}
