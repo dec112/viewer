@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import style from "./Snackbar.css"
+import style from "./Snackbar.module.css"
 import classNames from 'classnames';
 import SnackbarType from '../../constant/SnackbarType';
 import ConfigService from "../../service/ConfigService";

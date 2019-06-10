@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import style from './MainGrid.css';
+import style from './MainGrid.module.css';
 import DataView from "../DataView/DataView";
 import MessageView from "../MessageView/MessageView";
 import Navbar from "../Navbar/Navbar"

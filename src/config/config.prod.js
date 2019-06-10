@@ -9,7 +9,7 @@ export default {
         },
         "protocol": "dec112",
     },
-    "debug": true,
+    "debug": false,
     "language": "de-DE",
     "ui": {
         "snackbar": {

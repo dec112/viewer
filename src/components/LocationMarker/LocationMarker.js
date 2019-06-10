@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import style from './LocationMarker.css';
+import style from './LocationMarker.module.css';
 import classNames from 'classnames';
 
 class LocationMarker extends Component {

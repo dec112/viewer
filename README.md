@@ -26,7 +26,7 @@ In order run this application, a complete setup of all DEC112 components is nece
 
 There are two locations where the viewer can be configured.
 
-1. `./src/config/config.js`: This configuration is bundled when you build the project
+1. `./src/config/config.[dev|prod].js`: This configuration is bundled when you build the project (separate configs for dev and prod environment)
 2. `./public/dec112.config.json`: This configuration can always be changed and is loaded asynchronously by the application and overwrites any config parameters previously defined in `config.js`
 
 ### Sample Configuration
@@ -55,7 +55,10 @@ There are two locations where the viewer can be configured.
       }
   },
   "connection": {
-      "endpoint": "wss://service.dec112.at:8080/api/v1", // endpoint which the viewer tries to connect to
+      "endpoint": { // endpoints which the viewer tries to connect to
+          "default": "ws://example.com", // if viewer protocol is http
+          "ssl": "wss://example.com", // if viewer protocol is https
+      },
       "protocol": "dec112" // protocol that's used for data exchange
   },
   "clients": {
@@ -111,13 +114,6 @@ yarn build --profile production
 # development
 yarn build --profile dev
 ```
-
-Each time the application is compiled, corresponding template config is copied to both `config.js` and `dec112.config.json`
-
-### Config template locations
-
-1. `./src/config/config.[dev|production].js`
-2. `./config/dec112.config.[dev|production].json`
 
 ## Authors
 

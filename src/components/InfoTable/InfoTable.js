@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import style from './InfoTable.css';
+import style from './InfoTable.module.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Snackbar from "../Snackbar/Snackbar";
 import LocalizationProvider from "../../provider/LocalizationProvider";

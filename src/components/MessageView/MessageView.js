@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import style from './MessageView.css';
+import style from './MessageView.module.css';
 import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from '../../i18n/Messages';
 import ModalDialog from "../ModalDialog/ModalDialog";

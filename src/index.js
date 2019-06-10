@@ -1,19 +1,16 @@
-// eslint-disable-next-line
-import $ from "jquery"; //do not remove
+import "jquery/src/jquery"; //do not remove
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/js/bootstrap.js';
 
 import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
 import store from './store';
-import 'babel-polyfill';
 import InternalConfig from './config/config'
 import ConfigService from './service/ConfigService'
 import ApiService from './service/ApiService'
@@ -29,6 +26,8 @@ fetch('./dec112.config.json')
   const config = configService.getConfig();
   LanguageService.getInstance().setCurrentLanguage(config.language);
   DebugService.initialize(!!config.debug);
+
+  document.title = config.appTitle || '';
   
   ReactDOM.render(
     <Provider store={store}>
@@ -37,5 +36,3 @@ fetch('./dec112.config.json')
     document.getElementById('root')
    );
 });
-
-registerServiceWorker();

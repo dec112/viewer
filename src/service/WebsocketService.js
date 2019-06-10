@@ -17,7 +17,11 @@ class WebsocketService {
         const debug = DebugService.getInstance();
         
         let connectionConfig = ConfigService.getConfig().connection;
-        let currentWebsocketEndpoint = connectionConfig.endpoint;
+
+        let isSSL = window.location.protocol === 'https:';
+        let endpoints = connectionConfig.endpoint;
+        let currentWebsocketEndpoint = isSSL ? endpoints.ssl : endpoints.default;
+
         if(apiKey){
             currentWebsocketEndpoint += `?${QueryParam.API_KEY}=${encodeURIComponent(apiKey)}`;
         }

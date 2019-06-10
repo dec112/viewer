@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Button from "./Button";
 import classNames from 'classnames';
 import React from "react";
-import style from './LoadingButton.css';
+import style from './LoadingButton.module.css';
 
 class LoadingButton extends Button {
     static propTypes = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import style from './DataView.css';
+import style from './DataView.module.css';
 import InfoTable from "../InfoTable/InfoTable";
 import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from "../../i18n/Messages";

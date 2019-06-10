@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import style from './Message.css';
+import style from './Message.module.css';
 import Origin from "../../constant/Origin";
 import DateTimeUtilities from "../../utilities/DateTimeUtilities"
 import classNames from 'classnames';

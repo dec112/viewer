@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import classNames from 'classnames';
-import style from './Login.css';
+import style from './Login.module.css';
 import Label from "../../components/Label/Label";
 import TextField from "../../components/TextField/TextField";
 import Messages from '../../i18n/Messages';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import style from './Overview.css';
+import style from './Overview.module.css';
 import PropTypes from "prop-types";
 import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from "../../i18n/Messages";

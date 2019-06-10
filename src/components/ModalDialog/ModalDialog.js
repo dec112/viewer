@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LocalizationProvider from '../../provider/LocalizationProvider';
 import Messages from "../../i18n/Messages";
 import ModalType from '../../constant/ModalType'
-import $ from 'jquery';
+import $ from 'jquery/src/jquery';
 
 function show(message, type, callback) {
     ModalDialog.CONTEXT.setState({

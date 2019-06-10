@@ -13,7 +13,7 @@ import MainGrid from "./components/MainGrid/MainGrid";
 import ModalDialog from './components/ModalDialog/ModalDialog'
 import Snackbar from "./components/Snackbar/Snackbar";
 import Localization from "./components/LocalizationProvider/Localization";
-import style from './App.css';
+import style from './App.module.css';
 import UrlUtilities from "./utilities/UrlUtilities";
 import Overview from "./components/Overview/Overview";
 import WebsocketStatus from "./constant/WebsocketStatus";
