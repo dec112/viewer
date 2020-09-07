@@ -11,6 +11,7 @@ class TextField extends Component {
         readOnly: PropTypes.bool,
         inputType: PropTypes.string,
         onKeyUp: PropTypes.func,
+        disabled: PropTypes.bool,
     };
 
     getInputType() {
@@ -39,6 +40,7 @@ class TextField extends Component {
             onKeyPress={this.handlekeyUp}
             value={this.props.text ? this.props.text : ''}
             placeholder={this.props.placeholder}
+            disabled={this.props.disabled}
             readOnly={this.props.readOnly}/>);
     }
 }

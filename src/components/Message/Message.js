@@ -2,43 +2,46 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import style from './Message.module.css';
 import Origin from "../../constant/Origin";
-import DateTimeUtilities from "../../utilities/DateTimeUtilities"
 import classNames from 'classnames';
-import LanguageService from '../../service/LanguageService';
 import LocationMarker from '../LocationMarker/LocationMarker';
+import DateTimeService from '../../service/DateTimeService';
 
 class Message extends Component {
     static propTypes = {
-        text: PropTypes.string.isRequired,
-        timeReceived: PropTypes.any.isRequired,
-        origin: PropTypes.string.isRequired,
-        locations: PropTypes.array,
+        message: PropTypes.object,
         currentLocations: PropTypes.array,
         onSetLocations: PropTypes.func
     };
+
+    constructor() {
+        super();
+        this.dateTimeService = DateTimeService.getInstance();
+    }
 
     scrollIntoView(){
         this.element.scrollIntoView({behavior: "smooth"});
     }
 
+    isIncoming = () => this.props.message.origin === Origin.REMOTE || this.props.message.origin === Origin.SYSTEM;
+
     getMessageDirection() {
-        return (this.props.origin === Origin.REMOTE || this.props.origin === Origin.SYSTEM) ? style.Incoming : style.Outgoing;
+        return this.isIncoming() ? style.Incoming : style.Outgoing;
     }
 
     getMessageBackground() {
-        return (this.props.origin === Origin.REMOTE || this.props.origin === Origin.SYSTEM) ? style.IncomingBackground : style.OutgoingBackground;
+        return this.isIncoming() ? style.IncomingBackground : style.OutgoingBackground;
     }
 
     getUserInformationAlignment() {
-        return (this.props.origin === Origin.REMOTE || this.props.origin === Origin.SYSTEM) ? style.Right : style.Left;
+        return this.isIncoming() ? style.Right : style.Left;
     }
 
     getArrowStyle() {
-        return (this.props.origin === Origin.REMOTE || this.props.origin === Origin.SYSTEM) ? style.IncomingArrow : style.OutgoingArrow;
+        return this.isIncoming() ? style.IncomingArrow : style.OutgoingArrow;
     }
 
     getTimeReceived() {
-        return DateTimeUtilities.toDateTime(this.props.timeReceived, LanguageService.getInstance().getCurrentLanguage());
+        return this.dateTimeService.toDateTime(this.props.message.received);
     }
 
     handleMapMarkerClick = (locations) => {
@@ -47,11 +50,12 @@ class Message extends Component {
     }
 
     hasLocations() {
-        return (this.props.locations && this.props.locations.length > 0)
+        const { locations } = this.props.message;
+        return (locations && locations.length > 0)
     }
 
     getLocations() {
-        return this.props.locations;
+        return this.props.message.locations;
     }
 
     getCurrentLocations() {
@@ -63,16 +67,16 @@ class Message extends Component {
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
                 <div className={classNames(style.Header, this.getUserInformationAlignment())}>
                     <span>
-                    {this.hasLocations() ? 
-                    <LocationMarker
-                        locations={this.getLocations()}
-                        currentLocations={this.getCurrentLocations()}
-                        onClick={this.handleMapMarkerClick} /> : ''}
+                        {this.hasLocations() ?
+                            <LocationMarker
+                                locations={this.getLocations()}
+                                currentLocations={this.getCurrentLocations()}
+                                onClick={this.handleMapMarkerClick} /> : ''}
                     </span>
                     <span>{this.getTimeReceived()}</span>
                 </div>
                 <div className={classNames(style.MessageBody, this.getMessageBackground(), style.Arrow, this.getArrowStyle())}>
-                    {this.props.text}
+                    {this.props.message.text}
                 </div>
             </div>)
     }

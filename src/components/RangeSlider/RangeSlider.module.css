@@ -1,0 +1,82 @@
+
+
+.slider {
+  position: relative;
+  z-index: 1;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  height: var(--range-slider-height);
+  background-color: var(--range-slider-bg-color);
+  outline: none;
+  border-radius: var(--range-slider-border-radius);
+}
+
+.slider::-moz-range-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  
+  width: var(--range-slider-handle-width);
+  height: var(--range-slider-height);
+  border-radius: var(--range-slider-border-radius);
+  background: var(--range-slider-handle-color);
+  border: none;
+  cursor: pointer;
+}
+
+/* 
+You may wonder, why I put the exact same instructions here again
+
+Well, Chrome does not want to accept these CSS properties, if I use the same instructions
+both for Firefox and Chrome. Okay Chrome, you may fool me, but you may not beat me!
+*/
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  
+  width: var(--range-slider-handle-width);
+  height: var(--range-slider-height);
+  border-radius: var(--range-slider-border-radius);
+  background: var(--range-slider-handle-color);
+  border: none;
+  cursor: pointer;
+}
+
+.sliderContainer {
+  opacity: 0.7;
+  transition: opacity .2s;
+}
+
+.sliderContainer:hover {
+  opacity: 1;
+}
+
+.stepsContainer {
+  /* These markers must be hidden behind the range slider, as they could be around the rounded corners */
+  /* If not moved upwards, there is an ugly gap between markers and range slider */
+  top: -1em;
+  /* Otherwise they occupy too much space on the bottom */
+  margin-bottom: -1em;
+  height: 2em;
+  position: relative;
+  margin: 0 calc(var(--range-slider-handle-width) / 2)
+}
+
+.marker {
+  width: 0.5em;
+  background-color: var(--range-slider-bg-color);
+  border-radius: 0 0 10px 10px;
+  height: 100%;
+  position: absolute;
+  transform: translateX(-50%);
+
+  /* button default style reset */
+  appearance: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}

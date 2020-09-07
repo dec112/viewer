@@ -38,6 +38,10 @@
     --alert-grey-border: var(--light-gainsboro);
     --alert-grey-color: var(--light-black);
     --map-marker-color: var(--bright-orange);
+    --range-slider-bg-color: var(--white);
+    --range-slider-handle-color: var(--bright-green);
     --bg-success: var(--bright-green);
     --bg-error: var(--dark-red);
+    --bg-warn: var(--light-orange);
+    --bg-light: var(--light-gray);
 }

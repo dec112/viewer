@@ -1,5 +1,5 @@
-import CommonUtilities from "../utilities/CommonUtilities"
-import DeepAssign from "deep-assign";
+import * as CommonUtilities from "../utilities/CommonUtilities"
+import { tryGet } from "../utilities";
 
 class ConfigService {
 
@@ -16,30 +16,58 @@ class ConfigService {
         return ConfigService.INSTANCE;
     }
 
-    static getConfig() {
-        return ConfigService.getInstance().getConfig();
+    static get(...path) {
+        return ConfigService.getInstance().get(...path);
     }
 
     constructor(internalConfig, externalConfig, client) {
         this.internalConfig = internalConfig;
         this.externalConfig = externalConfig;
 
+        this.serverConfig = null;
         this.config = null;
+        this.client = null;
 
         this.setClient(client);
     }
 
-    setClient(client) {
-        this.config = CommonUtilities.deepCopy(this.internalConfig);
-        DeepAssign(this.config, this.externalConfig);
+    get(...path) {
+        return tryGet(this.getConfig(), ...path);
+    }
 
+    mergeConfig() {
+        this.config = CommonUtilities.deepCopy(this.internalConfig);
+        this.config = CommonUtilities.deepAssign(this.config, this.externalConfig);
+
+        if (this.serverConfig)
+            this.config = CommonUtilities.deepAssign(this.config, this.serverConfig);
+
+        const { client } = this;
         if (client) {
-            DeepAssign(this.config, this.externalConfig.clients[client]);
+            const extConf = this.externalConfig;
+
+            if (extConf.clients) {
+                const extClientConf = extConf.clients[client];
+
+                if (extClientConf)
+                    this.config = CommonUtilities.deepAssign(this.config, extClientConf);
+            }
+
         }
 
         delete this.config.clients;
 
         return this.getConfig();
+    }
+
+    setClient(client) {
+        this.client = client;
+        return this.mergeConfig();
+    }
+
+    setServerConfig(config) {
+        this.serverConfig = config;
+        this.mergeConfig();
     }
 
     getConfig() {

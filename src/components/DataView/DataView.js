@@ -2,75 +2,90 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import style from './DataView.module.css';
 import InfoTable from "../InfoTable/InfoTable";
-import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from "../../i18n/Messages";
 import classNames from "classnames";
-import ArrayUtilities from "../../utilities/ArrayUtilities";
+import { sort } from "../../utilities/ArrayUtilities.ts";
+import { LocalizationService } from '../../service/LocalizationService';
 
 class DataView extends Component {
 
     static propTypes = {
-        additionalInformation: PropTypes.arrayOf(PropTypes.object),
+        placeholder: PropTypes.string,
+        data: PropTypes.object,
         showTitle: PropTypes.bool,
     };
+
+    constructor() {
+        super();
+        this.intl = LocalizationService.getInstance();
+    }
 
     _tryTranslate(key) {
         let messageKeyToTranslate = Messages[key];
         // if key cannot be found in messages, it will be used as is
-        return messageKeyToTranslate ? LocalizationProvider.formatMessage(messageKeyToTranslate) : key
+        return messageKeyToTranslate ? this.intl.formatMessage(messageKeyToTranslate) : key
     }
 
     showTitle() {
         return !!this.props.showTitle;
     }
 
-    getAdditionalInformationElements() {
-        let infos = this.props.additionalInformation;
+    _tryAddDataToObject = (obj, key, data) => {
+        // we don't show items starting with underscore
+        if (key.startsWith('_'))
+            return obj;
 
-        if (!infos || infos.length === 0)
-            return this.getInfoTableItem(LocalizationProvider.formatMessage(Messages.noAdditionalInformation), { '-': '-' }, 'noData');
+        obj[this._tryTranslate(key)] = data;
 
-        // group by substring before dot -> e.g. app.data -> app
-        let items = ArrayUtilities.groupBy(infos, x => {
-            let indexOfDot = x.name.indexOf('.');
-
-            if (indexOfDot > -1)
-                return x.name.substring(0, indexOfDot);
-
-            return '';
-        });
-
-        // sort keys by grouped array length
-        let keys = ArrayUtilities.reverse(Object.keys(items), (element) => items[element].length);
-
-        // create an info table for each key
-        return keys.map(key => {
-            let data = items[key].reduce((obj, item) => {
-                let keyToTranslate = item.name.split('.');
-
-                let translated = this._tryTranslate(keyToTranslate[keyToTranslate.length - 1]);
-
-                obj[translated] = item.value;
-                return obj;
-            }, {});
-
-            key = key || 'generalData';
-            return this.getInfoTableItem(this._tryTranslate(key), data, key);
-        });
+        return obj;
     }
 
-    getInfoTableItem(title, data, key) {      
-        return <div className="col-lg-6 col-md-6 col-sm-6"
+    getDataElements() {
+        const { data: infos, placeholder } = this.props;
+        const { formatMessage } = this.intl;
+
+        if (!infos || Object.keys(infos).length === 0) {
+            return <div className="panel panel-default">
+                <div className="panel-body">
+                    {placeholder ?? formatMessage(Messages.noAdditionalInformation)}
+                </div>
+            </div>
+        }
+
+        const infoObjects = {};
+        for (const key in infos) {
+            const item = infos[key];
+
+            // null is also identified as "object", weird
+            // this is why we also check on the object itself
+            if (!!item && typeof item === 'object') {
+                infoObjects[key] = Object.keys(item).reduce((obj, subKey) => this._tryAddDataToObject(obj, subKey, item[subKey]), {});
+            }
+            else {
+                // all values which are sitting in the root of the object
+                // will be consolidated in an object called "generalData"
+                infoObjects.generalData = (infoObjects.generalData || {});
+                this._tryAddDataToObject(infoObjects.generalData, key, item);
+            }
+        }
+
+        return sort(Object.keys(infoObjects), x => Object.keys(infoObjects[x]).length, true)
+            .map(key => this.getInfoTableItem(this._tryTranslate(key), infoObjects[key], key))
+    }
+
+    getInfoTableItem(title, data, key) {
+        return <div
+            className={classNames(style.InfoTable)}
             key={key}>
             <InfoTable
+                className={'panel-info'}
                 title={title}
-                data={data}
-                copyToClipboard={true} />
+                data={data} />
         </div>;
     }
 
     render() {
-        const { formatMessage } = LocalizationProvider;
+        const { formatMessage } = this.intl;
 
         return (<div>
             <div className={classNames('', style.noBorder)}>
@@ -78,8 +93,8 @@ class DataView extends Component {
                     <div className="panel-heading">
                         <h3 className="panel-title">{formatMessage(Messages.basicInformation)}</h3>
                     </div> : ''}
-                <div className={classNames("row")}>
-                    {this.getAdditionalInformationElements()}
+                <div className={classNames(style.DataViewContainer)}>
+                    {this.getDataElements()}
                 </div>
             </div>
         </div>);

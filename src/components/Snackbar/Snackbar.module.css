@@ -1,16 +1,24 @@
 @import "../../colors.css";
 @import "../../transitions.css";
 
+.snackbarContainer {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000; /* 1000 ensures snackbars overlay map */
+}
+
 .snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
+    border-radius: 2px;
     color: var(--white);
-    padding: 16px; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 30px;
-    bottom: 30px;
+    padding: 1em;
+    margin-top: 0.5em;
+    display: flex;
+}
+
+.message {
+    flex: 1;
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */

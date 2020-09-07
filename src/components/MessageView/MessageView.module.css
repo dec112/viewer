@@ -1,6 +1,6 @@
 @import '../../colors.css';
 
-.MessageButtonContainer {
+.SpaceBetween {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -10,8 +10,8 @@
     margin-top: 10px;
 }
 
-.MessageButton:not(:last-of-type) {
-    margin-right: 5px;
+.MessageButton {
+    height: 100%;
 }
 
 .Footer {
@@ -38,6 +38,11 @@
 
 .TextInput {
     resize: none;
+    flex: 1;
+}
+
+.MessageContainer {
+    display: flex;
 }
 
 .MessageWrapper {
@@ -47,25 +52,42 @@
 .Title {
     display: flex;
     flex-shrink: 0;
-    justify-content: space-around;
-    padding: 5px;
+    padding: 5px 1em;
 }
 
-.closedByCaller,
-.closedBySystem,
-.closedByCenter,
-.inCall {
+.WarningBanner {
+    margin-top: 1em;
+    width: 100%;
+}
+
+.AutoWidth {
+    width: auto;
+}
+
+.Opaque {
+    opacity: 0.25;
+    transition: var(--t-opacity);
+}
+
+.Opaque:hover {
+    opacity: 1;
+}
+
+.MarginRight {
+    margin-right: 0.5em;
+}
+
+.isStateOk {
     background: var(--light-green);
 }
 
-.newCall {
-    background: var(--darker-light-blue);
+.isStateError {
+    background: var(--light-salmon);
 }
 
-.undefined,
-.error,
-.stale {
-    background: var(--light-salmon);
+.isStateWarning,
+.isReplay {
+    background-color: var(--bg-warn);
 }
 
 @media print {

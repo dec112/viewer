@@ -1,32 +1,36 @@
 {
   "name": "dec112-viewer",
   "homepage": "./",
-  "version": "1.2.0",
-  "private": true,
+  "version": "2.0.3",
   "license": "GPL-3.0-only",
   "dependencies": {
-    "bootstrap": "3.3.7",
+    "bootstrap": "^3.3.7",
     "classnames": "^2.2.6",
-    "deep-assign": "^3.0.0",
+    "deepcopy": "^2.0.0",
     "jquery": "^3.4.0",
     "leaflet": "^1.4.0",
+    "merge-options": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
-    "react-intl": "^2.8.0",
+    "react-intl": "^4.3.1",
     "react-leaflet": "^2.2.1",
-    "react-live-clock": "^3.1.0",
     "react-redux": "^7.0.2",
-    "react-scripts": "2.1.8",
-    "redux": "^4.0.1"
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.1",
+    "typescript": "^3.7.3"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node scripts/release.js",
+    "release": "GENERATE_SOURCEMAP=false yarn build",
+    "docker-release": "yarn release && docker build -t dec112/viewer .",
+    "docker": "yarn docker-release && docker run -p 8080:80 --rm dec112/viewer",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "extract-intl": "node scripts/buildLocalization.js -l=en,de -o=src/i18n/ -d=de -s=src/i18n/DefaultMessages.json"
+    "extract-intl": "node scripts/buildLocalization.js -l=en,de,fr -o=src/i18n/ -d=de -s=src/i18n/DefaultMessages.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,8 +41,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "args-parser": "^1.1.0",
-    "find-root": "^1.1.0"
-  }
+  "devDependencies": {}
 }

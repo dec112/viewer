@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import style from './InfoTable.module.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Snackbar from "../Snackbar/Snackbar";
-import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from "../../i18n/Messages";
 import classNames from "classnames";
+import { LocalizationService} from '../../service/LocalizationService';
+import { Icon, IconType } from '../Icon';
 
 class InfoTable extends Component {
 
@@ -16,15 +17,22 @@ class InfoTable extends Component {
     copyToClipboard: PropTypes.bool
   }
 
+  constructor() {
+    super();
+    this.intl = LocalizationService.getInstance();
+  }
+
   hasCopyToClipboard() {
     return !!this.props.copyToClipboard;
   }
 
   onCopyToClipboard = (text, success) => {
+    const { formatMessage } = this.intl;
+
     if (success)
-      Snackbar.success(LocalizationProvider.formatMessage(Messages['copyToClipboard.success'], { message: text }));
+      Snackbar.success(formatMessage(Messages['copyToClipboard.success'], { message: text }));
     else
-      Snackbar.error(LocalizationProvider.formatMessage(Messages['copyToClipboard.error']));
+      Snackbar.error(formatMessage(Messages['copyToClipboard.error']));
   }
 
   getClipboardColumn(dataToCopy) {
@@ -44,17 +52,25 @@ class InfoTable extends Component {
 
   render() {
     return (
-      <div className="panel panel-info">
+      <div className={classNames('panel', this.props.className)}>
         <div className="panel-heading">{this.props.title}</div>
-        <table className={classNames("panel-body table table-striped table-hover table-bordered table-sm", this.props.className)}>
+        <table className={classNames("panel-body table table-striped table-hover table-bordered table-sm")}>
           <tbody>
             {Object.keys(this.props.data).sort().map(key => {
-              let value = this.props.data[key]
+              let value, visibleValue;
+              value = this.props.data[key];
+              value = visibleValue = value === undefined || value === null ? value : value.toString();
+
+              switch(value) {
+                case 'true': visibleValue = <Icon type={IconType.OK} />; break;
+                case 'false': visibleValue = <Icon type={IconType.REMOVE} />; break;
+                default:
+              }
 
               return (
                 <tr key={key}>
                   <th>{key}</th>
-                  <td>{value}</td>
+                  <td>{visibleValue}</td>
                   {this.getClipboardColumn(value)}
                 </tr>
               )
@@ -65,5 +81,9 @@ class InfoTable extends Component {
     );
   }
 }
+
+InfoTable.defaultProps = {
+  copyToClipboard: true,
+};
 
 export default InfoTable

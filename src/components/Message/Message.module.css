@@ -43,6 +43,7 @@
     margin-top: 10px;
     padding: 15px;
     position: relative;
+    white-space: pre-wrap;
 }
 
 .Arrow::after {
@@ -52,7 +53,7 @@
     pointer-events: none;
     border-width: 10px;
     display: inline-block;
-    bottom: -20px;
+    bottom: -40px;
 }
 
 .OutgoingArrow::after {

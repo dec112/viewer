@@ -7,3 +7,13 @@
     vertical-align: top;
     margin-left: 20px;
 }
+
+.DataViewContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.InfoTable {
+    min-width: calc(50% - 1em);
+}

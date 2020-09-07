@@ -1,0 +1,29 @@
+@import '../../colors.css';
+@import '../../animations.css';
+
+.Table th {
+    font-weight: bold;
+}
+
+.CallRow {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.CallRow:not(.IsReplay) {
+    animation: var(--a-pulsing-error-bg);
+    animation-iteration-count: 60;
+    /* means blinking for 30s */
+}
+
+.IsReplay {
+    background-color: var(--bg-warn);
+}
+
+.CallRow:hover {
+    background: var(--lighter-gray);
+}
+
+.Center {
+    text-align: center;
+}

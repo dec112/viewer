@@ -1,7 +1,6 @@
 {
   "short_name": "DEC 112 Viewer",
   "name": "DEC 112 - Deaf Emergency Call Viewer",
-  "version": "1.2.0",
   "icons": [
     {
       "src": "favicon.ico",

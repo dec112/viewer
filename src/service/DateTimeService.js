@@ -1,6 +1,4 @@
-// TODO: avoid this import by implementing everything here
-import DateTimeUtilities from '../utilities/DateTimeUtilities';
-import LanguageService from './LanguageService';
+import { LocalizationService } from './LocalizationService';
 
 class DateTimeService {
   static INSTANCE = new DateTimeService();
@@ -9,8 +7,22 @@ class DateTimeService {
     return DateTimeService.INSTANCE;
   }
 
+  constructor() {
+    this.intl = LocalizationService.getInstance();
+  }
+
   toDateTime(date) {
-    return DateTimeUtilities.toDateTime(date, LanguageService.getInstance().getCurrentLanguage());
+    if (!date)
+      return '';
+
+    if (!(date instanceof Date))
+      date = DateTimeService.parse(date);
+
+    return date.toLocaleString(this.intl.getCurrentLanguage());
+  }
+
+  static parse(dateString) {
+    return new Date(dateString);
   }
 }
 

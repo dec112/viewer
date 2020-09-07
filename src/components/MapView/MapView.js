@@ -2,12 +2,12 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import style from './MapView.module.css';
 import classNames from 'classnames';
-import LocalizationProvider from "../../provider/LocalizationProvider";
 import Messages from "../../i18n/Messages";
-import ArrayUtilities from "../../utilities/ArrayUtilities";
+import { sort, distinctBy } from "../../utilities/ArrayUtilities.ts";
 import ConfigService from "../../service/ConfigService";
 import LocationUtilities from "../../utilities/LocationUtilities";
 import {Map, TileLayer, Polyline, Marker, Circle, Tooltip, ScaleControl} from 'react-leaflet'
+import { LocalizationService} from '../../service/LocalizationService';
 
 class MapView extends Component {
 
@@ -23,9 +23,19 @@ class MapView extends Component {
     defaultZoomLevel = 15;
     defaultMapBounds = [[-1,-1], [1, 1]];
 
+    constructor() {
+        super();
+        this.intl = LocalizationService.getInstance();
+    }
+
     componentDidMount() {
         // default initialization for map
         this.map.current.leafletElement.fitWorld();
+        this._tryFitMap();
+    }
+
+    componentDidUpdate(prevProps) {
+        this._tryFitMap(prevProps);
     }
 
     _didNotHaveAnyLocations(prevProps) {
@@ -36,12 +46,16 @@ class MapView extends Component {
         return prevProps.currentLocations !== this.props.currentLocations;
     }
 
-    componentDidUpdate(prevProps) {
+    _fitMap = () => {
+        this.map.current.leafletElement.fitBounds(this.getMapBounds());
+    }
+
+    _tryFitMap(prevProps = {}) {
         // bounds and zoom of map are only updated if there hasn't been any locations before
         // or if currentLocations changed
         // otherwise it would be interfering with user's panning on map
-        if(this._didNotHaveAnyLocations(prevProps) || this._currentLocationsDidChange(prevProps)) {
-            this.map.current.leafletElement.fitBounds(this.getMapBounds());
+        if (this._didNotHaveAnyLocations(prevProps) || this._currentLocationsDidChange(prevProps)) {
+            this._fitMap();
         }
     }
 
@@ -53,17 +67,24 @@ class MapView extends Component {
         return LocationUtilities.getBounds(this.getMapLocations()) || this.defaultMapBounds;
     }
 
-    getMapLocations() {
-        let locs = this.props.locations;
-        
-        if(this.props.currentLocations && this.props.currentLocations.length > 0) 
-            locs = this.props.currentLocations;
+    hasCurrentLocations = () => this.props.currentLocations && this.props.currentLocations.length > 0;
 
-        locs = ArrayUtilities.distinctBy(locs, (x, y) => {
+    getMapLocations(locs) {
+        const { locations } = this.props;
+
+        // if no locations are passed, we look in our properties to find the correct ones
+        if (!locs) {
+            locs = locations;
+
+            if (this.hasCurrentLocations())
+                locs = this.props.currentLocations;
+        }
+
+        locs = distinctBy(locs, (x, y) => {
             return x.coords.longitude === y.coords.longitude
                 && x.coords.latitude === y.coords.latitude;
         });
-        locs = ArrayUtilities.reverse(locs, 'timestamp');
+        locs = sort(locs, x => x.message.received, true);
 
         return locs;
     }
@@ -84,36 +105,54 @@ class MapView extends Component {
     getMapOverlay() {
         let locations = this.getMapLocations();
         let latLngLocations = LocationUtilities.convertToLatLngArray(locations);
+        
+        let allLocations = locations;
+        let allLatLngLocations = latLngLocations;
+
+        // if mapView does not have current locations
+        // allLocations and locations would be the same
+        // this way we save resources not fetching and converting the same array twice
+        if (this.hasCurrentLocations()) {
+            allLocations = this.getMapLocations(this.props.locations);
+            allLatLngLocations = LocationUtilities.convertToLatLngArray(allLocations);
+        }
+
         let elements = [];
-        let polylineColor = ConfigService.getConfig().ui.mapView.polyline.color;
+        let polylineColor = ConfigService.get('ui', 'mapView', 'polyline', 'color');
 
-        if (locations.length > 0)
-            elements.push(this.getMarker(latLngLocations[0], 'main-marker'));
-            latLngLocations.forEach((loc, index) => {
-                let radius = locations[index].radius;
+        const { formatMessage } = this.intl;
 
-                if (radius !== null && radius !== undefined) {
-                    elements.push(
+        if (locations.length > 0) {
+            const firstLatLng = latLngLocations[0];
+            elements.push(this.getMarker(firstLatLng, 'main-marker'));
+            
+            const firstLocation = locations[0];
+            const radius = firstLocation.radius;
+            if (radius) {
+                elements.push(
                     <Circle
-                        center={loc} 
+                        center={firstLatLng}
                         color={polylineColor}
                         radius={radius}
-                        key={`circle-${loc.toString()}`}>
-                            <Tooltip direction={"right"} sticky={true}>
-                                <div>{LocalizationProvider.formatMessage(Messages.locationAccuracy, {radius: radius})}</div>
-                            </Tooltip>
-                        </Circle>);
-                }
-            });
+                        key={`circle-${firstLatLng.toString()}`}>
+                        <Tooltip direction={"right"} sticky={true}>
+                            <div>{formatMessage(Messages.locationAccuracy, { radius: radius })}</div>
+                        </Tooltip>
+                    </Circle>
+                );
+            }
+        }
 
-        if (latLngLocations.length > 1) {
+        // we always want to draw the polyline and the start marker from all available locations
+        // not only from the currently displayed ones
+        if (allLatLngLocations.length > 1) {
             elements.push(
                 <Polyline
                     color={polylineColor}
-                    positions={latLngLocations}
+                    positions={allLatLngLocations}
                     key='polyline' />
             );
-            elements.push(this.getMarker(latLngLocations[latLngLocations.length - 1], 'first-marker', 0.3));
+            elements.push(this.getMarker(allLatLngLocations[allLatLngLocations.length - 1], 'first-marker', 0.3));
         }
             
         return elements;
@@ -131,6 +170,10 @@ class MapView extends Component {
         return !this.props.currentLocations
     }
 
+    showsMultipleLocations() {
+        return this.getMapLocations().length > 1;
+    }
+
     showTitle() {
         return (this.props.showTitle) ? this.props.showTitle : false;
     }
@@ -141,8 +184,13 @@ class MapView extends Component {
             this.map.current.leafletElement.panTo(LocationUtilities.convertToLatLng(latestLoc));
     };
 
+    handleShowAllLocations = () => {
+        this._fitMap();
+    }
+
     render() {
-        const {formatMessage} = LocalizationProvider;
+        const { formatMessage } = this.intl;
+
         return (<div>
             <div className={classNames('panel panel-default', style.noBorder)}>
                 {this.showTitle() ? <div className="panel-heading">
@@ -162,11 +210,18 @@ class MapView extends Component {
                         <ScaleControl />
                     </Map>
                     <div className={classNames(style.InfoBar)} role="group" aria-label="...">
-                        <button disabled={this.getDisabledState()}
-                            className="btn btn-default hidePrint"
-                            onClick={this.handleMyLocationClick}>
-                            <span className="glyphicon glyphicon-map-marker" /> {formatMessage(Messages.centerMap)}
+                        <div>
+                            <button disabled={this.getDisabledState()}
+                                className="btn btn-default hidePrint"
+                                onClick={this.handleMyLocationClick}>
+                                <span className="glyphicon glyphicon-map-marker" /> {formatMessage(Messages.showLatestLocation)}
+                            </button>
+                            <button disabled={this.getDisabledState() || !this.showsMultipleLocations()}
+                                className="btn btn-default hidePrint"
+                                onClick={this.handleShowAllLocations}>
+                                <span className="glyphicon glyphicon-globe" /> {formatMessage(Messages.overview)}
                         </button>
+                        </div>
                         {this.hasLocations() ? '' :
                             <span className={classNames("label", "label-danger", style.Label)}>{formatMessage(Messages.noLocation)}</span>}
                         {this.isLatestLocation() ? '' :

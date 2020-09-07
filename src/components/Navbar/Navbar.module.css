@@ -10,16 +10,9 @@
 }
 
 .Title {
-    border: none;
-    background: none;
-    outline: none;
     font-size: 1.5em;
-    color: var(--gray);
-    transition: var(--t-color);
-}
-
-.Title:hover {
-    color: var(--black);
+    display: flex;
+    align-items: center;
 }
 
 .AlertMode .Title::after {
@@ -30,4 +23,8 @@
     margin-left: 1em;
     border-radius: 100%;
     animation: var(--a-pulsing-error-bg);
+}
+
+.BackIcon {
+    margin-right: 0.5em;
 }

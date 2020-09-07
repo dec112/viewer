@@ -6,10 +6,24 @@ const rootDirectory = findRoot(__dirname);
 let languages = [];
 let outputDirectory = [];
 let defaultLanguage = '';
+let defaultMessagesPath = '';
 
 readCommandLineArguments();
+reorderDefaultMessages();
 createLanguageFiles();
+
 var defaultMessages = null;
+
+function reorderDefaultMessages() {
+    const newDefaultMessages = {};
+
+    Object.keys(defaultMessages).sort().forEach(function(key) {
+        newDefaultMessages[key] = defaultMessages[key];
+    });
+    
+    defaultMessages = newDefaultMessages;
+    fs.writeFileSync(path.join(rootDirectory, defaultMessagesPath), JSON.stringify(defaultMessages, null, 2));
+}
 
 function createLanguageFiles() {
     for (var i = 0; i < languages.length; i++) {
@@ -58,7 +72,8 @@ function readCommandLineArguments() {
         if (!fs.existsSync(args['s'])) {
             throw new Error("No such file or directory");
         }
-        defaultMessages = JSON.parse(fs.readFileSync(path.join(rootDirectory, args['s'])));
+        defaultMessagesPath = args['s'];
+        defaultMessages = JSON.parse(fs.readFileSync(path.join(rootDirectory, defaultMessagesPath)));
     } else {
         throw new Error("No template file specified");
     }

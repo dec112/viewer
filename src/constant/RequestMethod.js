@@ -1,13 +1,21 @@
 export default {
     GET_CALL: 'get_call',
+    GET_CALL_REPLAY: 'get_call_replay',
+    GET_CONFIG: 'get_config',
     SEND: 'send',
     CLOSE_CALL: 'close_call',
+    EXECUTE_TRIGGER: 'execute_trigger',
     SUBSCRIBE_CALL: 'subscribe_call',
     SUBSCRIBE_NEW_CALLS: 'subscribe_new_calls',
     UNSUBSCRIBE_CALL: 'unsubscribe_call',
     UNSUBSCRIBE_NEW_CALLS: 'unsubscribe_new_calls',
     NEW_MESSAGE: 'new_message',
     NEW_CALL: 'new_call',
+    GET_CALL_REPLAYS: 'get_call_replays',
     GET_ACTIVE_CALLS: 'get_active_calls',
-    STATE_CHANGE: 'state_change'
+    RESOLVE_DID: 'resolve_did',
+    PI2_AUTHENTICATE: 'pi2_authenticate',
+    STATE_CHANGE: 'state_change',
+    LOGON: 'logon',
+    LOGOUT: 'logout',
 };

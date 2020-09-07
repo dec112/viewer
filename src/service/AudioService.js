@@ -1,3 +1,5 @@
+import DebugService from "./DebugService";
+
 class AudioService {
   audio;
 
@@ -10,7 +12,7 @@ class AudioService {
       this.audio.play();
     } catch (e) {
       // happens if user hasn't interacted with the document
-      console.error('Audio playback is not possible on this device. Interaction with document is required first.');
+      DebugService.getInstance().error('Audio playback is not possible on this device. Interaction with document is required first.');
     }
   }
 

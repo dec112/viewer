@@ -2,12 +2,17 @@
 @import './transitions.css';
 @import './animations.css';
 
-html * {
-    font-family: Roboto, Helvetica, Arial;
-    font-weight: 300;
+:root {
+    --range-slider-handle-width: 14px;
+    --range-slider-height: 25px;
+    --range-slider-border-radius: 25px;
 }
 
-html, body, :global(#root) {
+html * {
+    font-family: Roboto, Helvetica, Arial;
+}
+
+html, body, #root {
     height: 100%;
 }
 
@@ -15,41 +20,55 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--ligher-light-grey) !important;
+    font-weight: 300;
 }
 
-:global(.panel) {
+[hidden] {
+    display: none !important;
+}
+
+.panel {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
 }
 
-:global(.glyphicon--btn) {
+.glyphicon--btn {
     font-size: 1.5em;
     cursor: pointer;
     color: var(--light-gray);
     transition: var(--t-color);
 }
 
-:global(.glyphicon--btn:hover) {
+.glyphicon--btn:hover {
     color: var(--black);
 }
 
+:not(.input-group) > .btn:not(:last-child),
+:not(.input-group) > .form-control:not(:last-child) {
+    margin-right: 5px;
+}
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    opacity: .25;
+}
+
 @media print {  
-    :global(#root) {
+    #root {
         height: auto;
     }
 
-    :global(.hidePrint) {
+    .hidePrint {
         visibility: hidden;
     }
 
-    :global(.noPrint) {
+    .noPrint {
         display: none;
     }
 
-    :global(.panel) {
+    .panel {
         border: 1px solid var(--dark-gray) !important;
     }
 
-    :global(.table-bordered td:last-of-type) {
+    .table-bordered td:last-of-type {
         border-right: 1px solid var(--dark-gray) !important;
     }
 }

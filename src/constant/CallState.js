@@ -1,0 +1,9 @@
+export const UNDEFINED = 0;
+export const NEW_CALL = 1;
+export const IN_CALL = 2;
+export const STALE = 3;
+export const CLOSED_BY_CALLER = 4;
+export const CLOSED_BY_CENTER = 5;
+export const CLOSED_BY_SYSTEM = 6;
+export const CLOSED = 7;
+export const ERROR = 8;

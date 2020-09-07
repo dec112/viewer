@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import LocalizationProvider from '../../provider/LocalizationProvider';
 import Messages from "../../i18n/Messages";
 import ModalType from '../../constant/ModalType'
 import $ from 'jquery/src/jquery';
+import { LocalizationService} from '../../service/LocalizationService';
 
 function show(message, type, callback) {
     ModalDialog.CONTEXT.setState({
-        message: LocalizationProvider.formatMessage(message),
+        message,
         type: type,
         callback: callback
     });
@@ -28,6 +28,8 @@ class ModalDialog extends Component {
             type: '',
             callback: null
         };
+
+        this.intl = LocalizationService.getInstance();
     }
 
     static confirm(message, callback) {
@@ -47,7 +49,7 @@ class ModalDialog extends Component {
     };
 
     render() {
-        const { formatMessage } = LocalizationProvider;
+        const { formatMessage } = this.intl;
         let negativeButton;
         let positiveButtonText;
 

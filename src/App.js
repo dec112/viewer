@@ -1,261 +1,290 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { IntlProvider, addLocaleData } from 'react-intl';
-import enLocaleData from 'react-intl/locale-data/en';
-import deLocalData from 'react-intl/locale-data/de';
-import LocalizationService from "./service/LocalizationService";
+import { LocalizationService} from "./service/LocalizationService";
 import * as Actions from "./actions";
 import PropTypes from "prop-types";
-import LanguageService from "./service/LanguageService";
-import WebsocketService from "./service/WebsocketService";
-import MainGrid from "./components/MainGrid/MainGrid";
+import ServerService from "./service/ServerService.ts";
+import MainGrid from "./views/MainGrid/MainGrid";
 import ModalDialog from './components/ModalDialog/ModalDialog'
 import Snackbar from "./components/Snackbar/Snackbar";
-import Localization from "./components/LocalizationProvider/Localization";
 import style from './App.module.css';
 import UrlUtilities from "./utilities/UrlUtilities";
-import Overview from "./components/Overview/Overview";
-import WebsocketStatus from "./constant/WebsocketStatus";
-import MessageState from "./constant/MessageState";
-import QueryParam from './constant/QueryParam';
-import Login from "./components/Login/Login";
-import ApiService from "./service/ApiService";
-import NavigationService from "./service/NavigationService";
+import Overview from "./views/Overview/Overview";
+import { ConnectorState, ConnectorStateReason} from "./constant/ConnectorState";
+import Login from "./views/Login/Login";
+import { CenteredView } from './views/CenteredView/CenteredView';
 import ConfigService from './service/ConfigService';
 import AudioService from './service/AudioService';
 import AudioFile from './constant/AudioFile';
 import Messages from './i18n/Messages'
+import Navbar from './components/Navbar/Navbar';
+import { HOME, CALL } from './constant/Routes';
+import {
+    Switch,
+    Route,
+    withRouter,
+} from "react-router-dom";
+import { ServerMessage } from './constant';
+import { ResponseErrorReason } from './mappers';
+import { SSLWarning } from './components/SSLWarning';
 
 class DEC112 extends Component {
 
     static propTypes = {
         localization: PropTypes.object,
-        conversation: PropTypes.object,
         urlParameter: PropTypes.object,
-        basicInformation: PropTypes.arrayOf(PropTypes.object),
-        mapData: PropTypes.object,
-        calls: PropTypes.object,
+        call: PropTypes.object,
+        selectCall: PropTypes.func,
         setCurrentUserLanguage: PropTypes.func,
         setUrlParameter: PropTypes.func,
-        setMessage: PropTypes.func,
-        setMessages: PropTypes.func,
-        setData: PropTypes.func,
-        addLocation: PropTypes.func,
-        addCall: PropTypes.func,
         setLoggedIn: PropTypes.func,
         loginState: PropTypes.object,
-        setMessageState: PropTypes.func,
+
+        /* real props */
+        callId: PropTypes.string,
+        reuseSession: PropTypes.bool,
     };
-    
+
     constructor() {
         super();
-        this.apiService = ApiService.getInstance();
         this.configService = ConfigService.getInstance();
         this.localizationService = LocalizationService.getInstance();
-        this.languageService = LanguageService.getInstance();
-        this.navigationService = NavigationService.getInstance();
         this.audioService = new AudioService(AudioFile.NOTIFICATION);
-        addLocaleData([...deLocalData, ...enLocaleData]);
+
+        this.state = {
+            hasDirectlyStartedWithCall: false,
+        }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         const query = UrlUtilities.getUrlParameter(window.location.search);
         this.props.setUrlParameter(query);
         if (!this.props.localization.currentUserLanguage) {
-            this.props.setCurrentUserLanguage(this.languageService.getCurrentLanguage());
+            this.props.setCurrentUserLanguage(this.localizationService.getCurrentLanguage());
         }
 
-        if (this.apiService.hasKey()) {
-            this.initializeCommunication(query[QueryParam.CALL_ID], this.apiService.getKey());
+        // default routing
+        this.goHome(true);
+
+        // handle logout on tab close
+        window.onbeforeunload = () => this.serverService.close();
+    }
+
+    async componentDidMount() {
+        await this.initializeCommunication();
+    }
+
+    componentDidUpdate() {
+        const { call, callId } = this.props;
+        const { hasDirectlyStartedWithCall } = this.state;
+
+        if (!!callId && this.isLoggedIn() && hasDirectlyStartedWithCall === false) {
+            const c = call.all.find(x => x.callId === callId);
+
+            if (c) {
+                this.props.selectCall(c);
+                this.goTo(CALL);
+                this.setState({
+                    hasDirectlyStartedWithCall: true,
+                });
+            }
         }
     }
 
-    initializeCommunication(callId, apiKey) {
-        // fallback to config if necessary
-        if (!apiKey)
-            apiKey = this.configService.getConfig().apiKey
-
-        this.websocketService = WebsocketService.getInstance();
-        this.websocketService.connect(apiKey);
-        this.websocketService.onStatusChange((status) => {
+    initializeCommunication = async () => {
+        const { formatMessage } = this.localizationService;
+        const serv = this.serverService = ServerService.getInstance();
+        serv.addStatusChangedListener((status, reason) => {
             switch (status) {
-                case WebsocketStatus.OPEN:
-                    // seems that this key is a good one, let's set it to our service
-                    this.setLoggedIn(apiKey);
-
-                    if (callId) {
-                        this.websocketService.subscribeCall(callId);
-                    }
-                    else {
-                        this.websocketService.getCalls();
-                    }
+                case ConnectorState.OPEN:
                     break;
-                case WebsocketStatus.ERORR:
-                    ModalDialog.alert(Messages['connectionState.error']);
-                    this.apiService.removeKey(apiKey);
+                case ConnectorState.ERROR:
+                    ModalDialog.alert(formatMessage(Messages['connectionState.error']));
+                    break;
+                case ConnectorState.CLOSED:
+                    if (reason === ConnectorStateReason.UNEXPECTED) {
+                        this.handleLogout();
+                        ModalDialog.alert(formatMessage(Messages['connectionState.closed']));
+                    }
                     break;
                 default:
-                    break;
+                    ModalDialog.alert(formatMessage(Messages['connectionstate.unknown']));
             }
         });
-        this.websocketService.onMessage(this.handleOnMessage);
-        this.websocketService.onNewCall(this.handleNewCall);
-        this.websocketService.onMessageStateChange(this.handleMessageStateChange);
+
+        serv.addLoginChangedListener(this.handleLoginChange);
+        serv.addNewCallListener(this.handleNewCall);
+        serv.addErrorListener(this.handleError);
+        serv.addMessageListener(this.handleServerMessage);
+
+        const { callId, reuseSession } = this.props;
+        // if there is a callId and we should not reuse the last session
+        // (ergo, viewer is started by a border trigger)
+        // we do want to restore our connection with config data
+        // as we don't want to rely on what's in the storage
+        const useConfigEndpoint = callId && reuseSession !== true;
+        await serv.tryRestoreConnection(useConfigEndpoint);
     }
 
-    getMessages() {
-        return this.localizationService.getMessages(this.props.localization.currentUserLanguage);
-    }
+    goTo = (path, overwrite = false) => this.props.history[overwrite ? 'replace' : 'push'](path);
+    goHome = (overwrite) => this.goTo(HOME, overwrite);
 
+    getLocaleMessages = () => this.localizationService.getMessages();
+    getSelectedCall = () => this.props.call.selected;
     getActiveCalls() {
         let calls = [];
         
-        if(this.props.calls && this.props.calls.calls) {
-            calls = this.props.calls.calls.filter(message => 
-                message.getState() !== MessageState.CLOSED_BY_CALLER
-                && message.getState() !== MessageState.CLOSED_BY_CENTER
-                && message.getState() !== MessageState.CLOSED_BY_SYSTEM);
+        if(this.props.call && this.props.call.all) {
+            calls = this.props.call.all.filter(call => call.isActive);
         }
-        
+
         return calls;
     }
 
-    hasCallIdUrlParameter() {
-        return Object.keys(this.props.urlParameter).length > 0 && this.props.urlParameter[QueryParam.CALL_ID];
+    isLoggedIn = () => this.props.loginState.loggedIn;
+    
+    // isAlertMode is true if no call is selected, or if there is at least one unselected call still available
+    // CallReplays must not be taken into account
+    isAlertMode = () => {
+        const selectedCall = this.getSelectedCall();
+        return this.getActiveCalls()
+            .filter(call => call !== selectedCall && !call.isReplay).length > 0;
     }
 
-    setLoggedIn(apiKey) {
-        this.configService.setClient(apiKey);
+    handleLoginChange = (isAuthenticated) => {      
+        // yeah, i know, we check twice if user isAuthenticated
+        // but we have to issue subscribeCalls before setting logged in state
+        // as otherwise, react will re-render before and view "Overview" will trigger a "getCalls" server requst
+        // but as we want to do a subscribe calls BEFORE getting calls, we have to check twice here
+        if (isAuthenticated)
+            this.serverService.subscribeCalls();
 
-        if(apiKey) {
-            this.apiService.setKey(apiKey);
+        this.props.setLoggedIn(isAuthenticated);
+
+        if (!isAuthenticated)
+            return;
+
+        const { callId } = this.props;
+
+        if (callId) {
+            this.serverService.subscribeAndGetCall(callId);
+            this.goTo(CALL, true);
         }
-        else 
-            this.apiService.removeKey();
-        
-        this.props.setLoggedIn(!!apiKey);
-    }
-
-    isLoggedIn() {
-        return this.props.loginState.loggedIn;
-    }
-
-    isAlertMode() {
-        return this.hasActiveCalls();
-    }
-
-    handleMessageStateChange = (message) => {
-        this.props.setMessageState(message.getCallId(), message.getState());
+        else {
+            this.goHome();
+        }
     };
 
-    hasActiveCalls() {
-        return this.getActiveCalls().length > 0;
-    }
-
-    handleOnMessage = (messages) => {
-        if (!Array.isArray(messages)) {
-            messages = [messages];
-        }
-
-        this.props.setMessage(messages);
-        
-        let locs = [];
-        let hasBasicInformation = this.props.basicInformation.length > 0;
-        for (let message of messages) {
-            if (!hasBasicInformation) {
-                let data = message.getData();
-                
-                if (data.length > 0) {
-                    this.props.setData(data);
-                    hasBasicInformation = true;
-                }
-            }
-            
-            locs = locs.concat(message.getLocations());
-        }
-
-        this.props.addLocation(locs);
-    };
-
-    handleNewCall = (call) => {
-        this.props.addCall(call);
+    handleNewCall = () => {
         this.audioService.replay();
     };
 
-    handleSendMessage = (message, callId) => {
-        this.websocketService.send(message, callId);
-    };
-
-    handleEndCall = (callId) => {
-        this.websocketService.endCall(callId);
-        this.navigationService.removeQuery();
-    };
-
-    handleSetLoggedIn = (userName, password) => {
-        this.initializeCommunication(null, userName);
-    };
-
-    handleCallClick = (callId, newTab) => {
-        let query = `${QueryParam.CALL_ID}=${callId}`;
-
-        if (newTab === true) {
-            this.navigationService.openCurrent(query);
-        } else {
-            this.navigationService.appendQuery(query);
-        }
-    };
-
     handleLogout = () => {
-        this.setLoggedIn(false);
+        if (!this.isLoggedIn())
+            return;
+
+        this.serverService.logout();
+        this.props.setLoggedIn(false);
+
+        this.serverService.close();
     }
 
-    handleNavTitleClick = () => {
-        this.navigationService.removeQuery();
-    }
-
-    renderMain() {
-        if (this.hasCallIdUrlParameter()) {
-            return (<MainGrid locations={this.props.mapData.locations}
-                              onSendMessage={this.handleSendMessage}
-                              onEndCall={this.handleEndCall}
-                              onLogout={this.handleLogout}
-                              onNavTitleClick={this.handleNavTitleClick}
-                              additionalInformation={this.props.basicInformation}
-                              conversation={this.props.conversation}
-                              isAlertMode={this.isAlertMode()}/>);
+    handleError = (responseError) => {
+        let { reason, message } = responseError;
+        if (reason === ResponseErrorReason.UNAUTHORIZED && !message) {
+            message = this.localizationService.formatMessage(Messages.unauthorizedRequest);
         }
-        return (<Overview   calls={this.getActiveCalls()} 
-                            onCallClick={this.handleCallClick}
-                            onLogout={this.handleLogout}
-                            onNavTitleClick={this.handleNavTitleClick}
-                            isAlertMode={this.isAlertMode()}/>);
+
+        Snackbar.error(message);
+    }
+
+    handleServerMessage = (message, data) => {
+        const { formatMessage } = this.localizationService
+
+        switch (message) {
+            case ServerMessage.TRIGGER_EXECUTED:
+                Snackbar.success(formatMessage(Messages.manualTriggerExecuted, {
+                    id: data.id,
+                })); 
+                break;
+            default:
+        }
+    }
+
+    handleNavBackClick = () => {
+        this.goHome();
+        this.props.selectCall(null);
+    }
+
+    getNavigation = (showBackIcon = false) => {
+        return (
+            <Navbar
+                onLogout={this.handleLogout}
+                onBackClick={this.handleNavBackClick}
+                showBackIcon={showBackIcon}
+                isAlertMode={this.isAlertMode()} />
+        );
     }
 
     render() {
+        let children;
+
+        const { formatMessage } = this.localizationService;
+        const { callId, call } = this.props;
+
+        // display loading screen as long as this specific call is not loaded
+        if (callId && !call.all.find(x => x.callId === callId)) {
+            if (this.isLoggedIn()) {
+                children = (
+                    <CenteredView>
+                        <h1>{formatMessage(Messages.appName)}</h1>
+                        <p>{formatMessage(Messages.callLoading, { id: callId })}...</p>
+                    </CenteredView>
+                );
+            }
+            else {
+                children = (
+                    <CenteredView>
+                        <h1>{formatMessage(Messages.appName)}</h1>
+                    </CenteredView>
+                )
+            }
+        }
+        else if (this.isLoggedIn()) {
+            children = (
+                <Switch>
+                    <Route path={CALL}>
+                        <MainGrid navbar={this.getNavigation(true)} />
+                    </Route>
+                    <Route path={HOME}>
+                        <Overview navbar={this.getNavigation()} />
+                    </Route>
+                </Switch>
+            )
+        }
+        else
+            children = (
+                <Login />
+            )
+
         return (
-            <IntlProvider key={this.props.localization.currentUserLanguage}
-                locale={this.props.localization.currentUserLanguage}
-                messages={this.getMessages()}>
-                <div className={style.RootContent}>
-                    <Localization />
-                    {this.isLoggedIn() ?
-                        this.renderMain()
-                        : <Login onSetLoggedIn={this.handleSetLoggedIn} />}
-                    <ModalDialog />
-                    <Snackbar />
-                </div>
-            </IntlProvider>
+            <div className={style.RootContent}>
+                <SSLWarning />
+                {children}
+                <ModalDialog />
+                <Snackbar />
+            </div>
         );
     }
 }
 
-export default connect(model => ({
+export default withRouter(connect(model => ({
     localization: model.localization,
     conversation: model.conversation,
     basicInformation: model.basicInformation,
     urlParameter: model.urlParameter,
     mapData: model.mapData,
-    calls: model.calls,
+    call: model.call,
     loginState: model.loginState,
-}), dispatch => bindActionCreators(Actions, dispatch))(DEC112);
+}), dispatch => bindActionCreators(Actions, dispatch))(DEC112));
