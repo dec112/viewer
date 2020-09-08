@@ -1981,6 +1981,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+args-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/args-parser/-/args-parser-1.1.0.tgz#6253bfcd694d279fe63eaafd78d628d14a05ffa9"
+  integrity sha1-YlO/zWlNJ5/mPqr9eNYo0UoF/6k=
+
 aria-query@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-3.0.0.tgz#65b3fcc1ca1155a8c9ae64d6eee297f15d5133cc"
@@ -4531,6 +4536,11 @@ find-cache-dir@^3.2.0:
     commondir "^1.0.1"
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
+
+find-root@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
+  integrity sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==
 
 find-up@4.1.0, find-up@^4.0.0:
   version "4.1.0"
