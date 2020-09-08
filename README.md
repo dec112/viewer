@@ -52,6 +52,16 @@ Supported API version: v1 and v2
 
 Supported API version: v1
 
+## UI-Languages
+
+Currently, the following UI languages are supported:
+
+* German (de)
+* English (en)
+* French (fr)
+* Romanian (ro)
+* Spanish (es)
+
 ## Terms
 
 ### Config
@@ -122,7 +132,8 @@ LanguageObject type is used to provide internationalization (i18n) within *confi
 ```json
 {
   "de": "Hallo Welt",
-  "en": "Hello world"
+  "en": "Hello world",
+  "es": "Hola mundo"
 }
 ```
 

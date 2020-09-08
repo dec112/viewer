@@ -1,7 +1,7 @@
 {
   "name": "dec112-viewer",
   "homepage": "./",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "license": "GPL-3.0-only",
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -30,7 +30,7 @@
     "docker": "yarn docker-release && docker run -p 8080:80 --rm dec112/viewer",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "extract-intl": "node scripts/buildLocalization.js -l=en,de,fr -o=src/i18n/ -d=de -s=src/i18n/DefaultMessages.json"
+    "extract-intl": "node scripts/buildLocalization.js -l=en,de,fr,ro,es -o=src/i18n/ -d=de -s=src/i18n/DefaultMessages.json"
   },
   "eslintConfig": {
     "extends": "react-app"
