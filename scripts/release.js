@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dirToCheck = './build';
+const dirToCheck = './build/config';
 
 const files = fs.readdirSync(dirToCheck);
 
@@ -14,5 +14,5 @@ const configFilesToRemove = files
 
 for (const file of configFilesToRemove) {
   fs.unlinkSync(path.join(dirToCheck, file));
-  console.log(`Removed config file "${file}" from build directory.`);
+  console.log(`Removed config file "${file}" from config directory.`);
 }

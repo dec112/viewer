@@ -5,6 +5,13 @@ class ConfigService {
 
     static INSTANCE;
 
+    static fetchExternalConfig() {
+        const configFilename = `dec112.${process.env.NODE_ENV === 'development' ? 'dev.' : ''}config.json`;
+        
+        return fetch(`./config/${configFilename}`)
+            .then(x => x.json());
+    }
+
     static initialize(internalConfig, externalConfig, client) {
         if (!ConfigService.INSTANCE)
             ConfigService.INSTANCE = new ConfigService(internalConfig, externalConfig, client);

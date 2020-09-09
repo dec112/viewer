@@ -18,14 +18,9 @@ import * as QueryParam from './constant/QueryParam';
 import { StorageService } from "./service";
 import ServerService from "./service/ServerService";
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
-import { LocalizationService} from "./service/LocalizationService";
+import { LocalizationService } from "./service/LocalizationService";
 
-const configFilename = `dec112.${process.env.NODE_ENV === 'development' ? 'dev.' : ''}config.json`;
-
-fetch(`./${configFilename}`)
-  .then(x => x.json())
-  .then(externalConfig => {
-
+ConfigService.fetchExternalConfig().then(externalConfig => {
     const localService = LocalizationService.getInstance();
 
     ConfigService.initialize(InternalConfig, externalConfig);
