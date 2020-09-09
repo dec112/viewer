@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0
+
+* Breaking change: External config file was moved from build root into folder "config". This had to be changed to enable external config being in a docker volume, so config can be changed without restarting the docker container.
+* Updated: Spanish translations
+
 ## 2.0.3
 
 * Added: Docker support
