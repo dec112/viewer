@@ -33,11 +33,17 @@ If you want to run the viewer as a docker container just execute
 
 `yarn docker`
 
-It will build a release version of the builder and run a nginx web server on port 8080
+It will build a release version of the builder and run a nginx web server on port 8080.
 
 If you just want to build the docker image (without running it immediately) execute
 
-`yarn docker-release`
+`yarn docker-build`
+
+For further configuration of the underlying nginx server, run the script `yarn docker-release` once. It will create a default configuration file `nginx.conf` in your project root, which you can use to configure your the nginx server running inside the docker container. This is especially important for adding your certificate and key in order to use SSL.
+
+Alternatively, you can also mount an external `nginx.conf` as a docker volume and overwrite the internal one.
+
+Certificates should be mounted into the container via a docker volume.
 
 ## Compatibility
 
