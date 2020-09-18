@@ -1,6 +1,8 @@
 # DEC112 Viewer
 
-A lightweight viewer for DEC112 PSAP integration powered by **React**. It should simplify PSAP integration by providing a web frontend for sending and receiving text messages coming from the caller, as well as displaying the caller's location and additional personal data.
+A lightweight viewer for [DEC112](https://www.dec112.at) PSAP integration powered by **React**. It should simplify PSAP integration by providing a web frontend for sending and receiving text messages coming from the caller, as well as displaying the caller's location and additional personal data.
+
+[https://www.dec112.at](https://www.dec112.at)
 
 ## First run
 
@@ -12,7 +14,9 @@ A lightweight viewer for DEC112 PSAP integration powered by **React**. It should
 ### Installation
 
 ```sh
+# install dependencies with
 yarn install
+# run DEC112 Viewer with
 yarn start
 ```
 
