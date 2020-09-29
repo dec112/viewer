@@ -138,4 +138,19 @@ export class Call extends AbstractCall {
         this._data = undefined;
         this.messages = [];
     }
+
+    stringify(): string {
+        const copy = CommonUtilities.deepCopy(this);
+
+        for (const msg of copy.messages) {
+            // delete cyclic references
+            delete msg.call;
+
+            for (const loc of msg.locations) {
+                delete loc.message
+            }
+        }
+
+        return JSON.stringify(copy, null, 2);
+    }
 }

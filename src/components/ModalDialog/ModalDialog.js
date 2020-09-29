@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import Messages from "../../i18n/Messages";
 import ModalType from '../../constant/ModalType'
 import $ from 'jquery/src/jquery';
-import { LocalizationService} from '../../service/LocalizationService';
+import { LocalizationService } from '../../service/LocalizationService';
 
-function show(message, type, callback) {
+function show(children, type, callback) {
     ModalDialog.CONTEXT.setState({
-        message,
+        children,
         type: type,
         callback: callback
     });
@@ -24,7 +24,7 @@ class ModalDialog extends Component {
         super();
         ModalDialog.CONTEXT = this;
         ModalDialog.CONTEXT.state = {
-            message: '',
+            children: null,
             type: '',
             callback: null
         };
@@ -32,13 +32,19 @@ class ModalDialog extends Component {
         this.intl = LocalizationService.getInstance();
     }
 
-    static confirm(message, callback) {
-        show(message, ModalType.CONFIRM, callback);
+    static confirm(children, callback) {
+        show(children, ModalType.CONFIRM, callback);
+
+        return ModalDialog.getReturnObject();
     }
 
-    static alert(message, callback) {
-        show(message, ModalType.ALERT, callback);
+    static alert(children, callback) {
+        show(children, ModalType.ALERT, callback);
+
+        return ModalDialog.getReturnObject();
     }
+
+    static getReturnObject = () => ({ close: () => hide() })
 
     onConfirmClick = () => {
         if (ModalDialog.CONTEXT.state.callback) {
@@ -55,22 +61,28 @@ class ModalDialog extends Component {
 
         if (ModalDialog.CONTEXT.state.type === ModalType.CONFIRM) {
             negativeButton = <button
-                                type="button"
-                                data-dismiss="modal"
-                                className="btn btn-default">
-                                {formatMessage(Messages.no)}
-                            </button>
+                type="button"
+                data-dismiss="modal"
+                className="btn btn-default">
+                {formatMessage(Messages.no)}
+            </button>
             positiveButtonText = formatMessage(Messages.yes);
         }
         else
             positiveButtonText = formatMessage(Messages.ok);
+
+        const { children } = ModalDialog.CONTEXT.state;
 
         return (
             <div className="modal fade warningModal" tabIndex="-1" role="dialog">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-body">
-                            <p>{ModalDialog.CONTEXT.state.message}</p>
+                            {
+                                typeof children === 'string' ?
+                                    <p>{children}</p> :
+                                    children
+                            }
                         </div>
                         <div className="modal-footer">
                             <button

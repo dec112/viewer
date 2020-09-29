@@ -87,6 +87,16 @@ export default {
             //// number
             "timeout": 5000,
         },
+        // Configuration concerning snackbars that occur, when data is copied to clipboard
+        //// Object
+        "copyToClipboard": {
+            "preview": {
+                // Max length of preview text
+                // If text is longer an ellipsis "..." is appended after the maximum characters
+                //// number
+                "maxLength": 70,
+            },
+        },
         // Configuration concerning the data view
         //// Object
         "dataView": {

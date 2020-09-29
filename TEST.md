@@ -36,6 +36,7 @@
 * Production config
 * Old app and new app
 * Firefox and Chrome
+* Call export (print and copy to clipboard JSON)
 * Config overwrites
   * Clients
 * i18n

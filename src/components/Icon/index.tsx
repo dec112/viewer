@@ -3,11 +3,15 @@ import React from 'react';
 import classNames from 'classnames';
 
 export enum IconType {
+  COPY = 'copy',
+  EXPORT = 'export',
   LOCK = 'lock',
   OK = 'ok',
   PAUSE = 'pause',
   PLAY = 'play',
+  PRINT = 'print',
   REMOVE = 'remove',
+  SHARE = 'share',
   STEP_BACKWARD = 'step-backward',
   STEP_FORWARD = 'step-forward',
   EXCLAMATION_SIGN = 'exclamation-sign',

@@ -95,6 +95,10 @@
     "id": "connectionState.unknown",
     "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten"
   },
+  "copyToClipboard": {
+    "id": "copyToClipboard",
+    "defaultMessage": "In die Zwischenablage kopieren"
+  },
   "copyToClipboard.error": {
     "id": "copyToClipboard.error",
     "defaultMessage": "Kopieren fehlgeschlagen."
@@ -150,6 +154,10 @@
   "endEmergencyCallMessage": {
     "id": "endEmergencyCallMessage",
     "defaultMessage": "Wollen Sie den Notruf wirklich beenden?"
+  },
+  "export": {
+    "id": "export",
+    "defaultMessage": "Export"
   },
   "forward": {
     "id": "forward",

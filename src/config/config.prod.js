@@ -15,6 +15,11 @@ export default {
         "snackbar": {
             "timeout": 5000,
         },
+        "copyToClipboard": {
+            "preview": {
+                "maxLength": 70,
+            },
+        },
         "dataView": {
             "enabled": true,
         },
