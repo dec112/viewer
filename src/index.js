@@ -26,7 +26,7 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
     ConfigService.initialize(InternalConfig, externalConfig);
     localService.setCurrentLanguage(ConfigService.get('language'));
     DebugService.initialize(!!ConfigService.get('debug'));
-    StorageService.initialize(window.sessionStorage);
+    StorageService.initialize(window.localStorage);
     ServerService.initialize();
 
     document.title = ConfigService.get('appTitle') || '';
