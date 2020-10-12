@@ -67,6 +67,10 @@
     "id": "callTime",
     "defaultMessage": "Notruf Zeitpunkt"
   },
+  "callerName": {
+    "id": "callerName",
+    "defaultMessage": "Anrufer"
+  },
   "callerUri": {
     "id": "callerUri",
     "defaultMessage": "Anrufer Uri"

@@ -16,6 +16,7 @@
   "callState.closedBySystem": "Acest apel a fost închis automat de sistem. Acest lucru indică probleme grave de comunicare la sfârșitul apelantului. Problemele de rețea ar putea fi un motiv.",
   "callState.stale": "În prezent, există probleme de comunicare cu acest apel.",
   "callTime": "Ora apelului de urgenta",
+  "callerName": "",
   "callerUri": "Apelant Uri",
   "clear": "Stergeti",
   "code": "PLZ",

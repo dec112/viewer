@@ -9,6 +9,7 @@ export class CallReplay extends Call {
   ) {
     super(
       call.callId,
+      call.callerName,
       call.callerUri,
       call.calledUri,
       call.created

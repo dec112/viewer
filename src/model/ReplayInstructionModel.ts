@@ -13,6 +13,7 @@ export class MessageModel {
 export class ReplayInstruction extends AbstractCall {
   constructor(
     public callId: string,
+    public callerName: string,
     public callerUri: string,
     public calledUri: string,
     public created: Date,
@@ -23,6 +24,7 @@ export class ReplayInstruction extends AbstractCall {
   ) {
     super(
       callId,
+      callerName,
       callerUri,
       calledUri,
       created,

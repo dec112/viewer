@@ -16,6 +16,7 @@
   "callState.closedBySystem": "Der Anruf wurde automatisch vom System beendet. Dies deutet auf schwere Kommunikationsprobleme auf der Seite des Anrufers hin. Netzwerkprobleme können ein Grund dafür sein.",
   "callState.stale": "Bei diesem Anruf gibt es zur Zeit Kommunikationsprobleme.",
   "callTime": "Notruf Zeitpunkt",
+  "callerName": "Anrufer",
   "callerUri": "Anrufer Uri",
   "clear": "Löschen",
   "code": "PLZ",

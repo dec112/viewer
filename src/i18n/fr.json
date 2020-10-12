@@ -16,6 +16,7 @@
   "callState.closedBySystem": "Cet appel a été automatiquement fermé par le système. Cela indique de graves problèmes de communication du côté de l'appelant. Des problèmes de réseau peuvent en être la cause.",
   "callState.stale": "Il y a actuellement des problèmes de communication avec cet appel.",
   "callTime": "Heure",
+  "callerName": "",
   "callerUri": "URI contact entrant",
   "clear": "Effacer",
   "code": "Code Postal",

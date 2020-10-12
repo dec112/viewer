@@ -16,6 +16,7 @@
   "callState.closedBySystem": "This call was automatically closed by the system. This indicates severe communication problems at the caller's end. Networking problems could be a reason.",
   "callState.stale": "Currently there are communcation problems with this call.",
   "callTime": "Time",
+  "callerName": "Caller",
   "callerUri": "Caller Uri",
   "clear": "Delete",
   "code": "ZIP",

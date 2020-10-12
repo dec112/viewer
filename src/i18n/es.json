@@ -16,6 +16,7 @@
   "callState.closedBySystem": "Esta llamada fue cerrada automáticamente por el sistema. Esto indica problemas de comunicación graves al final de la llamada. Los problemas de redes pueden ser una razón.",
   "callState.stale": "Actualmente existen problemas de comunicación con esta llamada.",
   "callTime": "Hora de llamada de emergencia",
+  "callerName": "",
   "callerUri": "Llamador Uri",
   "clear": "Borrar",
   "code": "Código postal",

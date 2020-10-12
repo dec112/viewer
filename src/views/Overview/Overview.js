@@ -123,9 +123,9 @@ class Overview extends Component {
                         <thead>
                             <tr>
                                 <th>{formatMessage(Messages.service)}</th>
-                                <th>{formatMessage(Messages.callIdentifier)}</th>
+                                <th>{formatMessage(Messages.callerName)}</th>
                                 <th>{formatMessage(Messages.callTime)}</th>
-                                <th>{formatMessage(Messages.callerUri)}</th>
+                                <th>{formatMessage(Messages.callIdentifier)}</th>
                                 <th>{formatMessage(Messages.callState)}</th>
                                 <th className={style.Center}>{formatMessage(Messages.newTab)}</th>
                             </tr>
@@ -143,9 +143,9 @@ class Overview extends Component {
                                         but as there are nested click handlers, I think this is the only correct solution
                                         */}
                                         <td onClick={() => this.handleCallClick(call)}>{getCalledService(call, this.intl)}</td>
-                                        <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
+                                        <td onClick={() => this.handleCallClick(call)}>{call.callerName}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.dateTimeService.toDateTime(call.created)}</td>
-                                        <td onClick={() => this.handleCallClick(call)}>{call.callerUri}</td>
+                                        <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.getState(call)}</td>
                                         <td className={style.Center}>
                                             <a

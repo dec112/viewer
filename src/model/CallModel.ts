@@ -9,12 +9,14 @@ import { DIDState } from "../constant/DIDState";
 export class CallFactory {
     static fromJson<T extends AbstractCall>(c: new (
         callId: string,
+        callerName: string,
         callerUri: string,
         calledUri: string,
         created: Date,
     ) => T, json: any): T {
         return new c(
             json.call_id,
+            json.caller_name,
             json.caller_uri,
             json.called_uri,
             new Date(json.created_ts),
@@ -29,6 +31,7 @@ export abstract class AbstractCall {
 
     constructor(
         public callId: string,
+        public callerName: string,
         public callerUri: string,
         public calledUri: string,
         public created: Date,
@@ -38,6 +41,7 @@ export abstract class AbstractCall {
 export class Call extends AbstractCall {
     constructor(
         public callId: string,
+        public callerName: string,
         public callerUri: string,
         public calledUri: string,
         public created: Date,
@@ -57,6 +61,7 @@ export class Call extends AbstractCall {
     ) {
         super(
             callId,
+            callerName,
             callerUri,
             calledUri,
             created
