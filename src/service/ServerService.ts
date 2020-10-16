@@ -307,6 +307,7 @@ class ServerService {
             switch (error.reason) {
                 case ResponseErrorReason.NOT_FOUND:
                 case ResponseErrorReason.UNAVAILABLE:
+                case ResponseErrorReason.PARSING_ERROR:
                     this.notifyListeners(this.errorListener, error); break;
                 case ResponseErrorReason.UNAUTHORIZED:
                     this.notifyListeners(this.errorListener, error);
@@ -343,12 +344,12 @@ class ServerService {
                 response.body = body = JSON.parse(body);
         }
         catch (e) {
+            const msg = body ?? 'response body is empty';
+
             this.handleError(new ResponseError(
                 ResponseErrorReason.PARSING_ERROR,
-                `Unable to parse JSON message: ${body}`
+                `Unable to parse JSON message: ${msg}`
             ));
-
-            return;
         }
 
         this.debug.log(response);
