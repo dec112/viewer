@@ -344,11 +344,13 @@ class ServerService {
                 response.body = body = JSON.parse(body);
         }
         catch (e) {
-            const msg = body ?? 'response body is empty';
+            const msg = !!body ?
+                `Unable to parse JSON message: ${body}` :
+                `Response body is empty.`
 
             this.handleError(new ResponseError(
                 ResponseErrorReason.PARSING_ERROR,
-                `Unable to parse JSON message: ${msg}`
+                msg
             ));
         }
 
