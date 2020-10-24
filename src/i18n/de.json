@@ -37,6 +37,7 @@
   "end": "Ende",
   "endEmergencyCall": "Notruf beenden",
   "endEmergencyCallMessage": "Wollen Sie den Notruf wirklich beenden?",
+  "error.messageNotSent": "Die Nachricht konnte nicht gesendet werden. Dies deutet auf Kommunikationsprobleme mit dem Anrufer hin.",
   "forward": "Vorwärts",
   "generalData": "Kontaktdaten",
   "information": "Informationen",

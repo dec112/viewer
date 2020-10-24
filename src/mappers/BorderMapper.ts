@@ -5,6 +5,8 @@ import { ISecurityProvider } from "../security-provider";
 import { CustomSessionProvider } from "../security-provider/custom-session-provider";
 import { ApiKeyProvider } from "../security-provider/api-key-provider";
 import { isApiV1 } from "../utilities";
+import { LocalizationService } from "../service";
+import Messages from "../i18n/Messages";
 
 export class BorderMapper implements IMapper {
   private static INSTANCE = new BorderMapper();
@@ -56,15 +58,19 @@ export class BorderMapper implements IMapper {
     // response code can be undefined e.g. for fake login (api/v1)
     if (body.code !== undefined && body.code !== 200) {
       let errorCode = ResponseErrorReason.UNEXPECTED_ERROR;
+      let errorMessage = body.message;
+      let code = parseInt(body.code);
 
-      switch (parseInt(body.code)) {
-        case 404:
-          errorCode = ResponseErrorReason.NOT_FOUND; break;
-        default:
-          errorCode = ResponseErrorReason.UNEXPECTED_ERROR;
+      if (code === 404)
+        errorCode = ResponseErrorReason.NOT_FOUND;
+      else if (response.method === RequestMethod.SEND) {
+        errorMessage = LocalizationService.getInstance().formatMessage(Messages['error.messageNotSent']);
+        errorCode = ResponseErrorReason.UNAVAILABLE;
       }
+      else
+        errorCode = ResponseErrorReason.UNEXPECTED_ERROR;
 
-      throw new ResponseError(errorCode, body.message);
+      throw new ResponseError(errorCode, errorMessage);
     }
 
     if (securityProvider instanceof CustomSessionProvider)

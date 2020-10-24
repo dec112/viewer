@@ -37,6 +37,7 @@
   "end": "Sfarsit",
   "endEmergencyCall": "Apel de urgente incheiat/terminat",
   "endEmergencyCallMessage": "Doriti intradevar sa incheiati apelul?",
+  "error.messageNotSent": "",
   "forward": "Redirectionat",
   "generalData": "Date de contact",
   "information": "Informatii",

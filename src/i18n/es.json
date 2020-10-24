@@ -37,6 +37,7 @@
   "end": "Final",
   "endEmergencyCall": "Terminar llamada de emergencia",
   "endEmergencyCallMessage": "¿De verdad quiere terminar la llamada de emergencia?",
+  "error.messageNotSent": "",
   "forward": "Adelante",
   "generalData": "Datos de contacto",
   "information": "Informaciones",

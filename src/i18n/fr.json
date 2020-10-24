@@ -37,6 +37,7 @@
   "end": "Finir",
   "endEmergencyCall": "Fin de l'appel d'urgence",
   "endEmergencyCallMessage": "Confirmer la fin de l'appel d'urgence",
+  "error.messageNotSent": "",
   "forward": "Transférer",
   "generalData": "Contact",
   "information": "Informations",
