@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.2
+
+* Better error handling for unexpected server errors
+* Better error handling for message send errors
+
+## 3.0.1
+
+* Better error handling for parsing the server response
+
 ## 3.0.0
 
 * Breaking change: External config file was moved from build root into folder "config". This had to be changed to enable external config being in a docker volume, so config can be changed without restarting the docker container.
