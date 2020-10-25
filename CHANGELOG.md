@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.3
+
+* Improved cache management through deregistration of existing service workers
+
 ## 3.0.2
 
 * Better error handling for unexpected server errors
