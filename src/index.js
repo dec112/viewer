@@ -27,7 +27,7 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
   ConfigService.initialize(InternalConfig, externalConfig);
   localService.setCurrentLanguage(ConfigService.get('language'));
   DebugService.initialize(!!ConfigService.get('debug'));
-  StorageService.initialize(window.sessionStorage);
+  StorageService.initialize(window.localStorage);
   ServerService.initialize();
 
   // old service workers could promote caching, that's what we want to prevent

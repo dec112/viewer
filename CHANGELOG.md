@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.4
+
+* Fixed bug when opening call in a new tab
+
 ## 3.0.3
 
 * Improved cache management through deregistration of existing service workers
