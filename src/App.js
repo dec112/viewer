@@ -28,6 +28,7 @@ import {
 import { ServerMessage } from './constant';
 import { ResponseErrorReason } from './mappers';
 import { SSLWarning } from './components/SSLWarning';
+import { getInstance as getNotificationService } from './service/NotificationService';
 
 class DEC112 extends Component {
 
@@ -51,6 +52,7 @@ class DEC112 extends Component {
         this.configService = ConfigService.getInstance();
         this.localizationService = LocalizationService.getInstance();
         this.audioService = new AudioService(AudioFile.NOTIFICATION);
+        this.notificationService = getNotificationService();
 
         this.state = {
             hasDirectlyStartedWithCall: false,
@@ -178,6 +180,12 @@ class DEC112 extends Component {
 
     handleNewCall = () => {
         this.audioService.replay();
+
+        this.notificationService.send({
+            body: this.localizationService.formatMessage(Messages['notification.incomingCall']),
+            requireInteraction: true,
+            vibrate: true,
+        });
     };
 
     handleLogout = () => {

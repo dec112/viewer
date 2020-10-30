@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+* Added Notification service
+
 ## 3.0.4
 
 * Fixed bug when opening call in a new tab

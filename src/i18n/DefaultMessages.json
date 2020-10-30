@@ -159,13 +159,13 @@
     "id": "endEmergencyCallMessage",
     "defaultMessage": "Wollen Sie den Notruf wirklich beenden?"
   },
-  "export": {
-    "id": "export",
-    "defaultMessage": "Export"
-  },
   "error.messageNotSent": {
     "id": "error.messageNotSent",
     "defaultMessage": "Die Nachricht konnte nicht gesendet werden. Dies deutet auf Kommunikationsprobleme mit dem Anrufer hin."
+  },
+  "export": {
+    "id": "export",
+    "defaultMessage": "Export"
   },
   "forward": {
     "id": "forward",
@@ -286,6 +286,38 @@
   "notes": {
     "id": "notes",
     "defaultMessage": "Persönliche Informationen"
+  },
+  "notification.incomingCall": {
+    "id": "notification.incomingCall",
+    "defaultMessage": "Neuer eingehender Notruf"
+  },
+  "notification.info.line1": {
+    "id": "notification.info.line1",
+    "defaultMessage": "DEC112 Viewer kann eine Benachrichtigung senden, wenn ein neuer Notruf eingeht."
+  },
+  "notification.info.line2": {
+    "id": "notification.info.line2",
+    "defaultMessage": "Somit kann das Browserfenster auch in den Hintegrund gelegt werden."
+  },
+  "notification.info.line3": {
+    "id": "notification.info.line3",
+    "defaultMessage": "Achtung: Wenn das Fenster geschlossen wird werden KEINE Benachrichtigungen mehr gesendet."
+  },
+  "notification.missingPermission": {
+    "id": "notification.missingPermission",
+    "defaultMessage": "Ihre Browsereinstellungen lassen keine Benachrichtigungen zu."
+  },
+  "notification.status.active": {
+    "id": "notification.status.active",
+    "defaultMessage": "Benachrichtungen sind eingeschaltet"
+  },
+  "notification.status.inactive": {
+    "id": "notification.status.inactive",
+    "defaultMessage": "Benachrichtungen sind ausgeschaltet"
+  },
+  "notifications": {
+    "id": "notifications",
+    "defaultMessage": "Benachrichtigungen"
   },
   "ok": {
     "id": "ok",

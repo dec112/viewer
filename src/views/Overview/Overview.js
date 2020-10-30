@@ -18,6 +18,8 @@ import DateTimeService from '../../service/DateTimeService';
 import { Call } from '../../model/CallModel';
 import { CALL_ID, REUSE_SESSION, API_KEY, SESSION_KEY } from '../../constant/QueryParam';
 import { getQueryString, getCalledService } from '../../utilities';
+import { getInstance as getNoficationService } from '../../service/NotificationService';
+import Snackbar from '../../components/Snackbar/Snackbar';
 
 class Overview extends Component {
 
@@ -30,11 +32,16 @@ class Overview extends Component {
 
     constructor() {
         super();
-        this.state = { callId: "" };
 
         this.intl = LocalizationService.getInstance();
         this.serverService = ServerService.getInstance();
         this.dateTimeService = DateTimeService.getInstance();
+        this.notificationService = getNoficationService();
+
+        this.state = {
+            callId: "",
+            isNotificationServiceActive: this.notificationService.isActive(),
+        };
     }
 
     componentDidMount() {
@@ -109,6 +116,25 @@ class Overview extends Component {
 
         if (callId && !this.isCallIdValid())
             return 'has-error';
+    }
+
+    onNotificationCheckboxChange = async (evt) => {
+        const newState = evt.target.checked;
+        await this.notificationService.setActive(newState);
+
+        const isActive = this.notificationService.isActive();
+        this.setState({
+            isNotificationServiceActive: isActive,
+        });
+
+        // if user want's to activate it but browser actually denies it
+        // show a message
+        if (newState === true && isActive === false) {
+            debugger;
+            const id = Messages['notification.missingPermission'];
+            const msg = this.intl.formatMessage(id);
+            Snackbar.error(msg);
+        }
     }
 
     render() {
@@ -187,6 +213,24 @@ class Overview extends Component {
                     </div>
                 </div>
                 <div className="col-md-4">
+                    <div className="panel panel-info">
+                        <div className="panel-heading">{formatMessage(Messages.notifications)}</div>
+                        <div className="panel-body">
+                            <p>
+                                {formatMessage(Messages['notification.info.line1'])}<br />
+                                {formatMessage(Messages['notification.info.line2'])}<br />
+                                {formatMessage(Messages['notification.info.line3'])}
+                            </p>
+                            <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(evt) => this.onNotificationCheckboxChange(evt)}
+                                        checked={this.state.isNotificationServiceActive}
+                                    />{formatMessage(Messages[`notification.status.${this.state.isNotificationServiceActive ? 'active' : 'inactive'}`])}</label>
+                            </div>
+                        </div>
+                    </div>
                     <InfoTable
                         title={`${formatMessage(Messages.appName)} ${formatMessage(Messages.information)}`}
                         className={'panel-default'}
