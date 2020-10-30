@@ -19,38 +19,42 @@ import { StorageService } from "./service";
 import ServerService from "./service/ServerService";
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import { LocalizationService } from "./service/LocalizationService";
+import { unregisterAll as unregisterAllServiceWorkers } from './utilities/ServiceWorkerUtilities';
 
 ConfigService.fetchExternalConfig().then(externalConfig => {
-    const localService = LocalizationService.getInstance();
+  const localService = LocalizationService.getInstance();
 
-    ConfigService.initialize(InternalConfig, externalConfig);
-    localService.setCurrentLanguage(ConfigService.get('language'));
-    DebugService.initialize(!!ConfigService.get('debug'));
-    StorageService.initialize(window.localStorage);
-    ServerService.initialize();
+  ConfigService.initialize(InternalConfig, externalConfig);
+  localService.setCurrentLanguage(ConfigService.get('language'));
+  DebugService.initialize(!!ConfigService.get('debug'));
+  StorageService.initialize(window.localStorage);
+  ServerService.initialize();
 
-    document.title = ConfigService.get('appTitle') || '';
+  // old service workers could promote caching, that's what we want to prevent
+  unregisterAllServiceWorkers();
 
-    const intl = createIntl({
-      locale: localService.getCurrentLanguage(),
-      messages: localService.getMessages(),
-    }, createIntlCache());
-    localService.setIntlProvider(intl);
+  document.title = ConfigService.get('appTitle') || '';
 
-    const url = new URL(window.location);
-    const callId = url.searchParams.get(QueryParam.CALL_ID);
-    const reuseSession = url.searchParams.get(QueryParam.REUSE_SESSION) === 'true';
+  const intl = createIntl({
+    locale: localService.getCurrentLanguage(),
+    messages: localService.getMessages(),
+  }, createIntlCache());
+  localService.setIntlProvider(intl);
 
-    ReactDOM.render(
-      <Provider store={store}>
-        <Router>
-          <RawIntlProvider value={intl}>
-            <App
-              callId={callId}
-              reuseSession={reuseSession} />
-          </RawIntlProvider>
-        </Router>
-      </Provider>,
-      document.getElementById('root')
-    );
-  });
+  const url = new URL(window.location);
+  const callId = url.searchParams.get(QueryParam.CALL_ID);
+  const reuseSession = url.searchParams.get(QueryParam.REUSE_SESSION) === 'true';
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router>
+        <RawIntlProvider value={intl}>
+          <App
+            callId={callId}
+            reuseSession={reuseSession} />
+        </RawIntlProvider>
+      </Router>
+    </Provider>,
+    document.getElementById('root')
+  );
+});

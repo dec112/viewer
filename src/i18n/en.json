@@ -39,6 +39,7 @@
   "end": "End",
   "endEmergencyCall": "End Call",
   "endEmergencyCallMessage": "Do you really want to end the emergency call",
+  "error.messageNotSent": "The message was not sent. This indicates communication problems at the caller's end.",
   "export": "Export",
   "forward": "Forward",
   "generalData": "Contact Details",

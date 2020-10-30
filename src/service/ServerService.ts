@@ -316,8 +316,10 @@ class ServerService {
                     break;
                 default:
                     this.notifyListeners(this.errorListener, error);
-                    this.clearLogin();
-                    this.close();
+                // TODO: This is the default mode for unexpected errors
+                // This should be reactivated as soon as more error codes are defined
+                // this.clearLogin();
+                // this.close();
             }
         }
 

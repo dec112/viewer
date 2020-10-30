@@ -163,6 +163,10 @@
     "id": "export",
     "defaultMessage": "Export"
   },
+  "error.messageNotSent": {
+    "id": "error.messageNotSent",
+    "defaultMessage": "Die Nachricht konnte nicht gesendet werden. Dies deutet auf Kommunikationsprobleme mit dem Anrufer hin."
+  },
   "forward": {
     "id": "forward",
     "defaultMessage": "Vorwärts"
