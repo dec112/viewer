@@ -125,7 +125,7 @@ class DEC112 extends Component {
         // (ergo, viewer is started by a border trigger)
         // we do want to restore our connection with config data
         // as we don't want to rely on what's in the storage
-        const useConfigEndpoint = callId && reuseSession !== true;
+        const useConfigEndpoint = !!(callId && reuseSession !== true);
         await serv.tryRestoreConnection(useConfigEndpoint);
     }
 
