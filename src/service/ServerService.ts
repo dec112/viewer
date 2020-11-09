@@ -192,6 +192,9 @@ class ServerService {
         const client = this.storage.getItem(StorageKey.CLIENT);
         if (client)
             this.setClient(client);
+
+        // keeps sessions intact
+        this.startPingPong();
     }
 
     async send(
@@ -271,6 +274,8 @@ class ServerService {
     // this is some kind of forced logout
     // we assume we can logout, without notifying the server
     clearLogin() {
+        this.stopPingPong();
+
         this.clearStorage();
         this.securityProvider.logout();
         store.dispatch(resetStore());
@@ -391,6 +396,9 @@ class ServerService {
     handleLogon(message: any) {
         // get config is tightly coupled to being authenticated
         this.getConfig();
+
+        // keeps sessions intact
+        this.startPingPong();
     }
 
     handleGetConfig(json: any) {
@@ -630,6 +638,34 @@ class ServerService {
             listeners[i].apply(this, data);
         }
     };
+
+    /** PING PONG */
+
+    _pingPongInterval?: number;
+
+    // keeps sessions (v2) intact
+    startPingPong() {
+        // don't start it twice
+        if (this._pingPongInterval)
+            return;
+
+        const timeout = this.config.get('connection', 'pingPong');
+
+        // if it's null, don't start it
+        if (!timeout)
+            return;
+
+        this._pingPongInterval = window.setInterval(() => {
+            // get_active_calls_count method is used for ping pong
+            // as it uses least server resources amongst all available methods
+            // there is no specific ping pong method in the border api
+            this.send(RequestMethod.GET_ACTIVE_CALLS_COUNT);
+        }, parseInt(timeout));
+    }
+
+    stopPingPong() {
+        window.clearInterval(this._pingPongInterval);
+    }
 }
 
 export default ServerService;

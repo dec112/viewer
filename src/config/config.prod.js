@@ -7,6 +7,7 @@ export default {
             "ssl": "wss://{host}/api/v2",
         },
         "protocol": "dec112",
+        "pingPong": 60000,
     },
     "debug": false,
     "language": null,

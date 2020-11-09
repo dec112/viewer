@@ -13,6 +13,7 @@ export default {
     NEW_CALL: 'new_call',
     GET_CALL_REPLAYS: 'get_call_replays',
     GET_ACTIVE_CALLS: 'get_active_calls',
+    GET_ACTIVE_CALLS_COUNT: 'get_active_calls_count',
     RESOLVE_DID: 'resolve_did',
     PI2_AUTHENTICATE: 'pi2_authenticate',
     STATE_CHANGE: 'state_change',

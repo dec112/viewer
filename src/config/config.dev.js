@@ -47,6 +47,11 @@ export default {
         // Protocol, used to communicate via websocket
         //// string
         "protocol": "dec112",
+        // "pingPong" speficies the duration between two ping pong calls that are fired to the endpoint
+        // this is important to keep websockets open and to possibly renew session tokens (v2)
+        // If set to null, ping pong is inactive
+        //// number | null
+        "pingPong": 60000,
     },
     // If true, logs debug messages into the browser's console
     //// true | false
