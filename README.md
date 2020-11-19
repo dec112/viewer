@@ -55,7 +55,7 @@ Certificates should be mounted into the container via a docker volume.
 
 DEC112 Border is the main endpoint DEC112 Viewer connects to.
 
-Minimun version: 1.1.1  (can be checked in info.html)
+Minimun version: 1.1.2  (can be checked in info.html)
 Supported API version: v1 and v2
 
 ### Semantic Container for Call Replays (Chat Bot)
