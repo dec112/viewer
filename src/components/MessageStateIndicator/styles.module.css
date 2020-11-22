@@ -1,0 +1,11 @@
+.Overlapping :nth-child(2) {
+  margin-left: -0.6em;
+}
+
+.Error {
+  color: var(--bg-error);
+}
+
+.Text {
+  margin-left: 0.5em;
+}

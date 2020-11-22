@@ -1,4 +1,4 @@
-import { addOrUpdateCall, addMessage, setCallState, resetStore, addOrUpdateCallReplay, timeTravel, updateData, setDIDState } from "../actions";
+import { addOrUpdateCall, addOrUpdateMessage, setCallState, resetStore, addOrUpdateCallReplay, timeTravel, updateData, setDIDState, updateMessageState } from "../actions";
 import RequestMethod from "../constant/RequestMethod";
 import { Call } from "../model/CallModel";
 import { Message } from "../model/MessageModel";
@@ -8,7 +8,7 @@ import ConfigService from "./ConfigService";
 import DebugService from "./DebugService";
 import { ConnectorState, ConnectorStateReason } from "../constant/ConnectorState";
 import { IConnector, DummyConnector, IServerResponse, RestConnector } from "../connectors";
-import { IMapper, DummyMapper, Behaviour, ResponseError, ResponseErrorReason } from "../mappers";
+import { IMapper, DummyMapper, Behaviour, ResponseError, ResponseErrorReason, MessageError } from "../mappers";
 import { ReplayInstruction } from "../model/ReplayInstructionModel";
 import { CallReplay } from "../model/CallReplayModel";
 import { getConnectorByUrl, getMapperByUrl, getEndpoint, getSecurityProviderByUrl, getConnectionParameters } from "../utilities/ServerUtilities";
@@ -21,6 +21,8 @@ import { ApiKeyProvider } from "../security-provider/api-key-provider";
 import { PI2Mapper } from "../mappers/PI2Mapper";
 import { OAuthProvider } from "../security-provider/oauth-provider/OAuthProvider";
 import { DIDState } from "../constant/DIDState";
+import { MessageState } from "../constant/MessageState";
+import Origin from "../constant/Origin";
 
 class ServerService {
     static INSTANCE: ServerService;
@@ -88,6 +90,7 @@ class ServerService {
         this.responseMap.set(RequestMethod.EXECUTE_TRIGGER, this.handleExecuteTrigger);
         this.responseMap.set(RequestMethod.PI2_AUTHENTICATE, this.handleAuthPi2);
         this.responseMap.set(RequestMethod.RESOLVE_DID, this.handleResolveDID);
+        this.responseMap.set(RequestMethod.SEND, this.handleSend);
     }
 
     stateListener: Array<(status: ConnectorState, event: Event) => void> = [];
@@ -327,6 +330,13 @@ class ServerService {
                 // this.close();
             }
         }
+        else if (error instanceof MessageError) {
+            store.dispatch(updateMessageState(
+                error.messageId,
+                MessageState.ERROR,
+                error.errorCode,
+            ));
+        }
 
         const { message } = error;
 
@@ -422,11 +432,14 @@ class ServerService {
     }
 
     handleNewMessage(json: any) {
-        const { message, call_id } = json;
+        const { message, call_id, tag: messageId } = json;
         const call = getCallById(store.getState().call, call_id);
 
         if (call) {
-            store.dispatch(addMessage(call_id, Message.fromJson(message, call)));
+            store.dispatch(addOrUpdateMessage(call_id, Message.fromJson(message, call), messageId));
+            if (messageId)
+                store.dispatch(updateMessageState(messageId, MessageState.RECEIVED));
+
             store.dispatch(updateData(call_id, Message.getDataFromJson(message)));
         }
     }
@@ -443,6 +456,16 @@ class ServerService {
 
     handleGetCallReplay(json: any) {
         this.addOrUpdateCallReplay(json, true);
+    }
+
+    handleSend(json: any) {
+        // TODO: There should be a possibility to also show, when the border has received a message
+        // const { tag: messageId } = json;
+
+        // if (!messageId)
+        //     return;
+
+        // store.dispatch(updateMessageState(messageId, MessageState.INTERMIEDIARY));
     }
 
     handleNewCall(json: any) {
@@ -601,7 +624,24 @@ class ServerService {
     }
 
     sendMessage(message: string, callId: string) {
+        const call = getCallById(store.getState().call, callId);
+
+        if (!call)
+            return;
+
+        const messageId = call.getNextMessageId();
+
+        store.dispatch(addOrUpdateMessage(callId, new Message(
+            new Date(),
+            Origin.LOCAL,
+            MessageState.SENDING,
+            [message],
+            call,
+            messageId,
+        )));
+
         this.send(RequestMethod.SEND, {
+            tag: messageId,
             call_id: callId,
             message: message,
         });

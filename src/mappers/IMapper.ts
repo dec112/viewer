@@ -29,7 +29,16 @@ export class ResponseError extends Error {
   constructor(
     public reason: ResponseErrorReason,
     public message: string = '',
-  ) { 
+  ) {
     super(message);
   }
 };
+
+export class MessageError extends Error {
+  constructor(
+    public messageId: string,
+    public errorCode: number,
+  ) {
+    super(`Message error ${errorCode.toString()}`);
+  }
+}

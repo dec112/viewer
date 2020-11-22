@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import style from './Overview.module.css';
 import PropTypes from "prop-types";
 import Messages from "../../i18n/Messages";
-import MessageStateQualifier from "../../constant/MessageStateQualifier";
 import { sort } from "../../utilities/ArrayUtilities";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -20,6 +19,7 @@ import { CALL_ID, REUSE_SESSION, API_KEY, SESSION_KEY } from '../../constant/Que
 import { getQueryString, getCalledService } from '../../utilities';
 import { getInstance as getNoficationService } from '../../service/NotificationService';
 import Snackbar from '../../components/Snackbar/Snackbar';
+import * as CallState from '../../constant/CallState';
 
 class Overview extends Component {
 
@@ -70,7 +70,7 @@ class Overview extends Component {
 
         const callState = call.stateId;
         if (callState) {
-            return formatMessage(Messages[MessageStateQualifier[callState]]);
+            return formatMessage(Messages[CallState.toI18nKey(callState)]);
         }
         return "";
     }
@@ -139,7 +139,7 @@ class Overview extends Component {
 
     render() {
         const { formatMessage } = this.intl;
-            
+
         return (<div className={classNames('container-fluid', style.Container)}>
             {this.props.navbar}
             <div className="panel panel-success">

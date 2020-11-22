@@ -331,7 +331,7 @@ class MessageView extends Component {
                     <div className={style.MessageWrapper}>
                         {this.getTextMessages().map((msg, index) =>
                             <Message
-                                key={`${msg.messageId}`}
+                                key={`${msg.uniqueId}`}
                                 message={msg}
                                 currentLocations={this.props.currentLocations}
                                 onSetLocations={this.handleSetLocations}

@@ -65,3 +65,7 @@
     border-top-color: var(--light-red);
     right: 10px;
 }
+
+.StateIndicator {
+    margin-left: 0.5em;
+}

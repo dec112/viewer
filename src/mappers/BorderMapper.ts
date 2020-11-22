@@ -1,12 +1,10 @@
-import { IMapper, IBehaviour, Behaviour, ResponseError, ResponseErrorReason, } from "./IMapper";
+import { IMapper, IBehaviour, Behaviour, ResponseError, ResponseErrorReason, MessageError, } from "./IMapper";
 import { IServerRequest, RequestMethod as ServerRequestMethod, IServerResponse } from '../connectors'
 import RequestMethod from "../constant/RequestMethod";
 import { ISecurityProvider } from "../security-provider";
 import { CustomSessionProvider } from "../security-provider/custom-session-provider";
 import { ApiKeyProvider } from "../security-provider/api-key-provider";
 import { isApiV1 } from "../utilities";
-import { LocalizationService } from "../service";
-import Messages from "../i18n/Messages";
 
 export class BorderMapper implements IMapper {
   private static INSTANCE = new BorderMapper();
@@ -63,9 +61,16 @@ export class BorderMapper implements IMapper {
 
       if (code === 404)
         errorCode = ResponseErrorReason.NOT_FOUND;
-      else if (response.method === RequestMethod.SEND) {
-        errorMessage = LocalizationService.getInstance().formatMessage(Messages['error.messageNotSent']);
-        errorCode = ResponseErrorReason.UNAVAILABLE;
+      else if (
+        response.method === RequestMethod.SEND &&
+        body.tag &&
+        body.data &&
+        body.data.code
+      ) {
+        throw new MessageError(
+          body.tag,
+          body.data.code,
+        );
       }
       else
         errorCode = ResponseErrorReason.UNEXPECTED_ERROR;

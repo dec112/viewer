@@ -5,6 +5,8 @@ import { flattenObject } from "../utilities";
 import * as CommonUtilities from "../utilities/CommonUtilities";
 import { IdType } from "../constant";
 import { DIDState } from "../constant/DIDState";
+import Origin from "../constant/Origin";
+import { MessageState } from "../constant/MessageState";
 
 export class CallFactory {
     static fromJson<T extends AbstractCall>(c: new (
@@ -29,6 +31,8 @@ export abstract class AbstractCall {
     static readonly callIdRegex = '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
     static isCallIdValid = (callId: string) => new RegExp(AbstractCall.callIdRegex).test(callId);
 
+    private _messageIdIncrementor = 1;
+
     constructor(
         public callId: string,
         public callerName: string,
@@ -36,6 +40,8 @@ export abstract class AbstractCall {
         public calledUri: string,
         public created: Date,
     ) { }
+
+    getNextMessageId = () => `${this.callId}-${this._messageIdIncrementor++}`;
 }
 
 export class Call extends AbstractCall {
@@ -89,7 +95,11 @@ export class Call extends AbstractCall {
             call.messages = [];
 
             for (const msg of json.chat) {
-                call.messages.push(Message.fromJson(msg, call));
+                const message = Message.fromJson(msg, call);
+                if (message.origin === Origin.LOCAL)
+                    message.state = MessageState.RECEIVED;
+
+                call.messages.push(message);
                 call.updateData(Message.getDataFromJson(msg));
             }
         }
@@ -146,6 +156,8 @@ export class Call extends AbstractCall {
 
     stringify(): string {
         const copy = CommonUtilities.deepCopy(this);
+
+        delete copy._messageIdIncrementor;
 
         for (const msg of copy.messages) {
             // delete cyclic references
