@@ -436,11 +436,12 @@ class ServerService {
         const call = getCallById(store.getState().call, call_id);
 
         if (call) {
-            store.dispatch(addOrUpdateMessage(call_id, Message.fromJson(message, call), messageId));
-            if (messageId)
-                store.dispatch(updateMessageState(messageId, MessageState.RECEIVED));
+            const messageObj = Message.fromJson(message, call);
+            // Messages that go in through handleNewMessage always are in state RECEIVED
+            // either they were sent by the border automatically, or they have already be sent to the user
+            messageObj.state = MessageState.RECEIVED;
 
-            store.dispatch(updateData(call_id, Message.getDataFromJson(message)));
+            store.dispatch(addOrUpdateMessage(call_id, messageObj, messageId));
         }
     }
 
