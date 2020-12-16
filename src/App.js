@@ -188,11 +188,11 @@ class DEC112 extends Component {
         });
     };
 
-    handleLogout = () => {
+    handleLogout = async () => {
         if (!this.isLoggedIn())
             return;
 
-        this.serverService.logout();
+        await this.serverService.logout();
         this.props.setLoggedIn(false);
 
         this.serverService.close();

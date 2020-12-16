@@ -284,9 +284,9 @@ class ServerService {
         store.dispatch(resetStore());
     }
 
-    logout() {
+    async logout() {
         this.clearLogin();
-        this.send(RequestMethod.LOGOUT);
+        await this.send(RequestMethod.LOGOUT);
     }
 
     timeTravel(callId: string, progress: number) {
