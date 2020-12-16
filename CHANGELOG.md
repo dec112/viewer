@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.5
+
+* Fixed bug when logging out on Border v2 environments
+
 ## 3.0.4
 
 * Fixed bug when opening call in a new tab
