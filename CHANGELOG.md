@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+* Added Notification service
+
 ## 3.0.5
 
 * Fixed bug when logging out on Border v2 environments

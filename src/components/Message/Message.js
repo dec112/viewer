@@ -5,6 +5,7 @@ import Origin from "../../constant/Origin";
 import classNames from 'classnames';
 import LocationMarker from '../LocationMarker/LocationMarker';
 import DateTimeService from '../../service/DateTimeService';
+import { MessageStateIndicator } from '../MessageStateIndicator';
 
 class Message extends Component {
     static propTypes = {
@@ -22,7 +23,8 @@ class Message extends Component {
         this.element.scrollIntoView({behavior: "smooth"});
     }
 
-    isIncoming = () => this.props.message.origin === Origin.REMOTE || this.props.message.origin === Origin.SYSTEM;
+    isOutgoing = () => this.props.message.origin === Origin.LOCAL;
+    isIncoming = () => !this.isOutgoing();
 
     getMessageDirection() {
         return this.isIncoming() ? style.Incoming : style.Outgoing;
@@ -73,7 +75,17 @@ class Message extends Component {
                                 currentLocations={this.getCurrentLocations()}
                                 onClick={this.handleMapMarkerClick} /> : ''}
                     </span>
-                    <span>{this.getTimeReceived()}</span>
+                    <span>
+                        {this.getTimeReceived()}
+                        {/* message states are only available for outgoing messages */}
+                        {
+                            this.isOutgoing() ?
+                                <MessageStateIndicator
+                                    className={style.StateIndicator}
+                                    message={this.props.message} /> :
+                                undefined
+                        }
+                    </span>
                 </div>
                 <div className={classNames(style.MessageBody, this.getMessageBackground(), style.Arrow, this.getArrowStyle())}>
                     {this.props.message.text}

@@ -1,32 +1,36 @@
 import { Location } from "./LocationModel";
 import { Call } from "./CallModel";
-import * as CallState from "../constant/CallState";
+import { MessageState } from "../constant/MessageState";
 
 export class Message {
+
+    locations: Array<Location> = [];
+
     constructor(
-        // TODO: not defined yet
-        public messageId: string,
         public received: Date,
         public origin: string,
-        public stateId: number,
+        public state: MessageState,
         public texts: Array<string> = [],
 
         public call: Call,
-        public locations: Array<Location> = [],
+        public messageId?: string,
+        public stateCode?: number,
     ) { }
 
     static fromJson(json: any, call: Call) {
         const message = new Message(
-            json.message_id,
             new Date(json.received_ts),
             json.origin,
-            CallState.UNDEFINED,
+            MessageState.UNDEFINED,
             json.texts,
             call,
         );
 
         if (json.locations)
             message.locations = json.locations.map((x: any) => Location.fromJson(x, message));
+
+        if (json.tag)
+            message.messageId = json.tag;
 
         return message;
     }
@@ -37,5 +41,9 @@ export class Message {
 
     get text(): string {
         return this.texts.join('\r\n');
+    }
+
+    get uniqueId(): string {
+        return `${this.call.callId}-${this.origin}-${this.received.getTime()}`;
     }
 }

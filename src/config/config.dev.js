@@ -47,6 +47,11 @@ export default {
         // Protocol, used to communicate via websocket
         //// string
         "protocol": "dec112",
+        // "pingPong" speficies the duration between two ping pong calls that are fired to the endpoint
+        // this is important to keep websockets open and to possibly renew session tokens (v2)
+        // If set to null, ping pong is inactive
+        //// number | null
+        "pingPong": 60000,
     },
     // If true, logs debug messages into the browser's console
     //// true | false
@@ -86,6 +91,16 @@ export default {
             // This does not apply to errors shown in snackbars, they do not disappear automatically
             //// number
             "timeout": 5000,
+        },
+        // Configuration concerning snackbars that occur, when data is copied to clipboard
+        //// Object
+        "copyToClipboard": {
+            "preview": {
+                // Max length of preview text
+                // If text is longer an ellipsis "..." is appended after the maximum characters
+                //// number
+                "maxLength": 70,
+            },
         },
         // Configuration concerning the data view
         //// Object

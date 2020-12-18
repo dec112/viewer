@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import style from './InfoTable.module.css';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Snackbar from "../Snackbar/Snackbar";
-import Messages from "../../i18n/Messages";
 import classNames from "classnames";
-import { LocalizationService} from '../../service/LocalizationService';
+import { LocalizationService } from '../../service/LocalizationService';
 import { Icon, IconType } from '../Icon';
+import { UiService } from '../../service';
 
 class InfoTable extends Component {
 
@@ -26,13 +24,8 @@ class InfoTable extends Component {
     return !!this.props.copyToClipboard;
   }
 
-  onCopyToClipboard = (text, success) => {
-    const { formatMessage } = this.intl;
-
-    if (success)
-      Snackbar.success(formatMessage(Messages['copyToClipboard.success'], { message: text }));
-    else
-      Snackbar.error(formatMessage(Messages['copyToClipboard.error']));
+  copyToClipboard(text) {
+    UiService.getInstance().copyToClipboard(text);
   }
 
   getClipboardColumn(dataToCopy) {
@@ -41,11 +34,10 @@ class InfoTable extends Component {
 
     return (
       <td className={style.copyToClipboardColumn}>
-        <CopyToClipboard
-          text={dataToCopy}
-          onCopy={this.onCopyToClipboard}>
-          <span className="glyphicon glyphicon-copy glyphicon--btn"></span>
-        </CopyToClipboard>
+        <span
+          onClick={() => this.copyToClipboard(dataToCopy)}
+          className="glyphicon glyphicon-copy glyphicon--btn">
+        </span>
       </td>
     );
   }

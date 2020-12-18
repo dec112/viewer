@@ -55,17 +55,45 @@
     "id": "callState",
     "defaultMessage": "Status"
   },
+  "callState.closedByCaller": {
+    "id": "callState.closedByCaller",
+    "defaultMessage": "Vom Anrufer beendet"
+  },
+  "callState.closedByCenter": {
+    "id": "callState.closedByCenter",
+    "defaultMessage": "Von der Leitstelle beendet"
+  },
   "callState.closedBySystem": {
     "id": "callState.closedBySystem",
     "defaultMessage": "Der Anruf wurde automatisch vom System beendet. Dies deutet auf schwere Kommunikationsprobleme auf der Seite des Anrufers hin. Netzwerkprobleme können ein Grund dafür sein."
+  },
+  "callState.error": {
+    "id": "callState.error",
+    "defaultMessage": "Fehlerhaft"
+  },
+  "callState.inCall": {
+    "id": "callState.inCall",
+    "defaultMessage": "Im Arbeit"
+  },
+  "callState.newCall": {
+    "id": "callState.newCall",
+    "defaultMessage": "Neu"
   },
   "callState.stale": {
     "id": "callState.stale",
     "defaultMessage": "Bei diesem Anruf gibt es zur Zeit Kommunikationsprobleme."
   },
+  "callState.undefined": {
+    "id": "callState.undefined",
+    "defaultMessage": "Nicht bekannt"
+  },
   "callTime": {
     "id": "callTime",
     "defaultMessage": "Notruf Zeitpunkt"
+  },
+  "callerName": {
+    "id": "callerName",
+    "defaultMessage": "Anrufer"
   },
   "callerUri": {
     "id": "callerUri",
@@ -94,6 +122,10 @@
   "connectionState.unknown": {
     "id": "connectionState.unknown",
     "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten"
+  },
+  "copyToClipboard": {
+    "id": "copyToClipboard",
+    "defaultMessage": "In die Zwischenablage kopieren"
   },
   "copyToClipboard.error": {
     "id": "copyToClipboard.error",
@@ -151,9 +183,9 @@
     "id": "endEmergencyCallMessage",
     "defaultMessage": "Wollen Sie den Notruf wirklich beenden?"
   },
-  "error.messageNotSent": {
-    "id": "error.messageNotSent",
-    "defaultMessage": "Die Nachricht konnte nicht gesendet werden. Dies deutet auf Kommunikationsprobleme mit dem Anrufer hin."
+  "export": {
+    "id": "export",
+    "defaultMessage": "Export"
   },
   "forward": {
     "id": "forward",
@@ -211,41 +243,21 @@
     "id": "message",
     "defaultMessage": "Nachricht"
   },
+  "messageError.code": {
+    "id": "messageError.code",
+    "defaultMessage": "Code: {code}"
+  },
+  "messageError.relayError": {
+    "id": "messageError.relayError",
+    "defaultMessage": "Der Anrufer kann nicht erreicht werden. Die Nachricht wurde nicht gesendet."
+  },
+  "messageError.undefined": {
+    "id": "messageError.undefined",
+    "defaultMessage": "Die Nachricht konnte nicht gesendet werden."
+  },
   "messageInstruction": {
     "id": "messageInstruction",
     "defaultMessage": "Text eingeben und auf \"{send}\" klicken oder Eingabetaste \"{enter}\" drücken."
-  },
-  "messageState.closedByCaller": {
-    "id": "messageState.closedByCaller",
-    "defaultMessage": "Vom Anrufer beendet"
-  },
-  "messageState.closedByCenter": {
-    "id": "messageState.closedByCenter",
-    "defaultMessage": "Von der Leitstelle beendet"
-  },
-  "messageState.closedBySystem": {
-    "id": "messageState.closedBySystem",
-    "defaultMessage": "Vom System beendet"
-  },
-  "messageState.error": {
-    "id": "messageState.error",
-    "defaultMessage": "Fehlerhaft"
-  },
-  "messageState.inCall": {
-    "id": "messageState.inCall",
-    "defaultMessage": "Im Arbeit"
-  },
-  "messageState.newCall": {
-    "id": "messageState.newCall",
-    "defaultMessage": "Neu"
-  },
-  "messageState.stale": {
-    "id": "messageState.stale",
-    "defaultMessage": "Schlecht"
-  },
-  "messageState.undefined": {
-    "id": "messageState.undefined",
-    "defaultMessage": "Nicht bekannt"
   },
   "messages": {
     "id": "messages",
@@ -274,6 +286,38 @@
   "notes": {
     "id": "notes",
     "defaultMessage": "Persönliche Informationen"
+  },
+  "notification.incomingCall": {
+    "id": "notification.incomingCall",
+    "defaultMessage": "Neuer eingehender Notruf"
+  },
+  "notification.info.line1": {
+    "id": "notification.info.line1",
+    "defaultMessage": "DEC112 Viewer kann eine Benachrichtigung senden, wenn ein neuer Notruf eingeht."
+  },
+  "notification.info.line2": {
+    "id": "notification.info.line2",
+    "defaultMessage": "Somit kann das Browserfenster auch in den Hintegrund gelegt werden."
+  },
+  "notification.info.line3": {
+    "id": "notification.info.line3",
+    "defaultMessage": "Achtung: Wenn das Fenster geschlossen wird werden KEINE Benachrichtigungen mehr gesendet."
+  },
+  "notification.missingPermission": {
+    "id": "notification.missingPermission",
+    "defaultMessage": "Ihre Browsereinstellungen lassen keine Benachrichtigungen zu."
+  },
+  "notification.status.active": {
+    "id": "notification.status.active",
+    "defaultMessage": "Benachrichtungen sind eingeschaltet"
+  },
+  "notification.status.inactive": {
+    "id": "notification.status.inactive",
+    "defaultMessage": "Benachrichtungen sind ausgeschaltet"
+  },
+  "notifications": {
+    "id": "notifications",
+    "defaultMessage": "Benachrichtigungen"
   },
   "ok": {
     "id": "ok",

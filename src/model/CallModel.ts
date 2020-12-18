@@ -5,16 +5,20 @@ import { flattenObject } from "../utilities";
 import * as CommonUtilities from "../utilities/CommonUtilities";
 import { IdType } from "../constant";
 import { DIDState } from "../constant/DIDState";
+import Origin from "../constant/Origin";
+import { MessageState } from "../constant/MessageState";
 
 export class CallFactory {
     static fromJson<T extends AbstractCall>(c: new (
         callId: string,
+        callerName: string,
         callerUri: string,
         calledUri: string,
         created: Date,
     ) => T, json: any): T {
         return new c(
             json.call_id,
+            json.caller_name,
             json.caller_uri,
             json.called_uri,
             new Date(json.created_ts),
@@ -27,17 +31,23 @@ export abstract class AbstractCall {
     static readonly callIdRegex = '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
     static isCallIdValid = (callId: string) => new RegExp(AbstractCall.callIdRegex).test(callId);
 
+    private _messageIdIncrementor = 1;
+
     constructor(
         public callId: string,
+        public callerName: string,
         public callerUri: string,
         public calledUri: string,
         public created: Date,
     ) { }
+
+    getNextMessageId = () => `${this.callId}-${this._messageIdIncrementor++}`;
 }
 
 export class Call extends AbstractCall {
     constructor(
         public callId: string,
+        public callerName: string,
         public callerUri: string,
         public calledUri: string,
         public created: Date,
@@ -57,6 +67,7 @@ export class Call extends AbstractCall {
     ) {
         super(
             callId,
+            callerName,
             callerUri,
             calledUri,
             created
@@ -84,7 +95,11 @@ export class Call extends AbstractCall {
             call.messages = [];
 
             for (const msg of json.chat) {
-                call.messages.push(Message.fromJson(msg, call));
+                const message = Message.fromJson(msg, call);
+                if (message.origin === Origin.LOCAL)
+                    message.state = MessageState.RECEIVED;
+
+                call.messages.push(message);
                 call.updateData(Message.getDataFromJson(msg));
             }
         }
@@ -137,5 +152,22 @@ export class Call extends AbstractCall {
         this.didState = DIDState.UNRESOLVED;
         this._data = undefined;
         this.messages = [];
+    }
+
+    stringify(): string {
+        const copy = CommonUtilities.deepCopy(this);
+
+        delete copy._messageIdIncrementor;
+
+        for (const msg of copy.messages) {
+            // delete cyclic references
+            delete msg.call;
+
+            for (const loc of msg.locations) {
+                delete loc.message
+            }
+        }
+
+        return JSON.stringify(copy, null, 2);
     }
 }

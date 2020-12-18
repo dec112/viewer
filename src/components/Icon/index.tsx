@@ -3,14 +3,21 @@ import React from 'react';
 import classNames from 'classnames';
 
 export enum IconType {
+  ALERT = 'alert',
+  COPY = 'copy',
+  EXCLAMATION_SIGN = 'exclamation-sign',
+  EXPORT = 'export',
   LOCK = 'lock',
   OK = 'ok',
   PAUSE = 'pause',
   PLAY = 'play',
+  PRINT = 'print',
+  QUESTION_SIGN = 'question-sign',
   REMOVE = 'remove',
+  REPEAT = 'repeat',
+  SHARE = 'share',
   STEP_BACKWARD = 'step-backward',
   STEP_FORWARD = 'step-forward',
-  EXCLAMATION_SIGN = 'exclamation-sign',
 };
 
 interface IconProps {

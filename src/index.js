@@ -20,6 +20,7 @@ import ServerService from "./service/ServerService";
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import { LocalizationService } from "./service/LocalizationService";
 import { unregisterAll as unregisterAllServiceWorkers } from './utilities/ServiceWorkerUtilities';
+import { initialize as initializeNotificationService } from "./service/NotificationService";
 
 ConfigService.fetchExternalConfig().then(externalConfig => {
   const localService = LocalizationService.getInstance();
@@ -29,6 +30,10 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
   DebugService.initialize(!!ConfigService.get('debug'));
   StorageService.initialize(window.localStorage);
   ServerService.initialize();
+  initializeNotificationService(
+    StorageService.getInstance(),
+    localService,
+  );
 
   // old service workers could promote caching, that's what we want to prevent
   unregisterAllServiceWorkers();

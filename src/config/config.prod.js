@@ -7,6 +7,7 @@ export default {
             "ssl": "wss://{host}/api/v2",
         },
         "protocol": "dec112",
+        "pingPong": 60000,
     },
     "debug": false,
     "language": null,
@@ -14,6 +15,11 @@ export default {
     "ui": {
         "snackbar": {
             "timeout": 5000,
+        },
+        "copyToClipboard": {
+            "preview": {
+                "maxLength": 70,
+            },
         },
         "dataView": {
             "enabled": true,

@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import style from './Overview.module.css';
 import PropTypes from "prop-types";
 import Messages from "../../i18n/Messages";
-import MessageStateQualifier from "../../constant/MessageStateQualifier";
 import { sort } from "../../utilities/ArrayUtilities";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -18,6 +17,9 @@ import DateTimeService from '../../service/DateTimeService';
 import { Call } from '../../model/CallModel';
 import { CALL_ID, REUSE_SESSION, API_KEY, SESSION_KEY } from '../../constant/QueryParam';
 import { getQueryString, getCalledService } from '../../utilities';
+import { getInstance as getNoficationService } from '../../service/NotificationService';
+import Snackbar from '../../components/Snackbar/Snackbar';
+import * as CallState from '../../constant/CallState';
 
 class Overview extends Component {
 
@@ -30,11 +32,16 @@ class Overview extends Component {
 
     constructor() {
         super();
-        this.state = { callId: "" };
 
         this.intl = LocalizationService.getInstance();
         this.serverService = ServerService.getInstance();
         this.dateTimeService = DateTimeService.getInstance();
+        this.notificationService = getNoficationService();
+
+        this.state = {
+            callId: "",
+            isNotificationServiceActive: this.notificationService.isActive(),
+        };
     }
 
     componentDidMount() {
@@ -63,7 +70,7 @@ class Overview extends Component {
 
         const callState = call.stateId;
         if (callState) {
-            return formatMessage(Messages[MessageStateQualifier[callState]]);
+            return formatMessage(Messages[CallState.toI18nKey(callState)]);
         }
         return "";
     }
@@ -111,9 +118,28 @@ class Overview extends Component {
             return 'has-error';
     }
 
+    onNotificationCheckboxChange = async (evt) => {
+        const newState = evt.target.checked;
+        await this.notificationService.setActive(newState);
+
+        const isActive = this.notificationService.isActive();
+        this.setState({
+            isNotificationServiceActive: isActive,
+        });
+
+        // if user want's to activate it but browser actually denies it
+        // show a message
+        if (newState === true && isActive === false) {
+            debugger;
+            const id = Messages['notification.missingPermission'];
+            const msg = this.intl.formatMessage(id);
+            Snackbar.error(msg);
+        }
+    }
+
     render() {
         const { formatMessage } = this.intl;
-            
+
         return (<div className={classNames('container-fluid', style.Container)}>
             {this.props.navbar}
             <div className="panel panel-success">
@@ -123,9 +149,9 @@ class Overview extends Component {
                         <thead>
                             <tr>
                                 <th>{formatMessage(Messages.service)}</th>
-                                <th>{formatMessage(Messages.callIdentifier)}</th>
+                                <th>{formatMessage(Messages.callerName)}</th>
                                 <th>{formatMessage(Messages.callTime)}</th>
-                                <th>{formatMessage(Messages.callerUri)}</th>
+                                <th>{formatMessage(Messages.callIdentifier)}</th>
                                 <th>{formatMessage(Messages.callState)}</th>
                                 <th className={style.Center}>{formatMessage(Messages.newTab)}</th>
                             </tr>
@@ -143,9 +169,9 @@ class Overview extends Component {
                                         but as there are nested click handlers, I think this is the only correct solution
                                         */}
                                         <td onClick={() => this.handleCallClick(call)}>{getCalledService(call, this.intl)}</td>
-                                        <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
+                                        <td onClick={() => this.handleCallClick(call)}>{call.callerName}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.dateTimeService.toDateTime(call.created)}</td>
-                                        <td onClick={() => this.handleCallClick(call)}>{call.callerUri}</td>
+                                        <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.getState(call)}</td>
                                         <td className={style.Center}>
                                             <a
@@ -187,6 +213,24 @@ class Overview extends Component {
                     </div>
                 </div>
                 <div className="col-md-4">
+                    <div className="panel panel-info">
+                        <div className="panel-heading">{formatMessage(Messages.notifications)}</div>
+                        <div className="panel-body">
+                            <p>
+                                {formatMessage(Messages['notification.info.line1'])}<br />
+                                {formatMessage(Messages['notification.info.line2'])}<br />
+                                {formatMessage(Messages['notification.info.line3'])}
+                            </p>
+                            <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(evt) => this.onNotificationCheckboxChange(evt)}
+                                        checked={this.state.isNotificationServiceActive}
+                                    />{formatMessage(Messages[`notification.status.${this.state.isNotificationServiceActive ? 'active' : 'inactive'}`])}</label>
+                            </div>
+                        </div>
+                    </div>
                     <InfoTable
                         title={`${formatMessage(Messages.appName)} ${formatMessage(Messages.information)}`}
                         className={'panel-default'}

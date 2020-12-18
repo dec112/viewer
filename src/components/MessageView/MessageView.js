@@ -9,7 +9,7 @@ import MessageUtilities from "../../utilities/MessageUtilities";
 import DateTimeService from '../../service/DateTimeService';
 import Origin from '../../constant/Origin';
 import * as CoreUtil from '../../utilities';
-import { LocalizationService} from '../../service/LocalizationService';
+import { LocalizationService } from '../../service/LocalizationService';
 import { SnippetPanel, Snippet } from '../SnippetPanel/SnippetPanel';
 import ConfigService from '../../service/ConfigService';
 import { ReplayControlPanel } from '../ReplayPanel/ReplayControlPanel';
@@ -17,6 +17,7 @@ import { getCalledService } from '../../utilities';
 import * as CallState from '../../constant/CallState';
 import { Icon, IconType } from '../Icon';
 import { DurationComponent } from '../DurationComponent';
+import { ExportButton, ExportTypeCopyToClipboard, ExportTypePrint } from '../ExportButton';
 
 class MessageView extends Component {
 
@@ -221,10 +222,6 @@ class MessageView extends Component {
         this.setState({ message: evt.target.value });
     };
 
-    handlePrintMessageClick = () => {
-        window.print();
-    };
-
     handleShowOnMapClick = () => {
         if (this.props.onShowLatestLocations)
             this.props.onShowLatestLocations();
@@ -334,7 +331,7 @@ class MessageView extends Component {
                     <div className={style.MessageWrapper}>
                         {this.getTextMessages().map((msg, index) =>
                             <Message
-                                key={`${msg.messageId}`}
+                                key={`${msg.uniqueId}`}
                                 message={msg}
                                 currentLocations={this.props.currentLocations}
                                 onSetLocations={this.handleSetLocations}
@@ -349,11 +346,12 @@ class MessageView extends Component {
                     {children}
 
                     <div className={style.MessageButtonGroup}>
-                        <button
-                            className={classNames("btn btn-default", style.MessageButton)}
-                            onClick={this.handlePrintMessageClick}>
-                            <span className="glyphicon glyphicon-print" /> {formatMessage(Messages.print)}
-                        </button>
+                        <ExportButton
+                            className={style.MessageButton}
+                            exportTypes={[
+                                ExportTypePrint(),
+                                ExportTypeCopyToClipboard(this.getCall().stringify()),
+                            ]}></ExportButton>
                         <button
                             disabled={this.isShowCurrentLocationsDisabled()}
                             className={classNames("btn btn-default", style.MessageButton)}
