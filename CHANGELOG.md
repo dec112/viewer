@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1
+
+* Fixed bug where additional data is not updated during a call
+
 ## 3.1.0
 
 * Added Notification service

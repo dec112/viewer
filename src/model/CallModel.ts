@@ -1,7 +1,7 @@
 import * as CallState from "../constant/CallState";
 import { Message } from "./MessageModel";
 import { Location } from "./LocationModel";
-import { flattenObject } from "../utilities";
+import { flattenObject, sort } from "../utilities";
 import * as CommonUtilities from "../utilities/CommonUtilities";
 import { IdType } from "../constant";
 import { DIDState } from "../constant/DIDState";
@@ -93,6 +93,10 @@ export class Call extends AbstractCall {
 
         if (Array.isArray(json.chat)) {
             call.messages = [];
+
+            // sorting by received timestamp is important because we want to call `call.updateData` for each message
+            // this ensures only latest data is shown to the user
+            sort(json.chat, (x: any) => x.received_ts);
 
             for (const msg of json.chat) {
                 const message = Message.fromJson(msg, call);

@@ -442,6 +442,7 @@ class ServerService {
             messageObj.state = MessageState.RECEIVED;
 
             store.dispatch(addOrUpdateMessage(call_id, messageObj, messageId));
+            store.dispatch(updateData(call_id, Message.getDataFromJson(message)));
         }
     }
 
