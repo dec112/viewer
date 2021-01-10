@@ -15,7 +15,7 @@ export class RestConnector implements IConnector {
   };
 
   // nothing to close here as well
-  close = () => { };
+  close = async () => { };
 
   send = (method: string, requestMethod: string, requestObj: IServerRequest) => {
     const {

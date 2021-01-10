@@ -27,7 +27,7 @@ export interface IConnector {
   protocol?: string;
 
   connect: () => Promise<void>,
-  close: () => void,
+  close: () => Promise<void>,
   send: (method: string, requestMethod: string, requestObj: IServerRequest) => void,
   addStateListener: (listener: (state: ConnectorState, reason: ConnectorStateReason, event: Event) => void) => void,
   addResponseListener: (listener: (response: IServerResponse, method?: string) => void) => void,

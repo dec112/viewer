@@ -4,6 +4,7 @@
   "version": "3.1.1",
   "license": "GPL-3.0-only",
   "dependencies": {
+    "@gebsl/ng112-js": "^0.4.0",
     "@types/classnames": "^2.2.11",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.6",

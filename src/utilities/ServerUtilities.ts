@@ -1,6 +1,6 @@
 import ConfigService from "../service/ConfigService";
-import { IMapper, BorderMapper, SemanticContainerMapper } from "../mappers";
-import { IConnector, WebsocketConnector, RestConnector } from "../connectors";
+import { IMapper, NG112Mapper, SemanticContainerMapper } from "../mappers";
+import { IConnector, NG112Connector, RestConnector } from "../connectors";
 import { API_KEY } from "../constant/QueryParam";
 import { ISecurityProvider } from "../security-provider";
 import { CustomSessionProvider } from "../security-provider/custom-session-provider";
@@ -8,6 +8,7 @@ import { StorageService } from "../service";
 import { OAuthProvider } from "../security-provider/oauth-provider/OAuthProvider";
 import { ApiKeyProvider } from "../security-provider/api-key-provider";
 import Messages from "../i18n/Messages";
+import { NG112Provider } from "../security-provider/ng112-provider";
 
 function isHttp(url: string): boolean {
   return /^https?:/.test(url) && testUrl(url);
@@ -39,19 +40,17 @@ function testUrl(url: string) {
 }
 
 export function getMapperByUrl(url: string): IMapper {
-  return isWebsocket(url) ? new BorderMapper() : new SemanticContainerMapper();
+  return isWebsocket(url) ? new NG112Mapper() : new SemanticContainerMapper();
 }
 
 export function getConnectorByUrl(url: string, protocol: string): IConnector {
-  return isWebsocket(url) ? new WebsocketConnector(url, protocol) : new RestConnector(url);
+  return isWebsocket(url) ? new NG112Connector(url, protocol) : new RestConnector(url);
 }
 
 export function getSecurityProviderByUrl(url: string): ISecurityProvider {
   const storage = StorageService.getInstance();
   return isWebsocket(url) ?
-    (isApiV1(url) ?
-      new ApiKeyProvider(storage) :
-      new CustomSessionProvider(storage)) :
+    new NG112Provider() :
     new OAuthProvider('security-provider', storage);
 }
 

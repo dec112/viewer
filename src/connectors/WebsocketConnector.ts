@@ -79,7 +79,7 @@ export class WebsocketConnector implements IConnector {
     this.connection.send(JSON.stringify(body));
   }
 
-  close() {
+  async close() {
     if (this.connection && this.isOpen())
       this.connection.close();
   }

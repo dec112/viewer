@@ -6,7 +6,7 @@ export class DummyConnector implements IConnector {
   protocol?: string = '';
 
   connect = () => Promise.resolve();
-  close = () => { };
+  close = async () => { };
   send = (method: string, requestMethod: string, data: any) => { };
   addStateListener = (listener: (state: ConnectorState, reason: ConnectorStateReason, event: Event) => void) => { };
   addResponseListener = (listener: (data: any, method?: string | undefined) => void) => { };
