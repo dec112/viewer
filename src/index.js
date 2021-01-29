@@ -21,6 +21,7 @@ import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import { LocalizationService } from "./service/LocalizationService";
 import { unregisterAll as unregisterAllServiceWorkers } from './utilities/ServiceWorkerUtilities';
 import { initialize as initializeNotificationService } from "./service/NotificationService";
+import { TranslationService } from "./service/TranslationService";
 
 ConfigService.fetchExternalConfig().then(externalConfig => {
   const url = new URL(window.location);
@@ -34,6 +35,7 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
   localService.setCurrentLanguage(ConfigService.get('language'));
   DebugService.initialize(!!ConfigService.get('debug'));
   StorageService.initialize(window.localStorage);
+  TranslationService.initialize();
   ServerService.initialize();
   initializeNotificationService(
     StorageService.getInstance(),

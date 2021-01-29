@@ -17,6 +17,13 @@ export default {
     "triggers": null,
     "processTestCalls": false,
     "alternativeTargets": [],
+    "translation": {
+        "maxCacheCount": 1000,
+        "translationEndpoint": 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0',
+        "languagesEndpoint": "https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation",
+        "apiKey": null,
+        "region": 'westeurope',
+    },
     "ui": {
         "notification": {
             "playAudio": false,

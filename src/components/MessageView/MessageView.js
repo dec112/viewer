@@ -20,6 +20,7 @@ import { Icon, IconType } from '../Icon';
 import { DurationComponent } from '../DurationComponent';
 import { ExportButton, ExportTypeCopyToClipboard, ExportTypePrint } from '../ExportButton';
 import { Select, SelectStyle } from '../Select';
+import { TranslationService } from '../../service/TranslationService';
 
 class MessageView extends Component {
 
@@ -40,12 +41,22 @@ class MessageView extends Component {
         this.intl = LocalizationService.getInstance();
         this.messageElements = [];
 
-        this.snippets = mapSnippetsFromConfig(ConfigService.get('ui', 'messageView', 'snippets'))
+        this.snippets = mapSnippetsFromConfig(ConfigService.get('ui', 'messageView', 'snippets'));
+        this.translationService = TranslationService.getInstance();
 
         this.state = {
             message: '',
             showSnippetContainer: false,
             messageCount: 0,
+
+            isTranslationAvailable: this.translationService.isAvailable(),
+            isTranslationActive: false,
+            isTranslating: false,
+            availableLanguages: undefined,
+            translations: [],
+            messageTranslation: '',
+            isTranslationDirty: true,
+            selectedRemoteLanguage: undefined,
         }
     }
 
@@ -59,7 +70,7 @@ class MessageView extends Component {
         this.focusMessageText();
     }
 
-    componentDidUpdate() {
+    async componentDidUpdate(prevProps, prevState) {
         // ok, I'm sorry. This is bad practice
         // To do this correctly, you should compare previous props to current props
         // But this requires our redux store to be immutable (have immutable objects)
@@ -73,9 +84,15 @@ class MessageView extends Component {
         // But now it's your task, mighty reader...find out!
         // And only come back, if you have a solution AND beer!
 
-        const { messageCount: previousMessageCount } = this.state;
-        const currMessages = this.getMessages() || [];
-        const currLength = MessageUtilities.getDisplayableMessages(currMessages).length;
+        const {
+            messageCount: previousMessageCount,
+            isTranslationActive,
+            isTranslationDirty,
+            availableLanguages,
+            selectedRemoteLanguage,
+        } = this.state;
+        const displayableMessages = this.getTextMessages();
+        const currLength = displayableMessages.length;
 
         if (previousMessageCount !== currLength) {
             this.scrollToBottom();
@@ -84,11 +101,47 @@ class MessageView extends Component {
                 messageCount: currLength,
             });
         }
+
+        if (
+            previousMessageCount !== currLength ||
+            prevState.isTranslationActive !== isTranslationActive ||
+            prevState.isTranslationDirty !== isTranslationDirty ||
+            prevState.selectedRemoteLanguage !== selectedRemoteLanguage
+        ) {
+            const localLanguage = this.getLocalLanguage();
+            const translations = new Array(currLength);
+
+            this.setState({
+                translations,
+            });
+
+            if (isTranslationActive) {
+                for (let i = 0; i < currLength; i++) {
+                    const msg = displayableMessages[i];
+                    if (msg.origin === Origin.REMOTE) {
+                        this.translationService.getTranslation(msg.text, localLanguage, selectedRemoteLanguage).then(translation => {
+                            translations[i] = translation;
+                            this.setState({
+                                translations,
+                            });
+                        });
+                    }
+                }
+            }
+        }
+
+        if (!availableLanguages && prevState.isTranslationActive !== isTranslationActive) {
+            this.translationService.getAvailableLanguages().then(availableLanguages => {
+                this.setState({
+                    availableLanguages,
+                });
+            });
+        }
     }
 
     getCall = () => this.props.call;
     getReplayInstruction = () => this.props.replayInstruction;
-    getMessages = () => this.getCall().messages;
+    getMessages = () => this.getCall().messages || [];
     getCalledService = () => getCalledService(this.getCall(), this.intl);
 
     getTargetSelectValues = () => getPossibleTargets(this.getCall()).map(x => ({
@@ -100,6 +153,7 @@ class MessageView extends Component {
     isCallActive = () => this.getCall().isActive;
     isUiDisabled = () => !this.isCallActive() || this.isReplay();
     isSendButtonDisabled = () => this.isUiDisabled() || !this.state.message;
+    isTranslateButtonDisabled = () => this.isSendButtonDisabled() || this.state.isTranslating;
     isReplay = () => this.getCall().isReplay;
     isShowCurrentLocationsDisabled = () => !this.props.currentLocations;
 
@@ -188,6 +242,45 @@ class MessageView extends Component {
         return style.isStateOk;
     }
 
+    getLocalLanguage = () => this.state.isTranslationActive ? this.intl.getCurrentLanguage() : undefined;
+    getAutoDetectedLanguage = () => {
+        // fetch language from last translation that is not null
+        const all = this.state.translations.filter(x => !!x);
+        if (all.length > 0)
+            return all[all.length - 1].from;
+        else
+            return undefined;
+    }
+    getRemoteLanguage = () => {
+        const { selectedRemoteLanguage } = this.state;
+
+        if (selectedRemoteLanguage)
+            return selectedRemoteLanguage;
+        else
+            return this.getAutoDetectedLanguage();
+    }
+    getAvailableLanguageSelectValues = () => {
+        const languages = (this.state.availableLanguages || []).map(lang => ({
+            key: lang.code,
+            value: lang.code,
+            text: lang.name,
+        }));
+
+        let text = 'auto';
+        // showing the automatically detected language only makes sense
+        // if no language was selected manually
+        if (!this.state.selectedRemoteLanguage)
+            text += ` (${this.getAutoDetectedLanguage() ?? 'unknown'})`;
+
+        return [
+            {
+                key: 'auto',
+                value: 'auto',
+                text,
+            }
+        ].concat(languages);
+    }
+
     showSnippetContainer = () => this.state.showSnippetContainer && this.hasSnippets() && !this.isUiDisabled();
     hasSnippets() {
         const snipps = this.getSnippets();
@@ -216,8 +309,22 @@ class MessageView extends Component {
             this.messageText.focus();
     }
 
+    handleSuccessButtonClick = () => {
+        if (this.state.isTranslationActive && this.state.isTranslationDirty) {
+            this.handleTranslateMessageClick();
+        } else {
+            this.handleSendClick();
+        }
+    }
+
     handleSendClick = () => {
-        const msg = this.state.message.trim();
+        let msg = this.state.message.trim();
+
+        if (this.state.isTranslationActive) {
+            const translatedMsg = this.state.messageTranslation.trim();
+            // translated text is prepended -> so it's easier for the user to understand
+            msg = `${translatedMsg}\n\n---\n\n${msg}`;
+        }
 
         if (!msg)
             return;
@@ -225,16 +332,49 @@ class MessageView extends Component {
         if (this.props.onSendMessage) {
             this.props.onSendMessage(this.getCall(), msg);
         }
-        this.setState({ message: "" });
+
+        this.setState({
+            message: '',
+            messageTranslation: '',
+        });
     };
 
+    handleTranslateMessageClick = async () => {
+        this.setState({
+            isTranslating: true,
+        })
+
+        const sourceMessage = this.state.message;
+        const translation = await this.translationService.getTranslation(
+            sourceMessage,
+            this.getRemoteLanguage(),
+            this.getLocalLanguage(),
+        );
+
+        this.setState({
+            isTranslationDirty: false,
+            isTranslating: false,
+            // as a fallback we just use what has been written by the user
+            // (in case of any translation errors)
+            messageTranslation: translation?.text ?? sourceMessage,
+        });
+    }
+
     handleDeleteClick = () => {
-        this.setState({ message: "" });
+        this.setState({
+            message: '',
+            messageTranslation: '',
+            isTranslationDirty: true,
+        });
         this.focusMessageText();
     };
 
     handleMessageChange = (evt) => {
-        this.setState({ message: evt.target.value });
+        this.setState({
+            message: evt.target.value,
+            messageTranslation: '',
+            isTranslationDirty: true,
+        });
     };
 
     handleShowOnMapClick = () => {
@@ -242,9 +382,10 @@ class MessageView extends Component {
             this.props.onShowLatestLocations();
     };
 
-    handleMessageKeyUp = (event) => {
+    handleMessageKeyDown = (event) => {
         if (event.key === 'Enter' && event.shiftKey !== true) {
-            this.handleSendClick();
+            event.preventDefault();
+            this.handleSuccessButtonClick();
         }
     };
 
@@ -262,7 +403,6 @@ class MessageView extends Component {
         }
     }
 
-
     handleSnippetCallback = (snippet) => {
         if (snippet.uri) {
             if (this.props.onSendMessage)
@@ -278,6 +418,16 @@ class MessageView extends Component {
             this.props.onTargetChange(targetSelectValue);
     }
 
+    handleTargetLanguageChange = (targetLanguage) => {
+        if (targetLanguage === 'auto')
+            targetLanguage = undefined;
+
+        this.setState({
+            selectedRemoteLanguage: targetLanguage,
+            isTranslationDirty: true,
+        })
+    }
+
     timeBarChange = (progress) => {
         if (this.props.onTimeBarChange)
             this.props.onTimeBarChange(progress);
@@ -289,6 +439,12 @@ class MessageView extends Component {
         });
     }
 
+    toggleTranslationActive = () => {
+        this.setState({
+            isTranslationActive: !this.state.isTranslationActive,
+        });
+    }
+
     appendToMessage = (text) => {
         this.setState({
             message: this.state.message + text,
@@ -297,6 +453,13 @@ class MessageView extends Component {
 
     render() {
         const { formatMessage } = this.intl;
+        const {
+            isTranslationAvailable,
+            isTranslationActive,
+            isTranslationDirty,
+            isTranslating,
+            selectedRemoteLanguage,
+        } = this.state;
 
         const replayClass = this.isReplay() ? style.isReplay : null;
         const call = this.getCall();
@@ -332,11 +495,23 @@ class MessageView extends Component {
                             rows={3}
                             className={classNames('form-control', style.TextInput)}
                             placeholder={formatMessage(Messages.messageInstruction, {
-                                send: formatMessage(Messages.send),
                                 enter: '\u21b5',
                             })}
-                            onKeyUp={this.handleMessageKeyUp}
-                            value={this.state.message} onChange={this.handleMessageChange} />
+                            onKeyDown={this.handleMessageKeyDown}
+                            value={this.state.message}
+                            onChange={this.handleMessageChange}
+                        />
+                        {
+                            isTranslationActive ?
+                                <textarea
+                                    readOnly={true}
+                                    rows={3}
+                                    className={classNames('form-control', style.TextInput)}
+                                    placeholder={isTranslating ? `${formatMessage(Messages.translation)}...` : ''}
+                                    value={this.state.messageTranslation} />
+                                :
+                                undefined
+                        }
                         <span className={classNames(style.AutoWidth, 'input-group-btn')}>
                             <button
                                 disabled={this.isUiDisabled()}
@@ -361,6 +536,7 @@ class MessageView extends Component {
                             <Message
                                 key={`${msg.uniqueId}`}
                                 message={msg}
+                                translation={this.state.translations[index]}
                                 currentLocations={this.props.currentLocations}
                                 onSetLocations={this.handleSetLocations}
                                 ref={(el) => {
@@ -399,6 +575,31 @@ class MessageView extends Component {
                                 <span className={classNames('glyphicon', 'glyphicon-pencil')} /> {formatMessage(Messages.snippets)}
                             </button> : null
                         }
+                        {
+                            isTranslationAvailable ?
+                                <button
+                                    className={classNames(
+                                        'btn',
+                                        'btn-default',
+                                        isTranslationActive ? 'active' : null,
+                                        style.MessageButton,
+                                    )}
+                                    onClick={this.toggleTranslationActive}>
+                                    <span className={classNames('glyphicon', 'glyphicon-flag')} /> {formatMessage(Messages.translation)}
+                                </button> : null
+                        }
+                        {
+                            isTranslationActive ?
+                                <Select
+                                    className={style.AutoWidth}
+                                    style={SelectStyle.SELECT}
+                                    values={this.getAvailableLanguageSelectValues()}
+                                    selected={selectedRemoteLanguage}
+                                    onChange={this.handleTargetLanguageChange}
+                                />
+                                :
+                                undefined
+                        }
                     </div>
                     {this.isReplay() ? null :
                         <div className={style.SpaceBetween}>
@@ -427,19 +628,35 @@ class MessageView extends Component {
                                         undefined
                                 }
 
-                                <button
-                                    disabled={this.isSendButtonDisabled()}
-                                    type="button"
-                                    className={classNames("btn btn-success", style.MessageButton)}
-                                    onClick={this.handleSendClick}>
-                                    <span className="glyphicon glyphicon-send" /> {formatMessage(Messages.send)}
-                                </button>
+                                {
+                                    isTranslationActive && isTranslationDirty ?
+                                        <button
+                                            disabled={this.isTranslateButtonDisabled()}
+                                            type="button"
+                                            className={classNames("btn btn-warning", style.MessageButton)}
+                                            onClick={this.handleSuccessButtonClick}>
+                                            <span className="glyphicon glyphicon-flag" /> {
+                                                isTranslating ?
+                                                    `${formatMessage(Messages.translation)}...` :
+                                                    formatMessage(Messages.translate)
+                                            }
+                                        </button>
+                                        :
+                                        <button
+                                            disabled={this.isSendButtonDisabled()}
+                                            type="button"
+                                            className={classNames("btn btn-success", style.MessageButton)}
+                                            onClick={this.handleSuccessButtonClick}>
+                                            <span className="glyphicon glyphicon-send" /> {formatMessage(Messages.send)}
+                                        </button>
+                                }
                             </span>
                         </div>
                     }
                 </div>
             </div>
-        </div>);
+        </div>
+        );
     }
 }
 

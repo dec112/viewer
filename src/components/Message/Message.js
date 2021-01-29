@@ -16,7 +16,9 @@ class Message extends Component {
     static propTypes = {
         message: PropTypes.object,
         currentLocations: PropTypes.array,
-        onSetLocations: PropTypes.func
+        onSetLocations: PropTypes.func,
+
+        translation: PropTypes.object,
     };
 
     constructor() {
@@ -26,8 +28,8 @@ class Message extends Component {
         this.intl = LocalizationService.getInstance();
     }
 
-    scrollIntoView(){
-        this.element.scrollIntoView({behavior: "smooth"});
+    scrollIntoView() {
+        this.element.scrollIntoView({ behavior: "smooth" });
     }
 
     isOutgoing = () => this.props.message.origin === Origin.LOCAL;
@@ -46,7 +48,7 @@ class Message extends Component {
     }
 
     handleMapMarkerClick = (locations) => {
-        if(this.props.onSetLocations)
+        if (this.props.onSetLocations)
             this.props.onSetLocations(locations);
     }
 
@@ -72,7 +74,7 @@ class Message extends Component {
         return getDisplayable(this.getAttachments());
     }
 
-    getDownloadableAttachments ()  {
+    getDownloadableAttachments() {
         // all attachments that are not displayable will be offered to download
         const displayable = this.getDisplayableAttachments();
         return this.getAttachments().filter(a => displayable.indexOf(a) === -1);
@@ -87,12 +89,30 @@ class Message extends Component {
     }
 
     render() {
-        const { text, uris } = this.props.message;
+        const {
+            text,
+            uris
+        } = this.props.message;
+
+        const {
+            translation,
+        } = this.props;
 
         return (
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
                 <div>
                     {text}
+                    {translation ?
+                        <>
+                            <p>
+                                <small>({translation.from})</small>
+                            </p>
+                            <p>---</p>
+                            <p>
+                                {translation.text}
+                            </p>
+                        </> : undefined
+                    }
                 </div>
 
                 {uris && uris.length > 0 ?

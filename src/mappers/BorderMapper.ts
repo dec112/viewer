@@ -24,9 +24,6 @@ export class BorderMapper implements IMapper {
       // in version 1, login and logout method is not supported and will therfore be faked
       if (method === RequestMethod.LOGON || method === RequestMethod.LOGOUT)
         behaviour.behave = Behaviour.RESPONSE;
-      // v1 does not support get_config
-      else if (method === RequestMethod.GET_CONFIG)
-        behaviour.behave = Behaviour.RESPONSE;
     }
 
     if (securityProvider instanceof CustomSessionProvider && securityProvider.isAuthenticated()) {

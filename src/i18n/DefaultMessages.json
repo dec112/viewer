@@ -277,7 +277,7 @@
   },
   "messageInstruction": {
     "id": "messageInstruction",
-    "defaultMessage": "Text eingeben und auf \"{send}\" klicken oder Eingabetaste \"{enter}\" drücken."
+    "defaultMessage": "Text eingeben und Eingabetaste \"{enter}\" drücken."
   },
   "messages": {
     "id": "messages",
@@ -418,6 +418,14 @@
   "tel": {
     "id": "tel",
     "defaultMessage": "Telefon"
+  },
+  "translate": {
+    "id": "translate",
+    "defaultMessage": "Übersetzen"
+  },
+  "translation": {
+    "id": "translation",
+    "defaultMessage": "Übersetzung"
   },
   "unauthorizedRequest": {
     "id": "unauthorizedRequest",
