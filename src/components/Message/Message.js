@@ -34,14 +34,6 @@ class Message extends Component {
         return this.isIncoming() ? style.IncomingBackground : style.OutgoingBackground;
     }
 
-    getUserInformationAlignment() {
-        return this.isIncoming() ? style.Right : style.Left;
-    }
-
-    getArrowStyle() {
-        return this.isIncoming() ? style.IncomingArrow : style.OutgoingArrow;
-    }
-
     getTimeReceived() {
         return this.dateTimeService.toDateTime(this.props.message.received);
     }
@@ -67,7 +59,10 @@ class Message extends Component {
     render() {
         return (
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
-                <div className={classNames(style.Header, this.getUserInformationAlignment())}>
+                <div>
+                    {this.props.message.text}
+                </div>
+                <div className={classNames(style.Meta)}>
                     <span>
                         {this.hasLocations() ?
                             <LocationMarker
@@ -76,7 +71,6 @@ class Message extends Component {
                                 onClick={this.handleMapMarkerClick} /> : ''}
                     </span>
                     <span>
-                        {this.getTimeReceived()}
                         {/* message states are only available for outgoing messages */}
                         {
                             this.isOutgoing() ?
@@ -85,12 +79,11 @@ class Message extends Component {
                                     message={this.props.message} /> :
                                 undefined
                         }
+                        {this.getTimeReceived()}
                     </span>
                 </div>
-                <div className={classNames(style.MessageBody, this.getMessageBackground(), style.Arrow, this.getArrowStyle())}>
-                    {this.props.message.text}
-                </div>
-            </div>)
+            </div>
+        );
     }
 }
 

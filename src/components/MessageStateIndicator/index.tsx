@@ -29,8 +29,8 @@ const getErrorContent = (message: Message): JSX.Element => {
     }
 
     return <>
-      {icon}
       <span className={styles.Text}>{errorMsg} ({l10n.formatMessage(Messages['messageError.code'], { code: message.stateCode })})</span>
+      {icon}
     </>
   }
 
