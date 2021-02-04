@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.2
+
+* Changed design of messages
+
 ## 3.1.1
 
 * Fixed bug where additional data is not updated during a call
