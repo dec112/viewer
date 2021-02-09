@@ -707,6 +707,7 @@ class ServerService {
 
     stopPingPong() {
         window.clearInterval(this._pingPongInterval);
+        this._pingPongInterval = undefined;
     }
 }
 
