@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.3
+
+* Fixed ping pong for multiple logoffs/logins
+
 ## 3.1.2
 
 * Changed design of messages
