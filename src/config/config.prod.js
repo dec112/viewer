@@ -26,6 +26,7 @@ export default {
         },
         "mapView": {
             "enabled": true,
+            "clipboardLocationTemplate": "{{latitude}},{{longitude}}",
             "polyline": {
                 "color": "#00f",
             },

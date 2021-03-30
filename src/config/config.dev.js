@@ -115,6 +115,10 @@ export default {
             // Enbles or disables map view on UI
             //// true | false
             "enabled": true,
+            // Template that specifies which text should be copied to clipboard
+            // {{latitude}} {{longitude}} and {{radius}} can be used as placeholders
+            //// string
+            "clipboardLocationTemplate": "{{latitude}},{{longitude}}",
             // Polyline specific configuration
             //// Object
             "polyline": {

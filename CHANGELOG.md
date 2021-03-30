@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.4
+
+* Added copy to clipboard button for latest location on map
+
 ## 3.1.3
 
 * Fixed ping pong for multiple logoffs/logins

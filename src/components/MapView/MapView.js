@@ -8,6 +8,7 @@ import ConfigService from "../../service/ConfigService";
 import LocationUtilities from "../../utilities/LocationUtilities";
 import {Map, TileLayer, Polyline, Marker, Circle, Tooltip, ScaleControl} from 'react-leaflet'
 import { LocalizationService} from '../../service/LocalizationService';
+import { UiService } from '../../service';
 
 class MapView extends Component {
 
@@ -63,7 +64,7 @@ class MapView extends Component {
         return this.props.defaultZoomLevel || this.defaultZoomLevel;
     }
 
-    getMapBounds() {     
+    getMapBounds() {
         return LocationUtilities.getBounds(this.getMapLocations()) || this.defaultMapBounds;
     }
 
@@ -95,6 +96,23 @@ class MapView extends Component {
             return locations[0];
     }
 
+    hasLatestLocation = () => !!this.getLatestLocation();
+
+    getLocationToClipboardContent = () => {
+        const loc = this.getLatestLocation();
+
+        if (!loc)
+            return;
+
+        let text = ConfigService.get('ui', 'mapView', 'clipboardLocationTemplate');
+
+        text = text.replace('{{latitude}}', loc.coords.latitude);
+        text = text.replace('{{longitude}}', loc.coords.longitude);
+        text = text.replace('{{radius}}', loc.radius || '');
+
+        return text;
+    }
+
     getMarker(location, key, opacity) {
         return <Marker
             position={location}
@@ -105,7 +123,7 @@ class MapView extends Component {
     getMapOverlay() {
         let locations = this.getMapLocations();
         let latLngLocations = LocationUtilities.convertToLatLngArray(locations);
-        
+
         let allLocations = locations;
         let allLatLngLocations = latLngLocations;
 
@@ -125,7 +143,7 @@ class MapView extends Component {
         if (locations.length > 0) {
             const firstLatLng = latLngLocations[0];
             elements.push(this.getMarker(firstLatLng, 'main-marker'));
-            
+
             const firstLocation = locations[0];
             const radius = firstLocation.radius;
             if (radius) {
@@ -154,7 +172,7 @@ class MapView extends Component {
             );
             elements.push(this.getMarker(allLatLngLocations[allLatLngLocations.length - 1], 'first-marker', 0.3));
         }
-            
+
         return elements;
     }
 
@@ -188,6 +206,10 @@ class MapView extends Component {
         this._fitMap();
     }
 
+    handleLocationToClipboardClick = () => {
+        UiService.getInstance().copyToClipboard(this.getLocationToClipboardContent());
+    }
+
     render() {
         const { formatMessage } = this.intl;
 
@@ -197,9 +219,9 @@ class MapView extends Component {
                     <h3 className="panel-title">{formatMessage(Messages.map)}</h3>
                 </div> : ''}
                 <div className="panel-body">
-                    <Map 
+                    <Map
                         className={style.Map}
-                        zoom={this.getZoomLevel()} 
+                        zoom={this.getZoomLevel()}
                         animate={true}
                         maxZoom={this.maxZoom}
                         ref={this.map}>
@@ -219,8 +241,16 @@ class MapView extends Component {
                             <button disabled={this.getDisabledState() || !this.showsMultipleLocations()}
                                 className="btn btn-default hidePrint"
                                 onClick={this.handleShowAllLocations}>
-                                <span className="glyphicon glyphicon-globe" /> {formatMessage(Messages.overview)}
-                        </button>
+                                {formatMessage(Messages.overview)}
+                            </button>
+                            {
+                                this.hasLatestLocation() ?
+                                    <button
+                                        className="btn btn-default hidePrint"
+                                        onClick={this.handleLocationToClipboardClick}>
+                                        {this.getLocationToClipboardContent()}
+                                    </button> : undefined
+                            }
                         </div>
                         {this.hasLocations() ? '' :
                             <span className={classNames("label", "label-danger", style.Label)}>{formatMessage(Messages.noLocation)}</span>}
