@@ -89,7 +89,7 @@
   "region": "Region",
   "replay": "Replay",
   "search": "Search",
-  "searchCallId": "Enter Call Id [{format}]",
+  "searchCallId": "Enter Call Id",
   "searchCallIdPanelHeader": "Search For Emergency Call",
   "send": "Send",
   "server": "Server",

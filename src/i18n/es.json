@@ -89,7 +89,7 @@
   "region": "Región",
   "replay": "Reiniciar",
   "search": "Buscar",
-  "searchCallId": "Ingrese la identificación de la llamada [{format}]",
+  "searchCallId": "Ingrese la identificación de la llamada",
   "searchCallIdPanelHeader": "Buscar llamada de emergencia",
   "send": "Enviar",
   "server": "Servidor",

@@ -361,7 +361,7 @@
   },
   "searchCallId": {
     "id": "searchCallId",
-    "defaultMessage": "Call Id eingeben [{format}]"
+    "defaultMessage": "Call Id eingeben"
   },
   "searchCallIdPanelHeader": {
     "id": "searchCallIdPanelHeader",

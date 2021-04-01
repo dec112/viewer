@@ -89,7 +89,7 @@
   "region": "Region",
   "replay": "Neustart",
   "search": "Suchen",
-  "searchCallId": "Call Id eingeben [{format}]",
+  "searchCallId": "Call Id eingeben",
   "searchCallIdPanelHeader": "Notruf suchen",
   "send": "Senden",
   "server": "Server",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.5
+
+* Less restrictive call id validation on search
+
 ## 3.1.4
 
 * Added copy to clipboard button for latest location on map

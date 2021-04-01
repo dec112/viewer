@@ -81,15 +81,19 @@ class Overview extends Component {
     }
 
     handleOpenCallClick = () => {
-        if (this.isCallIdValid())
-            window.open(this.getQueryString(this.state.callId));
+        window.open(this.getQueryString(this.state.callId));
     };
 
     handleCallIdChange = (evt) => {
-        this.setState({callId: evt.target.value});
+        this.setState({ callId: evt.target.value });
     };
 
-    isCallIdValid = () => Call.isCallIdValid(this.state.callId);
+    isCallIdValid = () => {
+        const { callId } = this.state;
+
+        return callId && callId.length > 0
+    };
+
     getQueryString = (callId) => {
         const urlObj = {};
 
@@ -110,12 +114,11 @@ class Overview extends Component {
 
         return getQueryString(urlObj);
     }
-    getCallIdFormat = () => Call.callIdFormat;
-    getCallIdInputClass = () => {
-        const { callId } = this.state;
 
-        if (callId && !this.isCallIdValid())
-            return 'has-error';
+    getCallIdInputClass = () => {
+        // this can be used for callId validations
+        // the function still exsits due to some previous validations being done here
+        return '';
     }
 
     onNotificationCheckboxChange = async (evt) => {
@@ -197,11 +200,8 @@ class Overview extends Component {
                             <div className={classNames("input-group", this.getCallIdInputClass())}>
                                 <input type="text" className={classNames("form-control")}
                                     value={this.state.callId}
-                                    pattern={Call.callIdRegex}
                                     onChange={this.handleCallIdChange}
-                                    placeholder={formatMessage(Messages.searchCallId, {
-                                        format: this.getCallIdFormat(),
-                                    })} />
+                                    placeholder={formatMessage(Messages.searchCallId)} />
                                 <span className={"input-group-btn"}>
                                     <button onClick={this.handleOpenCallClick}
                                         disabled={!this.isCallIdValid()}

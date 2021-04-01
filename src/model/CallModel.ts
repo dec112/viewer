@@ -27,10 +27,6 @@ export class CallFactory {
 }
 
 export abstract class AbstractCall {
-    static readonly callIdFormat = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-    static readonly callIdRegex = '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
-    static isCallIdValid = (callId: string) => new RegExp(AbstractCall.callIdRegex).test(callId);
-
     private _messageIdIncrementor = 1;
 
     constructor(
