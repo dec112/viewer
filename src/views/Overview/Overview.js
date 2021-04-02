@@ -14,7 +14,6 @@ import ServerService from '../../service/ServerService';
 import InfoTable from '../../components/InfoTable/InfoTable';
 import { LocalizationService} from '../../service/LocalizationService';
 import DateTimeService from '../../service/DateTimeService';
-import { Call } from '../../model/CallModel';
 import { CALL_ID, REUSE_SESSION, API_KEY, SESSION_KEY } from '../../constant/QueryParam';
 import { getQueryString, getCalledService } from '../../utilities';
 import { getInstance as getNoficationService } from '../../service/NotificationService';

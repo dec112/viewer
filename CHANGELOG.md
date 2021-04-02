@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.6
+
+* Added language keys for additional information
+
 ## 3.1.5
 
 * Less restrictive call id validation on search
