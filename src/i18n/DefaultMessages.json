@@ -1,4 +1,8 @@
 {
+  "additionalInfo": {
+    "id": "additionalInfo",
+    "defaultMessage": "Zusätzliche Informationen"
+  },
   "adr": {
     "id": "adr",
     "defaultMessage": "Wohnadresse"
@@ -27,6 +31,10 @@
     "id": "battery",
     "defaultMessage": "Akku"
   },
+  "batteryLevel": {
+    "id": "batteryLevel",
+    "defaultMessage": "Ladestand"
+  },
   "batteryPercentage": {
     "id": "batteryPercentage",
     "defaultMessage": "Ladestand"
@@ -34,6 +42,10 @@
   "batteryPlugged": {
     "id": "batteryPlugged",
     "defaultMessage": "Wird geladen"
+  },
+  "batteryStatus": {
+    "id": "batteryStatus",
+    "defaultMessage": "Modus"
   },
   "begin": {
     "id": "begin",
@@ -222,6 +234,10 @@
   "logout": {
     "id": "logout",
     "defaultMessage": "Abmelden"
+  },
+  "lowPowerModeEnabled": {
+    "id": "lowPowerModeEnabled",
+    "defaultMessage": "Energiesparmodus aktiv?"
   },
   "manualTriggerExecuted": {
     "id": "manualTriggerExecuted",
