@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.7
+
+* Fixed missing german language keys
+
 ## 3.1.6
 
 * Added language keys for additional information
