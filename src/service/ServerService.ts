@@ -452,6 +452,11 @@ class ServerService {
     }
 
     handleGetCall(json: any) {
+        // TODO:
+        // if there is a "new_message" between issuing and receiving our get_call request
+        // we have to be careful -> this message might not be included in our get_call response
+        // maybe it's better to then issue another get_call call
+
         const call = this.addOrUpdateCall(json, true);
         this.authPi2AndResolveDID(call);
     }
