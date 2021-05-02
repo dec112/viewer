@@ -483,14 +483,14 @@ class ServerService {
 
         // TODO: Push all available info to the store, there is already an id
 
-        const call = getCallById(store.getState().call, call_id);
+        let call = getCallById(store.getState().call, call_id);
         if (call && call.isReplay)
             // We don't care about new_call events    
             return;
 
-        this.addOrUpdateCall(json);
+        call = this.addOrUpdateCall(json);
         this.subscribeAndGetCall(call_id);
-        this.notifyListeners(this.newCallListener, call_id);
+        this.notifyListeners(this.newCallListener, call);
     }
 
     handleGetActiveCalls(json: any) {

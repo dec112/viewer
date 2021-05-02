@@ -58,6 +58,7 @@ export class Call extends AbstractCall {
         // when using border: after get_call method was issued and call is subscribed successfully
         // when using semcon: after call details were fetched
         public isInitialized: boolean = false,
+        public isTest: boolean = false,
         public messages: Array<Message> = [],
         private _data?: any,
     ) {
@@ -79,6 +80,7 @@ export class Call extends AbstractCall {
         call.callerId = json.caller_id;
         call.did = json.did;
         call.stateId = json.state;
+        call.isTest = json.is_test;
 
         switch (json.id_type) {
             case IdType.DEVICE_ID:

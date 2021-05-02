@@ -2,6 +2,8 @@
 
 ## 3.2.0
 
+* Added support for test calls. They won't be shown in the call overview. \
+Furthermore, no notifications about an incoming call will be shown for them.
 * Updated React to version 16.14.0
 * More stable handling for new calls
 

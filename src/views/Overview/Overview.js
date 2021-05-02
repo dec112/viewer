@@ -75,7 +75,9 @@ class Overview extends Component {
     }
 
     getActiveCalls() {
-        let calls = this.props.call.all.filter(x => x.isActive || x.isReplay);
+        let calls = this.props.call.all.filter(x =>
+            (x.isActive || x.isReplay) && !x.isTest
+        );
         return sort(calls, x => x.created, true);;
     }
 

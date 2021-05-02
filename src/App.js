@@ -145,16 +145,20 @@ class DEC112 extends Component {
     }
 
     isLoggedIn = () => this.props.loginState.loggedIn;
-    
+
     // isAlertMode is true if no call is selected, or if there is at least one unselected call still available
     // CallReplays must not be taken into account
     isAlertMode = () => {
         const selectedCall = this.getSelectedCall();
         return this.getActiveCalls()
-            .filter(call => call !== selectedCall && !call.isReplay).length > 0;
+            .filter(
+                call => call !== selectedCall &&
+                    !call.isReplay &&
+                    !call.isTest
+            ).length > 0;
     }
 
-    handleLoginChange = (isAuthenticated) => {      
+    handleLoginChange = (isAuthenticated) => {
         // yeah, i know, we check twice if user isAuthenticated
         // but we have to issue subscribeCalls before setting logged in state
         // as otherwise, react will re-render before and view "Overview" will trigger a "getCalls" server requst
@@ -178,7 +182,11 @@ class DEC112 extends Component {
         }
     };
 
-    handleNewCall = () => {
+    handleNewCall = (call) => {
+        if (call.isTest) {
+            return;
+        }
+
         this.audioService.replay();
 
         this.notificationService.send({
@@ -214,7 +222,7 @@ class DEC112 extends Component {
             case ServerMessage.TRIGGER_EXECUTED:
                 Snackbar.success(formatMessage(Messages.manualTriggerExecuted, {
                     id: data.id,
-                })); 
+                }));
                 break;
             default:
         }
