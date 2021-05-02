@@ -447,7 +447,10 @@ class ServerService {
     }
 
     handleSubscribeCall(json: any) {
-        const call = this.addOrUpdateCall(json);
+        // we don't use this.addOrUpdateCall here, as subscribe_call only offers the call_id
+        // therefore we would not be able to update any other properties of our call
+        // in fact, this would just interfere because most properties would be set to undefined
+        const call = Call.fromJson(json);
         this.getCall(call.callId);
     }
 
