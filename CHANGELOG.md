@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.0
+
+* Updated React to version 16.14.0
+
 ## 3.1.7
 
 * Fixed missing german language keys
