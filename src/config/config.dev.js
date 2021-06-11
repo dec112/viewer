@@ -47,6 +47,16 @@ export default {
         // Protocol, used to communicate via websocket
         //// string
         "protocol": "dec112",
+        //// Object
+        "attachments": {
+            // URL where to fetch attachments from
+            // {host} will be replaced by the host used for the websocket connection
+            // {hostname} will be replaced by the hostname used for the websocket connection
+            // {call_id} will be replaced by the respective call id the attachment was sent along
+            // {attachment_id} will be replaced by the attachment that should be fetched
+            //// string
+            "endpoint": "https://{host}/attachment/{call_id}/{attachment_id}",
+        },
         // "pingPong" speficies the duration between two ping pong calls that are fired to the endpoint
         // this is important to keep websockets open and to possibly renew session tokens (v2)
         // If set to null, ping pong is inactive
@@ -134,6 +144,19 @@ export default {
             // Enables or disables map view on UI
             //// true | false
             "enabled": true,
+            // Defines MIME types that can be natively shown within the viewer
+            // Regular expressions can be used to describe the MIME type
+            //// Object
+            "attachments": {
+                //// Object
+                "types": {
+                    // Specify image MIME types that should be natively shown within DEC112 Viewer
+                    //// Array<string>
+                    "image": [
+                        "image/.+"
+                    ],
+                },
+            },
             // Configuration concerning the snippet panel
             //// Array<Object>
             "snippets": [

@@ -7,6 +7,9 @@ export default {
             "ssl": "wss://{host}/api/v2",
         },
         "protocol": "dec112",
+        "attachments": {
+            "endpoint": "https://{host}/attachment/{call_id}/{attachment_id}",
+        },
         "pingPong": 60000,
     },
     "debug": false,
@@ -33,6 +36,13 @@ export default {
         },
         "messageView": {
             "enabled": true,
+            "attachments": {
+                "types": {
+                    "image": [
+                        "image/.+"
+                    ],
+                },
+            },
             "snippets": [
                 {
                     "title": {

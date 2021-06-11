@@ -6,6 +6,9 @@ import classNames from 'classnames';
 import LocationMarker from '../LocationMarker/LocationMarker';
 import DateTimeService from '../../service/DateTimeService';
 import { MessageStateIndicator } from '../MessageStateIndicator';
+import { AttachmentDownload } from '../Attachment/Download';
+import { AttachmentView } from '../Attachment/View';
+import { getDisplayable } from '../../utilities/AttachmentUtilities';
 
 class Message extends Component {
     static propTypes = {
@@ -56,12 +59,31 @@ class Message extends Component {
         return this.props.currentLocations;
     }
 
+    getAttachments() {
+        const { attachments } = this.props.message;
+        return attachments;
+    }
+
+    getDisplayableAttachments() {
+        return getDisplayable(this.getAttachments());
+    }
+
+    getDownloadableAttachments ()  {
+        // all attachments that are not displayable will be offered to download
+        const displayable = this.getDisplayableAttachments();
+        return this.getAttachments().filter(a => displayable.indexOf(a) === -1);
+    }
+
     render() {
         return (
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
                 <div>
                     {this.props.message.text}
                 </div>
+
+                <AttachmentView className={style.AttachmentContainer} values={this.getDisplayableAttachments()} />
+                <AttachmentDownload className={style.AttachmentContainer} values={this.getDownloadableAttachments()} />
+
                 <div className={classNames(style.Meta)}>
                     <span>
                         {this.hasLocations() ?

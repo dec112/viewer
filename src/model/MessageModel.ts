@@ -1,10 +1,12 @@
 import { Location } from "./LocationModel";
 import { Call } from "./CallModel";
 import { MessageState } from "../constant/MessageState";
+import { Attachment } from "./Attachment";
 
 export class Message {
 
     locations: Array<Location> = [];
+    attachments: Array<Attachment> = [];
 
     constructor(
         public received: Date,
@@ -17,7 +19,7 @@ export class Message {
         public stateCode?: number,
     ) { }
 
-    static fromJson(json: any, call: Call) {
+    static fromJson(json: any, call: Call, attachmentEndpointTemplate: string) {
         const message = new Message(
             new Date(json.received_ts),
             json.origin,
@@ -25,6 +27,9 @@ export class Message {
             json.texts,
             call,
         );
+
+        if (Array.isArray(json.attachments))
+            message.attachments = json.attachments.map((x: any) => Attachment.fromJson(x, attachmentEndpointTemplate, call));
 
         if (json.locations)
             message.locations = json.locations.map((x: any) => Location.fromJson(x, message));

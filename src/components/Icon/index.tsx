@@ -5,6 +5,7 @@ import classNames from 'classnames';
 export enum IconType {
   ALERT = 'alert',
   COPY = 'copy',
+  DOWNLOAD = 'download',
   EXCLAMATION_SIGN = 'exclamation-sign',
   EXPORT = 'export',
   LOCK = 'lock',

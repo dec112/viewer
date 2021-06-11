@@ -11,7 +11,7 @@ import { IConnector, DummyConnector, IServerResponse, RestConnector } from "../c
 import { IMapper, DummyMapper, Behaviour, ResponseError, ResponseErrorReason, MessageError } from "../mappers";
 import { ReplayInstruction } from "../model/ReplayInstructionModel";
 import { CallReplay } from "../model/CallReplayModel";
-import { getConnectorByUrl, getMapperByUrl, getEndpoint, getSecurityProviderByUrl, getConnectionParameters } from "../utilities/ServerUtilities";
+import { getConnectorByUrl, getMapperByUrl, getEndpoint, getSecurityProviderByUrl, getConnectionParameters, replaceURLParts } from "../utilities/ServerUtilities";
 import { StorageService } from ".";
 import { StorageKey, ServerMessage } from "../constant";
 import { startTransaction, commit } from "../store/transactionMiddleware";
@@ -159,6 +159,13 @@ class ServerService {
         return useConfigEndpoint ?
             getEndpoint(undefined, params) :
             this.storage.getItem(StorageKey.ENDPOINT);
+    }
+
+    private getAttachmentEndpointTemplate(): string {
+        const url = new URL(this.connection.url);
+        const attachmentEndpoint: string = this.config.get('connection', 'attachments', 'endpoint');
+
+        return replaceURLParts(attachmentEndpoint, url);
     }
 
     async tryRestoreConnection(useConfigEndpoint: boolean = false) {
@@ -436,7 +443,7 @@ class ServerService {
         const call = getCallById(store.getState().call, call_id);
 
         if (call) {
-            const messageObj = Message.fromJson(message, call);
+            const messageObj = Message.fromJson(message, call, this.getAttachmentEndpointTemplate());
             // Messages that go in through handleNewMessage always are in state RECEIVED
             // either they were sent by the border automatically, or they have already be sent to the user
             messageObj.state = MessageState.RECEIVED;
@@ -450,7 +457,7 @@ class ServerService {
         // we don't use this.addOrUpdateCall here, as subscribe_call only offers the call_id
         // therefore we would not be able to update any other properties of our call
         // in fact, this would just interfere because most properties would be set to undefined
-        const call = Call.fromJson(json);
+        const call = Call.fromJson(json, this.getAttachmentEndpointTemplate());
         this.getCall(call.callId);
     }
 
@@ -534,7 +541,7 @@ class ServerService {
         json: any,
         isInitialized: boolean = false,
     ): Call {
-        const call = Call.fromJson(json);
+        const call = Call.fromJson(json, this.getAttachmentEndpointTemplate());
 
         if (isInitialized)
             call.isInitialized = true;
@@ -549,7 +556,7 @@ class ServerService {
         isInitialized: boolean = false,
     ) {
         const replay = ReplayInstruction.fromJson(json);
-        const call = CallReplay.fromJson(json);
+        const call = CallReplay.fromJson(json, this.getAttachmentEndpointTemplate());
 
         if (isInitialized)
             call.isInitialized = true;

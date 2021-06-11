@@ -1,0 +1,9 @@
+.ImageContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ImageContainer > * {
+  max-width: 100%;
+  max-height: 10vh;
+}

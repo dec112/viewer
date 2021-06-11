@@ -72,8 +72,7 @@ export function getEndpoint(endpoint?: string | any, parameters?: any) {
   }
 
   const urlObj = new URL(window.location.href);
-  endpointStr = endpointStr.replace('{host}', urlObj.host);
-  endpointStr = endpointStr.replace('{hostname}', urlObj.hostname);
+  endpointStr = replaceURLParts(endpointStr, urlObj);
 
   return `${endpointStr}${getQueryString(parameters)}`;
 }
@@ -141,4 +140,17 @@ export function isLoginPossible(url: string, userName: string, password: string,
       isHttp(url) ||
       (isWebsocket(url) && userName)
     );
+}
+
+/**
+ * @example
+ * `template` can be `https://{hostname}:{port}/api
+ */
+export function replaceURLParts(template: string, url: URL): string {
+  for (const key in url) {
+    // @ts-expect-error
+    template = template.replace(`{${key}}`, url[key]);
+  }
+
+  return template;
 }

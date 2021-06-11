@@ -73,7 +73,7 @@ export class Call extends AbstractCall {
         this.erase();
     };
 
-    static fromJson(json: any): Call {
+    static fromJson(json: any, attachmentEndpointTemplate: string): Call {
         const call = CallFactory.fromJson(Call, json);
 
         call.callIdAlt = json.call_id_alt;
@@ -97,7 +97,7 @@ export class Call extends AbstractCall {
             sort(json.chat, (x: any) => x.received_ts);
 
             for (const msg of json.chat) {
-                const message = Message.fromJson(msg, call);
+                const message = Message.fromJson(msg, call, attachmentEndpointTemplate);
                 if (message.origin === Origin.LOCAL)
                     message.state = MessageState.RECEIVED;
 

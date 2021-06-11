@@ -5,7 +5,7 @@ import style from './MessageView.module.css';
 import Messages from '../../i18n/Messages';
 import ModalDialog from "../ModalDialog/ModalDialog";
 import Message from "../Message/Message";
-import MessageUtilities from "../../utilities/MessageUtilities";
+import MessageUtilities from "../../utilities/MessageUtilities.ts";
 import DateTimeService from '../../service/DateTimeService';
 import Origin from '../../constant/Origin';
 import * as CoreUtil from '../../utilities';
@@ -77,7 +77,7 @@ class MessageView extends Component {
 
         const { messageCount: previousMessageCount } = this.state;
         const currMessages = this.getMessages() || [];
-        const currLength = MessageUtilities.getTextMessages(currMessages).length;
+        const currLength = MessageUtilities.getDisplayableMessages(currMessages).length;
 
         if (previousMessageCount !== currLength) {
             this.scrollToBottom();
@@ -101,7 +101,7 @@ class MessageView extends Component {
 
     getTextMessages() {
         // reverse, because messages are always ordered descending by timeReceived
-        return CoreUtil.sort(MessageUtilities.getTextMessages(this.getMessages()), x => x.received);
+        return CoreUtil.sort(MessageUtilities.getDisplayableMessages(this.getMessages()), x => x.received);
     }
 
     getTitle() {

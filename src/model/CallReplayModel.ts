@@ -19,9 +19,9 @@ export class CallReplay extends Call {
     Object.assign(this, call);
   }
 
-  static fromJson(json: any): CallReplay {
+  static fromJson(json: any, attachmentUrlTemplate: string): CallReplay {
     const replay = new CallReplay(
-      Call.fromJson(json),
+      Call.fromJson(json, attachmentUrlTemplate),
       new Date(json.end_ts),
     );
 
