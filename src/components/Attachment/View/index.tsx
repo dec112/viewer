@@ -4,6 +4,7 @@ import { Attachment } from '../../../model/Attachment';
 import { AttachmentType, getDisplayable } from '../../../utilities/AttachmentUtilities';
 import { ImageView } from './Image';
 import style from './style.module.css';
+import { VideoView } from './Video';
 
 interface IProps {
   className?: string,
@@ -14,15 +15,17 @@ export const AttachmentView: React.FunctionComponent<IProps> = ({
   className,
   values,
 }) => {
-  const toDisplay = getDisplayable(values, AttachmentType.IMAGE);
+  const images = getDisplayable(values, AttachmentType.IMAGE);
+  const videos = getDisplayable(values, AttachmentType.VIDEO);
 
-  if (toDisplay.length === 0)
-    return null;
-
-  return (
+  return <div className={classNames(className)}>
     <ImageView
-      className={classNames(style.ImageContainer, className)}
-      values={values}
+      className={classNames(style.Container)}
+      values={images}
+      />
+    <VideoView
+      className={classNames(style.Container)}
+      values={videos}
     />
-  );
+  </div>;
 }

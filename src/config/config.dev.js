@@ -153,7 +153,12 @@ export default {
                     // Specify image MIME types that should be natively shown within DEC112 Viewer
                     //// Array<string>
                     "image": [
-                        "image/.+"
+                        "image/.+",
+                    ],
+                    // Specify video MIME types that should be natively shown within DEC112 Viewer
+                    //// Array<string>
+                    "video": [
+                        "video/.+",
                     ],
                 },
             },

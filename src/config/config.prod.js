@@ -41,6 +41,9 @@ export default {
                     "image": [
                         "image/.+"
                     ],
+                    "video": [
+                        "video/.+",
+                    ],
                 },
             },
             "snippets": [

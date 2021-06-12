@@ -3,6 +3,7 @@ import ConfigService from "../service/ConfigService";
 
 export enum AttachmentType {
   IMAGE = 'image',
+  VIDEO = 'video',
 }
 
 export const getDisplayable = (attachments: Array<Attachment>, type?: AttachmentType): Array<Attachment> => {
