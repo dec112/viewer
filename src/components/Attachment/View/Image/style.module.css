@@ -1,0 +1,8 @@
+.Image {
+  cursor: pointer;
+  transition: var(--t-opacity);
+}
+
+.Image:hover {
+  opacity: 0.5;
+}
