@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased] - 3.3.0
+
+* Added support for attachments (images, videos and other attachments)
+
 ## 3.2.0
 
 * Added support for test calls. They won't be shown in the call overview. \
