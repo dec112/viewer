@@ -30,9 +30,11 @@ class DataView extends Component {
         return !!this.props.showTitle;
     }
 
+    _isHiddenKey = (key) => key.startsWith('_');
+
     _tryAddDataToObject = (obj, key, data) => {
         // we don't show items starting with underscore
-        if (key.startsWith('_'))
+        if (this._isHiddenKey(key))
             return obj;
 
         obj[this._tryTranslate(key)] = data;
@@ -54,6 +56,10 @@ class DataView extends Component {
 
         const infoObjects = {};
         for (const key in infos) {
+            // we don't show items starting with underscore
+            if (this._isHiddenKey(key))
+                continue;
+
             const item = infos[key];
 
             // null is also identified as "object", weird

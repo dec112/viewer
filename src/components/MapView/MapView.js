@@ -22,7 +22,7 @@ class MapView extends Component {
     map = createRef();
     maxZoom = 19;
     defaultZoomLevel = 15;
-    defaultMapBounds = [[-1,-1], [1, 1]];
+    defaultMapBounds = [[-1, -1], [1, 1]];
 
     constructor() {
         super();
@@ -113,11 +113,13 @@ class MapView extends Component {
         return text;
     }
 
-    getMarker(location, key, opacity) {
+    getMarker(location, key, opacity, children) {
         return <Marker
             position={location}
             key={key}
-            opacity={opacity} />
+            opacity={opacity} >
+            {children}
+        </Marker>
     }
 
     getMapOverlay() {
@@ -141,8 +143,15 @@ class MapView extends Component {
         const { formatMessage } = this.intl;
 
         if (locations.length > 0) {
+            const { markerTooltip } = this.props;
             const firstLatLng = latLngLocations[0];
-            elements.push(this.getMarker(firstLatLng, 'main-marker'));
+
+            elements.push(this.getMarker(firstLatLng, 'main-marker', 1, markerTooltip ?
+                <Tooltip permanent className={style.MarkerTooltip}>
+                    {markerTooltip}
+                </Tooltip>
+                : undefined
+            ));
 
             const firstLocation = locations[0];
             const radius = firstLocation.radius;

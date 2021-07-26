@@ -3,6 +3,7 @@
 ## [Unreleased] - 3.3.0
 
 * Added support for attachments (images, videos and other attachments)
+* Added support device types and device names, shown as a map marker
 
 ## 3.2.0
 

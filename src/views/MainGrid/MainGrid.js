@@ -136,6 +136,19 @@ class MainGrid extends Component {
                 didMsg = Messages.unknown;
         }
 
+        const data = this.getData();
+        let mapMarkerTooltip = undefined;
+        if (data && data._device && data._device.type) {
+            const { type, name } = data._device;
+
+            // this shows a tooltip on the main map marker
+            // e.g. it can provide some additional information about IoT devices
+            mapMarkerTooltip = <span>
+                <strong>{type}</strong>
+                {name ? <><br /> {name}</> : undefined}
+            </span>;
+        }
+
         return (<div className={classNames('container-fluid', style.Column, this.getMessageOnlyCssClass())}>
             <div className={classNames('row', style.Row)}>
                 {isDataColumnEnabled ?
@@ -143,6 +156,7 @@ class MainGrid extends Component {
                         {this.props.navbar}
                         {(this.isMapViewEnabled()) ?
                             <MapView
+                                markerTooltip={mapMarkerTooltip}
                                 currentLocations={this.state.currentLocations}
                                 locations={this.getLocations()} /> : ''}
                         {this.triggers.length > 0 ?
@@ -154,7 +168,7 @@ class MainGrid extends Component {
                         {(this.isDataViewEnabled()) ?
                             <DataView
                                 placeholder={didMsg ? this.intl.formatMessage(didMsg) : null}
-                                data={this.getData()} /> : ''}
+                                data={data} /> : ''}
                     </div> : ''
                 }
                 {(this.isMessageViewEnabled()) ?
