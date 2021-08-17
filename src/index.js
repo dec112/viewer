@@ -23,9 +23,14 @@ import { unregisterAll as unregisterAllServiceWorkers } from './utilities/Servic
 import { initialize as initializeNotificationService } from "./service/NotificationService";
 
 ConfigService.fetchExternalConfig().then(externalConfig => {
+  const url = new URL(window.location);
+  const callId = url.searchParams.get(QueryParam.CALL_ID);
+  const reuseSession = url.searchParams.get(QueryParam.REUSE_SESSION) === 'true';
+  const clientId = url.searchParams.get(QueryParam.CLIENT_ID);
+
   const localService = LocalizationService.getInstance();
 
-  ConfigService.initialize(InternalConfig, externalConfig);
+  ConfigService.initialize(InternalConfig, externalConfig, clientId);
   localService.setCurrentLanguage(ConfigService.get('language'));
   DebugService.initialize(!!ConfigService.get('debug'));
   StorageService.initialize(window.localStorage);
@@ -45,10 +50,6 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
     messages: localService.getMessages(),
   }, createIntlCache());
   localService.setIntlProvider(intl);
-
-  const url = new URL(window.location);
-  const callId = url.searchParams.get(QueryParam.CALL_ID);
-  const reuseSession = url.searchParams.get(QueryParam.REUSE_SESSION) === 'true';
 
   ReactDOM.render(
     <Provider store={store}>

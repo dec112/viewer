@@ -186,6 +186,10 @@ class ServerService {
 
             if (apiKey) {
                 params = getConnectionParameters(apiKey, undefined);
+                // TODO: Don't use this anymore, this is insecure!
+                // Insecure in a way that we expose the client's API key in our config
+                // This should be removed with viewer version 4
+                // There is a better method of setting the client by passing "client_id" as a URL parameter
                 this.setClient(apiKey);
             }
         }
