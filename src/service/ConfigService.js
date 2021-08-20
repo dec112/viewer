@@ -5,11 +5,20 @@ class ConfigService {
 
     static INSTANCE;
 
-    static fetchExternalConfig() {
+    static async fetchExternalConfig() {
         const configFilename = `dec112.${process.env.NODE_ENV === 'development' ? 'dev.' : ''}config.json`;
-        
-        return fetch(`./config/${configFilename}`)
-            .then(x => x.json());
+
+        try {
+            const res = await fetch(`./config/${configFilename}`);
+            return await res.json();
+        } catch {
+            /* oh no, we couldn't load it */
+            /* IMPORTANT: our debug service is not yet initialized that's why we use console here */
+            console.error('Could not load external config!');
+            
+            /* let's return an empty object instead */
+            return {};
+        }
     }
 
     static initialize(internalConfig, externalConfig, client) {
