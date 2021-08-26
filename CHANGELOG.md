@@ -1,9 +1,14 @@
 # Changelog
 
-## [Unreleased] - 3.3.0
+## [Unreleased]
+
+
+## 3.3.0
 
 * Added support for attachments (images, videos and other attachments)
 * Added support device types and device names, shown as a map marker
+* Added support for `client_id` URL parameter for specifying a specific client config
+* Fixed bug when DEC112 Viewer stopped working if no external config was present
 
 ## 3.2.0
 
