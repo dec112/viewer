@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 3.4.0
+
+* Added better visibility for display name and call id within a call
+* Fixed uncaught promise on connection errors
 
 ## 3.3.0
 
