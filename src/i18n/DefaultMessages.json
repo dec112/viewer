@@ -53,7 +53,7 @@
   },
   "callIdentifier": {
     "id": "callIdentifier",
-    "defaultMessage": "Notruf Identifikation"
+    "defaultMessage": "Notruf ID"
   },
   "callLoading": {
     "id": "callLoading",
@@ -134,6 +134,10 @@
   "connectionState.unknown": {
     "id": "connectionState.unknown",
     "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten"
+  },
+  "contact": {
+    "id": "contact",
+    "defaultMessage": "Kontakt"
   },
   "copyToClipboard": {
     "id": "copyToClipboard",

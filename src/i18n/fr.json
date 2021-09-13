@@ -33,6 +33,7 @@
   "connectionState.closed": "Aucune connection au serveur",
   "connectionState.error": "Erreur lors de la connexion",
   "connectionState.unknown": "Erreur innatendue lors de la connexion au serveur",
+  "contact": "",
   "copyToClipboard": "",
   "copyToClipboard.error": "Erreur lors de la copie",
   "copyToClipboard.success": "\"{message}\" copié.",

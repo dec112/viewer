@@ -7,6 +7,9 @@
 }
 
 .MessageButtonGroup {
+    display: flex;
+    align-items: center;
+
     margin-top: 10px;
 }
 
@@ -72,6 +75,10 @@
 
 .Opaque:hover {
     opacity: 1;
+}
+
+.CallIdentifier {
+    margin-left: auto;
 }
 
 .MarginRight {

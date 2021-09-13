@@ -110,7 +110,7 @@ class MessageView extends Component {
         const latestMessage = CoreUtil.sort(this.getMessages().filter(x => x.origin === Origin.REMOTE), x => x.received, true)[0];
 
         const call = this.getCall();
-        const { callId, stateId } = call;
+        const { stateId, displayName } = call;
         let warning;
 
         switch (stateId) {
@@ -142,8 +142,14 @@ class MessageView extends Component {
 
         return (
             <div className={classNames(style.Title, style.SpaceBetween, this.getTitleClass())}>
-                <strong>{formatMessage(Messages.service)}: {this.getCalledService()}</strong>
-                <span className={style.Opaque}>{callId}</span>
+                <strong>
+                    <span>{formatMessage(Messages.service)}: {this.getCalledService()}</span>
+                    {
+                        displayName ?
+                            <span> | {formatMessage(Messages.contact)}: {displayName}</span>
+                            : undefined
+                    }
+                </strong>
                 {latestComponent}
                 {
                     warning ?
@@ -274,6 +280,7 @@ class MessageView extends Component {
         const { formatMessage } = this.intl;
 
         const replayClass = this.isReplay() ? style.isReplay : null;
+        const call = this.getCall();
 
         this.messageElements = [];
 
@@ -281,7 +288,7 @@ class MessageView extends Component {
         if (this.isReplay()) {
             children = (
                 <ReplayControlPanel
-                    call={this.getCall()}
+                    call={call}
                     replayInstruction={this.getReplayInstruction()}
                     onProgressChange={this.timeBarChange}
                 />
@@ -350,7 +357,7 @@ class MessageView extends Component {
                             className={style.MessageButton}
                             exportTypes={[
                                 ExportTypePrint(),
-                                ExportTypeCopyToClipboard(this.getCall().stringify()),
+                                ExportTypeCopyToClipboard(call.stringify()),
                             ]}></ExportButton>
                         <button
                             disabled={this.isShowCurrentLocationsDisabled()}
@@ -371,6 +378,11 @@ class MessageView extends Component {
                                 <span className={classNames('glyphicon', 'glyphicon-pencil')} /> {formatMessage(Messages.snippets)}
                             </button> : null
                         }
+                        <span className={style.CallIdentifier}>
+                            <strong className={style.Opaque}>
+                                <span>{formatMessage(Messages.callIdentifier)}:</span> {call.callId}
+                            </strong>
+                        </span>
                     </div>
                     {this.isReplay() ? null :
                         <div className={style.SpaceBetween}>

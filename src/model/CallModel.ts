@@ -140,6 +140,21 @@ export class Call extends AbstractCall {
         return this.calledUri;
     }
 
+    get displayName(): string | undefined {
+        const match = /^([^<]+)/.exec(this.callerName);
+
+        if (match !== null) {
+            const value = match[1].trim();
+
+            // if truthy
+            // if it is an empty string, we want to return undefined
+            if (value)
+                return value;
+        }
+
+        return undefined;
+    }
+
     updateData(dataObjects: Array<any>) {
         if (!Array.isArray(dataObjects) || dataObjects.length === 0)
             return;
