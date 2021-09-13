@@ -146,10 +146,13 @@ class ServerService {
         ) => this.handleConnectionStateChange(state, reason, event));
 
         const promise = this.connection.connect();
-        promise.then(() => {
-            this.storage
-                .setItem(StorageKey.ENDPOINT, getEndpoint(endpoint) as string);
-        });
+        promise
+            .then(() => {
+                this.storage
+                    .setItem(StorageKey.ENDPOINT, getEndpoint(endpoint) as string);
+            })
+            // we need to catch the error here, otherwise we'll have an uncaught promise
+            .catch(() => undefined);
 
         return promise;
     }

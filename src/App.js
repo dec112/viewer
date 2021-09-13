@@ -126,7 +126,13 @@ class DEC112 extends Component {
         // we do want to restore our connection with config data
         // as we don't want to rely on what's in the storage
         const useConfigEndpoint = !!(callId && reuseSession !== true);
-        await serv.tryRestoreConnection(useConfigEndpoint);
+
+        try {
+            await serv.tryRestoreConnection(useConfigEndpoint);
+        } catch {
+            /* we need to catch this error, otherwise we'll have an uncaught promise */
+            /* real error handling is done within the error callback of ServerService */
+        }
     }
 
     goTo = (path, overwrite = false) => this.props.history[overwrite ? 'replace' : 'push'](path);
