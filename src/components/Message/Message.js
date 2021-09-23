@@ -87,11 +87,22 @@ class Message extends Component {
     }
 
     render() {
+        const { text, uris } = this.props.message;
+
         return (
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
                 <div>
-                    {this.props.message.text}
+                    {text}
                 </div>
+
+                {uris && uris.length > 0 ?
+                    uris.map(uri =>
+                        <div>
+                            <a target="_blank" rel="noopener noreferrer" href={uri}>{uri}</a>
+                        </div>
+                    )
+                    : undefined
+                }
 
                 <AttachmentView className={style.AttachmentContainer} values={this.getDisplayableAttachments()} />
                 <AttachmentDownload className={style.AttachmentContainer} values={this.getDownloadableAttachments()} />

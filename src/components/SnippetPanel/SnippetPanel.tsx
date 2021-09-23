@@ -1,13 +1,41 @@
 import React, { useEffect, useCallback } from 'react';
 // @ts-ignore
 import classNames from 'classnames';
+import { LocalizationService } from '../../service';
+import { getRandomString } from '../../utilities';
 
 export class Snippet {
   constructor(
-    public text: string,
-    public title?: string,
-    public shortcut?: string
+    public title: string,
+    public shortcut?: string,
+    public text?: string,
+    public uri?: string,
   ) { }
+}
+
+const getRandomRegex = () => new RegExp('{{random\\((\\d+)\\)}}');
+
+export const mapSnippetsFromConfig = (config: any) => {
+  const intl = LocalizationService.getInstance();
+
+  return config ? config.map((x: any) => {
+    let uri: string = x.uri;
+
+    const match = getRandomRegex().exec(uri);
+    if (match && match[1]) {
+      const randomSize = parseInt(match[1]);
+      const randomString = getRandomString(randomSize);
+
+      uri = uri.replace(getRandomRegex(), randomString);
+    }
+
+    return new Snippet(
+      intl.getTextFromLanguageObject(x.title) || 'Unknown Title',
+      x.shortcut,
+      intl.getTextFromLanguageObject(x.text),
+      uri,
+    );
+  }) : [];
 }
 
 export const SnippetPanel = (props: {
@@ -36,8 +64,8 @@ export const SnippetPanel = (props: {
   }, [props.snippets, props.disabled, onKeyDown]);
 
   const getSnippetTitle = (snippet: Snippet) => {
-    const { title, text, shortcut } = snippet;
-    let res = title || text;
+    const { title, shortcut } = snippet;
+    let res = title;
 
     if (shortcut)
       res = `${res} [${shortcut}]`;

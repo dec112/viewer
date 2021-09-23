@@ -11,7 +11,7 @@ import DateTimeService from '../../service/DateTimeService';
 import Origin from '../../constant/Origin';
 import * as CoreUtil from '../../utilities';
 import { LocalizationService } from '../../service/LocalizationService';
-import { SnippetPanel, Snippet } from '../SnippetPanel/SnippetPanel';
+import { SnippetPanel, mapSnippetsFromConfig } from '../SnippetPanel/SnippetPanel';
 import ConfigService from '../../service/ConfigService';
 import { ReplayControlPanel } from '../ReplayPanel/ReplayControlPanel';
 import { getCalledService } from '../../utilities';
@@ -40,12 +40,7 @@ class MessageView extends Component {
         this.intl = LocalizationService.getInstance();
         this.messageElements = [];
 
-        const snipps = ConfigService.get('ui', 'messageView', 'snippets');
-        this.snippets = snipps ? snipps.map(x => new Snippet(
-            this.intl.getTextFromLanguageObject(x.text),
-            this.intl.getTextFromLanguageObject(x.title),
-            x.shortcut,
-        )) : [];
+        this.snippets = mapSnippetsFromConfig(ConfigService.get('ui', 'messageView', 'snippets'))
 
         this.state = {
             message: '',
@@ -228,7 +223,7 @@ class MessageView extends Component {
             return;
 
         if (this.props.onSendMessage) {
-            this.props.onSendMessage(msg, this.getCall());
+            this.props.onSendMessage(this.getCall(), msg);
         }
         this.setState({ message: "" });
     };
@@ -269,8 +264,13 @@ class MessageView extends Component {
 
 
     handleSnippetCallback = (snippet) => {
-        this.appendToMessage(snippet.text);
-        this.focusMessageText();
+        if (snippet.uri) {
+            if (this.props.onSendMessage)
+                this.props.onSendMessage(this.getCall(), snippet.text, snippet.uri);
+        } else if (snippet.text) {
+            this.appendToMessage(snippet.text);
+            this.focusMessageText();
+        }
     }
 
     handleTargetChange = (targetSelectValue) => {

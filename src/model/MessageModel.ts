@@ -13,6 +13,7 @@ export class Message {
         public origin: string,
         public state: MessageState,
         public texts: Array<string> = [],
+        public uris: Array<string> = [],
 
         public call: Call,
         public messageId?: string,
@@ -26,6 +27,7 @@ export class Message {
             json.origin,
             MessageState.UNDEFINED,
             json.texts,
+            json.uris,
             call,
         );
 
