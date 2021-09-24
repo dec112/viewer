@@ -94,6 +94,13 @@ export default {
     */
     //// Object
     "ui": {
+        // Configuration concerning notifications about new calls
+        //// Object
+        "notification": {
+            // Play audio when a new call comes in?
+            //// Boolean
+            "playAudio": false,
+        },
         // Configuration concerning snackbars
         //// Object
         "snackbar": {

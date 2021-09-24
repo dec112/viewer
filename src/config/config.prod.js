@@ -16,6 +16,9 @@ export default {
     "language": null,
     "triggers": null,
     "ui": {
+        "notification": {
+            "playAudio": false,
+        },
         "snackbar": {
             "timeout": 5000,
         },

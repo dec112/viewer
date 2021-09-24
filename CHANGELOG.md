@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 3.5.0
+
+* Fixed audio notification. Defaults to disabled. \
+Due to considerable interference in classic environments audio notifications are now disabled by default.
+
 ## 3.4.0
 
 * Added better visibility for display name and call id within a call

@@ -193,7 +193,10 @@ class DEC112 extends Component {
             return;
         }
 
-        this.audioService.replay();
+        // only play sound if it was enabled explicitly
+        if (this.configService.get('ui', 'notification', 'playAudio')) {
+            this.audioService.replay();
+        }
 
         this.notificationService.send({
             body: this.localizationService.formatMessage(Messages['notification.incomingCall']),
