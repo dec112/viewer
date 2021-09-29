@@ -324,6 +324,21 @@ class ServerService {
         store.dispatch(commit());
     }
 
+    /**
+     * `call` can be call_id or JSON call object
+     */
+    shouldHandleCall = (call: string | any) => {
+        const isObject = typeof call === 'object';
+        const shouldHandle = !isObject || this.config.get('processTestCalls') === true || !call.is_test;
+
+        if (!shouldHandle) {
+            const callId = isObject ? call.call_id : call;
+            this.debug.info(`Call ${callId} is not going to be processed, as processing of test calls is disabled.`);
+        }
+
+        return shouldHandle;
+    }
+
     handleError(error: ResponseError | Error) {
         if (error instanceof ResponseError) {
             switch (error.reason) {
@@ -495,6 +510,9 @@ class ServerService {
     handleNewCall(json: any) {
         const { call_id } = json;
 
+        if (!this.shouldHandleCall(json))
+            return;
+
         // TODO: Push all available info to the store, there is already an id
 
         let call = getCallById(store.getState().call, call_id);
@@ -503,12 +521,12 @@ class ServerService {
             return;
 
         call = this.addOrUpdateCall(json);
-        this.subscribeAndGetCall(call_id);
+        this.subscribeAndGetCall(json);
         this.notifyListeners(this.newCallListener, call);
     }
 
     handleGetActiveCalls(json: any) {
-        json.calls.forEach((x: any) => this.subscribeAndGetCall(x.call_id));
+        json.calls.forEach((x: any) => this.subscribeAndGetCall(x));
     }
 
     // call replays should not automatically be subscribed -> too resource intense
@@ -623,9 +641,20 @@ class ServerService {
         this.send(RequestMethod.GET_ACTIVE_CALLS);
     }
 
-    subscribeAndGetCall(callId: string) {
-        if (!callId)
+    /**
+     * `call` can be call_id or JSON call object
+     */
+    subscribeAndGetCall(call: string | any) {
+        const isCallObject = typeof call === 'object';
+        const callId = isCallObject ? call.call_id : call;
+
+        if (!callId) {
             this.debug.error('Can not subscribe call. No callId specified.');
+            return;
+        }
+
+        if (!this.shouldHandleCall(call))
+            return;
 
         // we do not want to fetch data or subscribe another time
         if (getCallById(store.getState().call, callId)?.isInitialized)

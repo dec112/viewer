@@ -76,7 +76,7 @@ class Overview extends Component {
 
     getActiveCalls() {
         let calls = this.props.call.all.filter(x =>
-            (x.isActive || x.isReplay) && !x.isTest
+            (x.isActive || x.isReplay)
         );
         return sort(calls, x => x.created, true);;
     }
@@ -163,10 +163,11 @@ class Overview extends Component {
                         <tbody>
                             {this.getActiveCalls().map((call) => {
                                 const replayClass = call.isReplay ? style.IsReplay : null;
+                                const testClass = call.isTest ? style.IsTest : null;
 
                                 return (
                                     <tr
-                                        className={classNames(style.CallRow, replayClass)}
+                                        className={classNames(style.CallRow, replayClass, testClass)}
                                         key={call.callId}>
                                         {/* 
                                         oh gosh, it is so ugly to see so many event handlers 

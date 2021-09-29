@@ -2,6 +2,7 @@
 
 :root {
     --a-pulsing-error-bg: pulsing-error-bg 0.5s alternate infinite;
+    --a-pulsing-success-bg: pulsing-success-bg 0.5s alternate infinite;
 }
 
 @keyframes pulsing-error-bg {
@@ -11,5 +12,15 @@
 
     100% {
         background-color: var(--bg-error);
+    }
+}
+
+@keyframes pulsing-success-bg {
+    0% {
+        background-color: transparent
+    }
+
+    100% {
+        background-color: var(--bg-success);
     }
 }

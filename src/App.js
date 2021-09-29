@@ -189,10 +189,6 @@ class DEC112 extends Component {
     };
 
     handleNewCall = (call) => {
-        if (call.isTest) {
-            return;
-        }
-
         // only play sound if it was enabled explicitly
         if (this.configService.get('ui', 'notification', 'playAudio')) {
             this.audioService.replay();

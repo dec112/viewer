@@ -15,6 +15,7 @@ export default {
     "debug": false,
     "language": null,
     "triggers": null,
+    "processTestCalls": false,
     "ui": {
         "notification": {
             "playAudio": false,

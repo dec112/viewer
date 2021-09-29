@@ -16,6 +16,12 @@
     /* means blinking for 30s */
 }
 
+.CallRow.IsTest {
+    animation: var(--a-pulsing-success-bg);
+    animation-iteration-count: 60;
+    /* means blinking for 30s */
+}
+
 .IsReplay {
     background-color: var(--bg-warn);
 }

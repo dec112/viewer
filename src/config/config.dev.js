@@ -92,6 +92,9 @@ export default {
         }
     ],
     */
+    // Defines whether test calls should be visualized or not
+    //// Boolean
+    "processTestCalls": true,
     //// Object
     "ui": {
         // Configuration concerning notifications about new calls

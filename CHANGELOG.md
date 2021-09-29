@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+* Better handling of test calls. It can be specified in config whether test calls should be processed or not. \
+By default, test calls are not processed for production builds, however they are for development builds. \
+Additionally, test calls are highlighted in a different color when they are shown in the overview list.
+
 ## 3.5.0
 
 * Fixed audio notification. Defaults to disabled. \
