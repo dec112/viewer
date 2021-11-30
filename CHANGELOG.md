@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 3.6.1
+
+* Center navbar text
+
 ## 3.6.0
 
 * Better handling of test calls. It can be specified in config whether test calls should be processed or not. \

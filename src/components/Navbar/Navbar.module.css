@@ -15,6 +15,12 @@
     align-items: center;
 }
 
+.TitleText {
+    /* what the hell, obviously this is needed for the text to be centered */
+    /* but I have no clue how to solve this differently... */
+    margin-top: 0.3em;
+}
+
 .AlertMode .Title::after {
     content: " ";
     display: inline-block;
