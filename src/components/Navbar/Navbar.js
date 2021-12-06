@@ -54,7 +54,7 @@ class Navbar extends Component {
                                 onClick={this.handleBackClick}></button> :
                             null
                     }
-                    <div class={style.TitleText}>
+                    <div className={style.TitleText}>
                         {this.getTitle()}
                     </div>
                 </span>
