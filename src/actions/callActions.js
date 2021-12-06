@@ -35,6 +35,11 @@ export const updateData = (callId, data) => ({
   data,
 });
 
+export const updateCall = (call) => ({
+  type: Action.UPDATE_CALL,
+  call,
+})
+
 export const setDIDState = (callId, state) => ({
   type: Action.SET_DID_STATE,
   callId,

@@ -95,6 +95,31 @@ export default {
     // Defines whether test calls should be visualized or not
     //// Boolean
     "processTestCalls": true,
+    // Specifies targets the call taker can choose from
+    // These are alternative ways to reach the caller
+    //// Array<Object>
+    "alternativeTargets": [
+        // {
+        //     // Used to uniquely identify the target
+        //     //// string
+        //     "id": "sms-gateway",
+        //     // The title of this target
+        //     // Used for display on UI
+        //     //// string | LanguageObject
+        //     "title": {
+        //         "en": "SMS",
+        //         "de": "SMS",
+        //     },
+        //     // type of this target
+        //     // different implementations can exist for targets
+        //     //// string
+        //     "type": "phone",
+        //     // A target URI
+        //     // placeholder {value} can be used for specifying where to put the new target
+        //     //// string
+        //     "targetUri": "sip:{value}@sms.test.dec112.eu",
+        // }
+    ],
     //// Object
     "ui": {
         // Configuration concerning notifications about new calls

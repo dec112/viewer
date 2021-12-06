@@ -1,6 +1,6 @@
 import Action from '../constant/Action';
 import messageReducer from './message';
-import { Call, AbstractCall } from '../model/CallModel';
+import { Call, AbstractCall, AbstractCallWithId } from '../model/CallModel';
 import { ReplayInstruction } from '../model/ReplayInstructionModel';
 import { CallReplay } from '../model/CallReplayModel';
 import DebugService from '../service/DebugService';
@@ -63,6 +63,14 @@ export default (state: ICallState = {
     switch (payload.type) {
         case Action.ADD_OR_UPDATE_CALL:
             addOrUpdate(payload.call, state.all);
+            break;
+        // update call is solely for updating call metadata
+        case Action.UPDATE_CALL:
+            const updateObj: AbstractCallWithId = payload.call;
+
+            const call = getById(state.all, updateObj.callId);
+            if (call)
+                Object.assign(call, updateObj);
             break;
         case Action.ADD_OR_UPDATE_CALL_REPLAY:
             addOrUpdate(payload.callReplay, state.replays);

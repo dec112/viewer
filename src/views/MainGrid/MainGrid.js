@@ -94,6 +94,12 @@ class MainGrid extends Component {
         this.serverService.timeTravel(this.getCallId(), progress);
     }
 
+    handleTargetChange = (targetUri) => {
+        this.serverService.updateCall(this.getCallId(), {
+            targetUri: targetUri,
+        });
+    }
+
     executeTrigger = (trigger) => {
         this.serverService.executeTrigger(trigger.id, this.getCallId());
         Snackbar.show(this.intl.formatMessage(Messages.manualTriggerRequested, {
@@ -182,6 +188,7 @@ class MainGrid extends Component {
                             onSetLocations={this.handleSetLocations}
                             onShowLatestLocations={this.handleShowLatestLocations}
                             onTimeBarChange={this.handleTimeBarChange}
+                            onTargetChange={this.handleTargetChange}
                             currentLocations={this.state.currentLocations}
                         />
                     </div>

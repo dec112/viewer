@@ -17,6 +17,7 @@ export class ReplayInstruction extends AbstractCall {
     public callerUri: string,
     public calledUri: string,
     public created: Date,
+    public targetUri?: string,
     // this has to be preinitialized, otherwise this object would not be compatible with CallFactory
     public ended: Date = new Date(),
 
@@ -28,6 +29,7 @@ export class ReplayInstruction extends AbstractCall {
       callerUri,
       calledUri,
       created,
+      targetUri,
     );
   };
 

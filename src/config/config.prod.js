@@ -16,6 +16,7 @@ export default {
     "language": null,
     "triggers": null,
     "processTestCalls": false,
+    "alternativeTargets": [],
     "ui": {
         "notification": {
             "playAudio": false,

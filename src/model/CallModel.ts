@@ -15,6 +15,7 @@ export class CallFactory {
         callerUri: string,
         calledUri: string,
         created: Date,
+        targetUri?: string,
     ) => T, json: any): T {
         return new c(
             json.call_id,
@@ -22,9 +23,12 @@ export class CallFactory {
             json.caller_uri,
             json.called_uri,
             new Date(json.created_ts),
+            json.target_uri,
         );
     }
 }
+
+export type AbstractCallWithId = Partial<AbstractCall> & Pick<AbstractCall, 'callId'>;
 
 export abstract class AbstractCall {
     private _messageIdIncrementor = 1;
@@ -35,6 +39,8 @@ export abstract class AbstractCall {
         public callerUri: string,
         public calledUri: string,
         public created: Date,
+        // this property is optional as it might not be supported by PSAP
+        public targetUri?: string,
     ) { }
 
     getNextMessageId = () => `${this.callId}-${this._messageIdIncrementor++}`;
@@ -47,6 +53,8 @@ export class Call extends AbstractCall {
         public callerUri: string,
         public calledUri: string,
         public created: Date,
+        // this property is optional as it might not be supported by PSAP
+        public targetUri?: string,
         public callIdAlt?: string,
 
         public callerId?: number,
@@ -67,7 +75,8 @@ export class Call extends AbstractCall {
             callerName,
             callerUri,
             calledUri,
-            created
+            created,
+            targetUri,
         );
 
         this.erase();
@@ -141,15 +150,18 @@ export class Call extends AbstractCall {
     }
 
     get displayName(): string | undefined {
-        const match = /^([^<]+)/.exec(this.callerName);
+        // this is just a preventive measure, if callerName was undefined
+        if (this.callerName) {
+            const match = /^([^<]+)/.exec(this.callerName);
 
-        if (match !== null) {
-            const value = match[1].trim();
+            if (match !== null) {
+                const value = match[1].trim();
 
-            // if truthy
-            // if it is an empty string, we want to return undefined
-            if (value)
-                return value;
+                // if truthy
+                // if it is an empty string, we want to return undefined
+                if (value)
+                    return value;
+            }
         }
 
         return undefined;

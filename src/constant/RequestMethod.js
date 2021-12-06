@@ -19,4 +19,5 @@ export default {
     STATE_CHANGE: 'state_change',
     LOGON: 'logon',
     LOGOUT: 'logout',
+    UPDATE_CALL: 'update_call',
 };

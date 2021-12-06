@@ -1,0 +1,10 @@
+/* these are the default styles that are applied */
+/* if one uses data-toggle="buttons" */
+/* however this also does some jQuery trickery we want to avoid */
+/* therefore the styles are duplicated here */
+
+.RadioButton {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}

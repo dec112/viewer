@@ -1,6 +1,6 @@
-import { addOrUpdateCall, addOrUpdateMessage, setCallState, resetStore, addOrUpdateCallReplay, timeTravel, updateData, setDIDState, updateMessageState } from "../actions";
+import { addOrUpdateCall, addOrUpdateMessage, setCallState, resetStore, addOrUpdateCallReplay, timeTravel, updateData, setDIDState, updateMessageState, updateCall } from "../actions";
 import RequestMethod from "../constant/RequestMethod";
-import { Call } from "../model/CallModel";
+import { AbstractCallWithId, Call } from "../model/CallModel";
 import { Message } from "../model/MessageModel";
 import { getCallById, getCallReplayById } from "../reducers/call";
 import store from "../store";
@@ -23,6 +23,10 @@ import { OAuthProvider } from "../security-provider/oauth-provider/OAuthProvider
 import { DIDState } from "../constant/DIDState";
 import { MessageState } from "../constant/MessageState";
 import Origin from "../constant/Origin";
+
+export interface CallUpdateProperties {
+    targetUri: string;
+}
 
 class ServerService {
     static INSTANCE: ServerService;
@@ -91,6 +95,7 @@ class ServerService {
         this.responseMap.set(RequestMethod.PI2_AUTHENTICATE, this.handleAuthPi2);
         this.responseMap.set(RequestMethod.RESOLVE_DID, this.handleResolveDID);
         this.responseMap.set(RequestMethod.SEND, this.handleSend);
+        this.responseMap.set(RequestMethod.UPDATE_CALL, this.handleUpdateCall);
     }
 
     stateListener: Array<(status: ConnectorState, event: Event) => void> = [];
@@ -560,6 +565,18 @@ class ServerService {
         });
     }
 
+    handleUpdateCall(json: any) {
+
+        const call = Call.fromJson(json, this.getAttachmentEndpointTemplate());
+        const updateObj: AbstractCallWithId = {
+            callId: call.callId,
+            // currently we only support updating targetUri
+            targetUri: call.targetUri,
+        }
+
+        store.dispatch(updateCall(updateObj));
+    }
+
     /* Functions */
 
     addOrUpdateCall(
@@ -709,6 +726,13 @@ class ServerService {
     unsubscribeCall(callId: string) {
         this.send(RequestMethod.UNSUBSCRIBE_CALL, {
             call_id: callId,
+        });
+    }
+
+    updateCall(callId: string, properties: CallUpdateProperties) {
+        this.send(RequestMethod.UPDATE_CALL, {
+            call_id: callId,
+            target_uri: properties.targetUri,
         });
     }
 

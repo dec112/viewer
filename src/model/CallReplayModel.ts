@@ -12,7 +12,8 @@ export class CallReplay extends Call {
       call.callerName,
       call.callerUri,
       call.calledUri,
-      call.created
+      call.created,
+      call.targetUri,
     );
 
     this.currentTime = this.created;

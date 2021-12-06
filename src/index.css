@@ -42,8 +42,9 @@ body {
     color: var(--black);
 }
 
-:not(.input-group) > .btn:not(:last-child),
-:not(.input-group) > .form-control:not(:last-child) {
+:not(.input-group):not(.btn-group) > .btn:not(:last-child),
+:not(.input-group):not(.btn-group) > .form-control:not(:last-child),
+:not(.input-group):not(.btn-group) > .input-group:not(:last-child) {
     margin-right: 5px;
 }
 

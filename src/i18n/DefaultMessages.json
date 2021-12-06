@@ -435,6 +435,10 @@
     "id": "version",
     "defaultMessage": "Version"
   },
+  "via": {
+    "id": "via",
+    "defaultMessage": "Via"
+  },
   "yes": {
     "id": "yes",
     "defaultMessage": "Ja"

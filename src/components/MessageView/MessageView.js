@@ -6,6 +6,7 @@ import Messages from '../../i18n/Messages';
 import ModalDialog from "../ModalDialog/ModalDialog";
 import Message from "../Message/Message";
 import MessageUtilities from "../../utilities/MessageUtilities.ts";
+import { getPossibleTargets } from "../../utilities/TargetUtitilies";
 import DateTimeService from '../../service/DateTimeService';
 import Origin from '../../constant/Origin';
 import * as CoreUtil from '../../utilities';
@@ -18,6 +19,7 @@ import * as CallState from '../../constant/CallState';
 import { Icon, IconType } from '../Icon';
 import { DurationComponent } from '../DurationComponent';
 import { ExportButton, ExportTypeCopyToClipboard, ExportTypePrint } from '../ExportButton';
+import { Select, SelectStyle } from '../Select';
 
 class MessageView extends Component {
 
@@ -27,6 +29,7 @@ class MessageView extends Component {
         onShowLatestLocations: PropTypes.func,
         onSetLocations: PropTypes.func,
         onTimeBarChange: PropTypes.func,
+        onTargetChange: PropTypes.func,
         call: PropTypes.object,
         replayInstruction: PropTypes.object,
         currentLocations: PropTypes.array
@@ -92,6 +95,12 @@ class MessageView extends Component {
     getReplayInstruction = () => this.props.replayInstruction;
     getMessages = () => this.getCall().messages;
     getCalledService = () => getCalledService(this.getCall(), this.intl);
+
+    getTargetSelectValues = () => getPossibleTargets(this.getCall()).map(x => ({
+        key: x.id,
+        value: x.targetUri,
+        text: this.intl.getTextFromLanguageObject(x.title),
+    }));
 
     isCallActive = () => this.getCall().isActive;
     isUiDisabled = () => !this.isCallActive() || this.isReplay();
@@ -259,6 +268,11 @@ class MessageView extends Component {
         this.focusMessageText();
     }
 
+    handleTargetChange = (targetSelectValue) => {
+        if (this.props.onTargetChange)
+            this.props.onTargetChange(targetSelectValue);
+    }
+
     timeBarChange = (progress) => {
         if (this.props.onTimeBarChange)
             this.props.onTimeBarChange(progress);
@@ -330,6 +344,8 @@ class MessageView extends Component {
             )
         }
 
+        const targets = this.getTargetSelectValues();
+
         return (<div className={style.PanelWrapper}>
             <div className={classNames('panel panel-primary', style.Panel, style.noBorder)}>
                 {this.getTitle()}
@@ -396,6 +412,21 @@ class MessageView extends Component {
                                 </button>
                             </span>
                             <span className={style.MessageButtonGroup}>
+                                {
+                                    targets && targets.length > 0 ?
+                                        <div className="input-group">
+                                            <span className="input-group-addon" id="basic-addon1">{formatMessage(Messages.via)}:</span>
+                                            <Select
+                                                style={SelectStyle.BUTTON}
+                                                disabled={this.isUiDisabled()}
+                                                values={targets}
+                                                selected={this.getCall().targetUri}
+                                                onChange={this.handleTargetChange}
+                                            />
+                                        </div> :
+                                        undefined
+                                }
+
                                 <button
                                     disabled={this.isSendButtonDisabled()}
                                     type="button"
