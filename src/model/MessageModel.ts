@@ -17,6 +17,7 @@ export class Message {
         public call: Call,
         public messageId?: string,
         public stateCode?: number,
+        public targetUri?: string,
     ) { }
 
     static fromJson(json: any, call: Call, attachmentEndpointTemplate: string) {
@@ -36,6 +37,9 @@ export class Message {
 
         if (json.tag)
             message.messageId = json.tag;
+
+        if (json.target_uri)
+            message.targetUri = json.target_uri;
 
         return message;
     }

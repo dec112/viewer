@@ -9,6 +9,8 @@ import { MessageStateIndicator } from '../MessageStateIndicator';
 import { AttachmentDownload } from '../Attachment/Download';
 import { AttachmentView } from '../Attachment/View';
 import { getDisplayable } from '../../utilities/AttachmentUtilities';
+import { getPossibleTargets } from '../../utilities/TargetUtitilies';
+import { LocalizationService } from '../../service';
 
 class Message extends Component {
     static propTypes = {
@@ -19,7 +21,9 @@ class Message extends Component {
 
     constructor() {
         super();
+
         this.dateTimeService = DateTimeService.getInstance();
+        this.intl = LocalizationService.getInstance();
     }
 
     scrollIntoView(){
@@ -74,6 +78,14 @@ class Message extends Component {
         return this.getAttachments().filter(a => displayable.indexOf(a) === -1);
     }
 
+    getTargetName() {
+        const message = this.props.message;
+        const name = getPossibleTargets(message.call).find(x => x.targetUri === message.targetUri)?.title;
+
+        if (name)
+            return this.intl.getTextFromLanguageObject(name);
+    }
+
     render() {
         return (
             <div className={classNames(style.Message, this.getMessageDirection())} ref={(el) => this.element = el}>
@@ -96,9 +108,14 @@ class Message extends Component {
                         {/* message states are only available for outgoing messages */}
                         {
                             this.isOutgoing() ?
-                                <MessageStateIndicator
-                                    className={style.StateIndicator}
-                                    message={this.props.message} /> :
+                                <>
+                                    <span className={style.MarginRight}>
+                                        {this.getTargetName()}
+                                    </span>
+                                    <MessageStateIndicator
+                                        className={style.MarginRight}
+                                        message={this.props.message} />
+                                </> :
                                 undefined
                         }
                         {this.getTimeReceived()}
