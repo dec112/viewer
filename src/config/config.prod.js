@@ -1,5 +1,5 @@
 export default {
-    "appTitle": "DEC112 Viewer",
+    "appTitle": "Viewer",
     "clients": {},
     "connection": {
         "endpoint": {

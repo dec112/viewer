@@ -21,6 +21,11 @@
     margin-top: 0.3em;
 }
 
+.TitleImage {
+    max-height: 1.25em;
+    margin-right: 0.5em;
+}
+
 .AlertMode .Title::after {
     content: " ";
     display: inline-block;

@@ -2,7 +2,7 @@ export default {
     // The viewer's document.title
     // Currently not working for clients
     //// string
-    "appTitle": "DEC112 Viewer",
+    "appTitle": "Viewer",
     // Section for client specific configuration
     // Whenever a client is used (usually determined by logged in user), 
     // configuration within "clients" is applied on top of the initial configuration

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import style from './Navbar.module.css';
 import Messages from "../../i18n/Messages";
-import { LocalizationService} from '../../service/LocalizationService';
+import { LocalizationService } from '../../service/LocalizationService';
 import ConfigService from '../../service/ConfigService';
+import ImageFile from '../../constant/ImageFile';
 
 class Navbar extends Component {
 
@@ -54,6 +55,11 @@ class Navbar extends Component {
                                 onClick={this.handleBackClick}></button> :
                             null
                     }
+                    <img
+                        className={style.TitleImage}
+                        src={ImageFile.DEC112_BANNER}
+                        alt="DEC112"
+                    />
                     <div className={style.TitleText}>
                         {this.getTitle()}
                     </div>
