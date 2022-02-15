@@ -2,6 +2,8 @@
 
 A lightweight viewer for [DEC112](https://www.dec112.at) PSAP integration powered by **React**. It should simplify PSAP integration by providing a web frontend for sending and receiving text messages coming from the caller, as well as displaying the caller's location and additional personal data.
 
+<img alt="DEC112 Viewer Screenshot, showing additional data, map and chat window." src="./res/dec112-viewer-screenshot.png" />
+
 Many thanks to [Netidee](https://www.netidee.at) who founded this software project in call #12 (DEC112) and #14 (DEC112 2.0).
 
 [https://www.dec112.at](https://www.dec112.at)
