@@ -8,6 +8,7 @@
 
 .MessageButtonGroup {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 
     margin-top: 10px;
@@ -55,6 +56,7 @@
 
 .Title {
     display: flex;
+    flex-direction: column;
     flex-shrink: 0;
     padding: 5px 1em;
 }
@@ -66,19 +68,6 @@
 
 .AutoWidth {
     width: auto;
-}
-
-.Opaque {
-    opacity: 0.25;
-    transition: var(--t-opacity);
-}
-
-.Opaque:hover {
-    opacity: 1;
-}
-
-.CallIdentifier {
-    margin-left: auto;
 }
 
 .MarginRight {

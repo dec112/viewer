@@ -150,16 +150,21 @@ class MessageView extends Component {
         }
 
         return (
-            <div className={classNames(style.Title, style.SpaceBetween, this.getTitleClass())}>
-                <strong>
-                    <span>{formatMessage(Messages.service)}: {this.getCalledService()}</span>
-                    {
-                        displayName ?
-                            <span> | {formatMessage(Messages.contact)}: {displayName}</span>
-                            : undefined
-                    }
-                </strong>
-                {latestComponent}
+            <div className={classNames(style.Title, this.getTitleClass())}>
+                <div className={classNames(style.SpaceBetween)}>
+                    <strong>
+                        <div>{formatMessage(Messages.service)}: {this.getCalledService()}</div>
+                        {
+                            displayName ?
+                                <div>{formatMessage(Messages.contact)}: {displayName}</div>
+                                : undefined
+                        }
+                        <div>{formatMessage(Messages.callIdentifier)}: {call.callId}</div>
+                    </strong>
+                    <div>
+                        {latestComponent}
+                    </div>
+                </div>
                 {
                     warning ?
                         <div className={style.WarningBanner}>
@@ -394,11 +399,6 @@ class MessageView extends Component {
                                 <span className={classNames('glyphicon', 'glyphicon-pencil')} /> {formatMessage(Messages.snippets)}
                             </button> : null
                         }
-                        <span className={style.CallIdentifier}>
-                            <strong className={style.Opaque}>
-                                <span>{formatMessage(Messages.callIdentifier)}:</span> {call.callId}
-                            </strong>
-                        </span>
                     </div>
                     {this.isReplay() ? null :
                         <div className={style.SpaceBetween}>
