@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 3.7.0
+
+* CSS Fix
+* Added support for handling different targets (e.g. if one transport medium should be SMS)
+* Added new DEC112 logo
+* Minor improvements on call UI
+
 ## 3.6.1
 
 * Center navbar text
