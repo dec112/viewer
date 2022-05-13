@@ -8,7 +8,7 @@ interface IProps {
   prefix?: String,
 }
 
-export const DurationComponent: React.SFC<IProps> = ({
+export const DurationComponent: React.FunctionComponent<IProps> = ({
   date,
   refreshRate,
   prefix,

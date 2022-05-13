@@ -18,7 +18,7 @@ function getEventValue(evt: ChangeEvent<HTMLInputElement>) {
   return parseFloat(evt.target.value);
 }
 
-export const RangeSlider: React.SFC<IProps> = (props) => {
+export const RangeSlider: React.FunctionComponent<IProps> = (props) => {
 
   const { min, max, value, step, steps, onChange, className } = props;
 

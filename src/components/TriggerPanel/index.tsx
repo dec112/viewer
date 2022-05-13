@@ -14,7 +14,7 @@ interface TriggerPanelProps {
   onExecuteTrigger: (trigger: ITrigger) => void,
 };
 
-export const TriggerPanel: React.SFC<TriggerPanelProps> = ({ triggers, onExecuteTrigger }) => {
+export const TriggerPanel: React.FunctionComponent<TriggerPanelProps> = ({ triggers, onExecuteTrigger }) => {
   const { formatMessage } = useMemo(() => LocalizationService.getInstance(), []);
 
   return (

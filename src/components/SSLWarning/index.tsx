@@ -5,7 +5,7 @@ interface IProps {
 
 }
 
-export const SSLWarning: React.SFC<IProps> = () => {
+export const SSLWarning: React.FunctionComponent<IProps> = () => {
   const location = window.location;
 
   const isLocalhost = location.hostname === 'localhost';

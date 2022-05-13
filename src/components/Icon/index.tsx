@@ -26,16 +26,17 @@ interface IconProps {
   className?: string,
 };
 
-export const Icon: React.SFC<IconProps> = (props) => {
+export const Icon: React.FunctionComponent<IconProps> = (props) => {
   const _props = Object.assign({}, props);
 
   _props.className = _props.className ?? '';
   _props.className += ' ' + classNames('glyphicon', `glyphicon-${_props.type}`);
 
-  delete _props.type;
+  const childProps: Partial<IconProps> = _props;
+  delete childProps.type;
 
   return (
-    <span {..._props}></span>
+    <span {...childProps}></span>
   );
 };
 
@@ -48,7 +49,7 @@ interface IconTextProps extends IconProps {
   iconPosition?: IconPosition
 }
 
-export const IconText: React.SFC<IconTextProps> = (props) => {
+export const IconText: React.FunctionComponent<React.PropsWithChildren<IconTextProps>> = (props) => {
   const { iconPosition } = props;
   const icon = <Icon type={props.type} />;
 

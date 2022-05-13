@@ -39,7 +39,7 @@ function calculateProgress(currentMessage: MessageModel, allMessages: Array<Mess
   return (currentMessage.received.getTime() - first) / (last - first)
 }
 
-export const ReplayControlPanel: React.SFC<IProps> = (props) => {
+export const ReplayControlPanel: React.FunctionComponent<IProps> = (props) => {
   const dts = DateTimeService.getInstance();
   const { formatMessage } = LocalizationService.getInstance();
   const { call: { created, ended, currentTime }, replayInstruction } = props;

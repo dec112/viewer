@@ -7,7 +7,7 @@ interface PanelProps {
   title?: string,
 }
 
-export const Panel: React.SFC<PanelProps> = ({ className, title, children }) => {
+export const Panel: React.FunctionComponent<React.PropsWithChildren<PanelProps>> = ({ className, title, children }) => {
   return (
     <div className={classNames('panel', 'panel-default', className)}>
       {title ?

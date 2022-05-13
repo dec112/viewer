@@ -14,7 +14,7 @@ interface IProps {
   disabled?: boolean,
 };
 
-export const Button: React.SFC<IProps> = (props) => {
+export const Button: React.FunctionComponent<React.PropsWithChildren<IProps>> = (props) => {
   const { type, className, onClick, disabled } = props;
 
   return (

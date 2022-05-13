@@ -97,7 +97,7 @@ class Message extends Component {
 
                 {uris && uris.length > 0 ?
                     uris.map(uri =>
-                        <div>
+                        <div key={uri}>
                             <a target="_blank" rel="noopener noreferrer" href={uri}>{uri}</a>
                         </div>
                     )
