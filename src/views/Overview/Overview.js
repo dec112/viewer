@@ -141,6 +141,25 @@ class Overview extends Component {
         }
     }
 
+    getSanitizedServerUrl = () => {
+        const url = this.serverService.connection.url;
+        if (url) {
+            try {
+                const parsedUrl = new URL(url);
+                // strip all search params
+                // we don't want to display them on the UI
+                // as it can/will contain an api key
+                parsedUrl.search = '';
+
+                return parsedUrl.toString();
+            } catch {
+                console.error('Could not parse server url', url);
+            }
+        }
+
+        return '-';
+    }
+
     render() {
         const { formatMessage } = this.intl;
 
@@ -238,7 +257,7 @@ class Overview extends Component {
                         className={'panel-default'}
                         data={{
                             [formatMessage(Messages.version)]: PACKAGE.version,
-                            [formatMessage(Messages.server)]: this.serverService.connection.url,
+                            [formatMessage(Messages.server)]: this.getSanitizedServerUrl(),
                             'Navigator': navigator.userAgent,
                         }} />
                 </div>

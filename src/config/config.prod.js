@@ -54,6 +54,18 @@ export default {
             "snippets": [
                 {
                     "title": {
+                        "de": "Video-Anruf",
+                        "en": "Video-Call"
+                    },
+                    "shortcut": "F10",
+                    "uri": "https://meet.jit.si/{{random(24)}}#config.prejoinPageEnabled=false",
+                    "text": {
+                        "de": "Treten Sie dem Video-Anruf bei.",
+                        "en": "Join the video call."
+                    }
+                },
+                {
+                    "title": {
                         "de": "Was?",
                         "en": "What?",
                     },

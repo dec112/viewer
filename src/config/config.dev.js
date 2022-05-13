@@ -205,15 +205,31 @@ export default {
                     // Used for display on UI
                     //// string | LanguageObject
                     "title": {
-                        "de": "Was?",
-                        "en": "What?",
+                        "de": "Video-Anruf",
+                        "en": "Video-Call"
                     },
                     // Shortcut key to trigger the snippet
                     // Currently, only F-Keys are supported [F1-F12]
                     //// string
-                    "shortcut": "F1",
+                    "shortcut": "F10",
+                    // URI that will be sent to the client
+                    // Template {{random(n)}} will be replace with a random, alphanumeric string of length `n`
+                    //// string
+                    "uri": "https://meet.jit.si/{{random(24)}}#config.prejoinPageEnabled=false",
                     // Text, that is appended to message, when snippet is triggered
+                    // If also property `uri` is available, URI and text will be directly sent to the client
                     //// string | LanguageObject
+                    "text": {
+                        "de": "Treten Sie dem Video-Anruf bei.",
+                        "en": "Join the video call."
+                    }
+                },
+                {
+                    "title": {
+                        "de": "Was?",
+                        "en": "What?",
+                    },
+                    "shortcut": "F1",
                     "text": {
                         "de": "Was ist passiert?",
                         "en": "What has happened?",

@@ -693,19 +693,21 @@ class ServerService {
         });
     }
 
-    sendMessage(message: string, callId: string) {
+    sendMessage(callId: string, message: string, uri?: string) {
         const call = getCallById(store.getState().call, callId);
 
         if (!call)
             return;
 
         const messageId = call.getNextMessageId();
+        const uris = uri ? [uri] : undefined;
 
         store.dispatch(addOrUpdateMessage(callId, new Message(
             new Date(),
             Origin.LOCAL,
             MessageState.SENDING,
             [message],
+            uris,
             call,
             messageId,
         )));
@@ -714,6 +716,7 @@ class ServerService {
             tag: messageId,
             call_id: callId,
             message: message,
+            uris,
         });
     }
 

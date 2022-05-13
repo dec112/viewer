@@ -89,3 +89,18 @@ export function tryGet(obj: any, ...path: Array<string>) {
 export function minmax(min: number, value: number, max: number) : number {
   return Math.min(Math.max(min, value), max);
 }
+
+const alpha = 'abcdefghijklmnopqrstuvwxyz';
+const numeric = '1234567890';
+
+const allowedChars = `${alpha}${alpha.toUpperCase()}${numeric}`;
+
+export const getRandomString = (size: number) => {
+  const arr = [];
+
+  for (let i = 0; i < size; i++) {
+    arr.push(allowedChars.charAt(Math.floor(Math.random() * allowedChars.length)));
+  }
+
+  return arr.join('');
+}

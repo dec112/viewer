@@ -84,8 +84,8 @@ class MainGrid extends Component {
         this.serverService.endCall(this.getCallId());
     };
 
-    handleSendMessage = (message, call) => {
-        this.serverService.sendMessage(message, call.callId);
+    handleSendMessage = (call, message, uri) => {
+        this.serverService.sendMessage(call.callId, message, uri);
     };
 
     handleTimeBarChange = (progress) => {
