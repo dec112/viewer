@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## 3.7.1
+* Fixed map bounds calculation for negative latitude and longitude values (e.g. in the United States)
+
 ## 3.7.0
 
 * CSS Fix

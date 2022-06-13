@@ -6,10 +6,10 @@ class LocationUtilities {
    * @param {number} radiusForSinglePoint in meters
    */
   static getBounds(locations, radiusForSinglePoint = 100) {
-    let maxLat = Number.MIN_VALUE;
-    let maxLon = Number.MIN_VALUE;
-    let minLat = Number.MAX_VALUE;
-    let minLon = Number.MAX_VALUE;
+    let maxLat = -Infinity; // smallest possible value (don't use Number.MIN_VALUE here! -> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MIN_VALUE#description)
+    let maxLon = -Infinity;
+    let minLat = Infinity; // biggest possible value
+    let minLon = Infinity;
 
     if (!Array.isArray(locations) || locations.length === 0)
       return;
