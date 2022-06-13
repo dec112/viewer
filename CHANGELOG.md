@@ -3,7 +3,9 @@
 ## [Unreleased]
 
 ## 3.7.1
+* Added support for sending URIs (e.g. for video calling)
 * Fixed map bounds calculation for negative latitude and longitude values (e.g. in the United States)
+* Improved display of server url without exposing potentially sensitive data
 
 ## 3.7.0
 
