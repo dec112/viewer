@@ -10,6 +10,13 @@ class UrlUtilities {
         }
         return {};
     }
+
+    static getAbsoluteUrl(relativeUrl) {
+        return window.location.origin +
+            window.location.pathname +
+            // remove leading slash as this is already included in pathname
+            relativeUrl.slice(1);
+    }
 }
 
 export default UrlUtilities;

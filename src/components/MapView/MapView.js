@@ -6,9 +6,12 @@ import Messages from "../../i18n/Messages";
 import { sort, distinctBy } from "../../utilities/ArrayUtilities.ts";
 import ConfigService from "../../service/ConfigService";
 import LocationUtilities from "../../utilities/LocationUtilities";
-import {Map, TileLayer, Polyline, Marker, Circle, Tooltip, ScaleControl} from 'react-leaflet'
-import { LocalizationService} from '../../service/LocalizationService';
+import L from 'leaflet';
+import { Map, TileLayer, Polyline, Marker, Circle, Tooltip, ScaleControl } from 'react-leaflet'
+import { LocalizationService } from '../../service/LocalizationService';
 import { UiService } from '../../service';
+import ImageFile from '../../constant/ImageFile';
+import UrlUtilities from '../../utilities/UrlUtilities';
 
 class MapView extends Component {
 
@@ -142,16 +145,62 @@ class MapView extends Component {
 
         const { formatMessage } = this.intl;
 
+        // we always want to draw the polyline and the start marker from all available locations
+        // not only from the currently displayed ones
+        if (allLatLngLocations.length > 1) {
+            elements.push(
+                <Polyline
+                    color={polylineColor}
+                    positions={allLatLngLocations}
+                    key='polyline' />
+            );
+            elements.push(this.getMarker(allLatLngLocations[allLatLngLocations.length - 1], 'first-marker', 0.3));
+        }
+
         if (locations.length > 0) {
             const { markerTooltip } = this.props;
             const firstLatLng = latLngLocations[0];
 
-            elements.push(this.getMarker(firstLatLng, 'main-marker', 1, markerTooltip ?
-                <Tooltip permanent className={style.MarkerTooltip}>
-                    {markerTooltip}
-                </Tooltip>
-                : undefined
-            ));
+            // draw all locations that do not come via GPS
+            // the user might have set them manually, which is quite important information
+            for (let i = 0, size = allLocations.length; i < size; i++) {
+                const loc = allLocations[i];
+                if (loc.method?.toLowerCase() !== 'gps') {
+                    elements.push(
+                        this.getMarker(
+                            LocationUtilities.convertToLatLng(loc),
+                            `extra-marker-${i}`,
+                            1,
+                            <Tooltip permanent className={style.MarkerTooltip}>
+                                {formatMessage(Messages.location)}: {loc.method}
+                            </Tooltip>
+                        )
+                    );
+                }
+            }
+
+            elements.push(
+                <Marker
+                    position={firstLatLng}
+                    key={`main-marker`}
+                    opacity={1}
+                    icon={L.icon({
+                        iconUrl: UrlUtilities.getAbsoluteUrl(ImageFile.MAP_MAIN_MARKER),
+                        iconRetinaUrl: UrlUtilities.getAbsoluteUrl(ImageFile.MAP_MAIN_MARKER_RETINA),
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                    })}
+                >
+                    {
+                        markerTooltip ?
+                            <Tooltip permanent className={style.MarkerTooltip}>
+                                {markerTooltip}
+                            </Tooltip>
+                            : <Tooltip className={style.MarkerTooltip}>
+                                {formatMessage(Messages.showLatestLocation)}
+                            </Tooltip>
+                    }
+                </Marker>);
 
             const firstLocation = locations[0];
             const radius = firstLocation.radius;
@@ -168,18 +217,6 @@ class MapView extends Component {
                     </Circle>
                 );
             }
-        }
-
-        // we always want to draw the polyline and the start marker from all available locations
-        // not only from the currently displayed ones
-        if (allLatLngLocations.length > 1) {
-            elements.push(
-                <Polyline
-                    color={polylineColor}
-                    positions={allLatLngLocations}
-                    key='polyline' />
-            );
-            elements.push(this.getMarker(allLatLngLocations[allLatLngLocations.length - 1], 'first-marker', 0.3));
         }
 
         return elements;

@@ -1,8 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+* Improved map markers
+  * Main marker is now highlighted in red
+  * Location information not coming from GPS is highlighted
 
-## 3.7.1
+## 3.8.0
 * Added support for sending URIs (e.g. for video calling)
 * Fixed map bounds calculation for negative latitude and longitude values (e.g. in the United States)
 * Improved display of server url without exposing potentially sensitive data
