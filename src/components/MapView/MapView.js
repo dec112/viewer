@@ -212,7 +212,7 @@ class MapView extends Component {
                         radius={radius}
                         key={`circle-${firstLatLng.toString()}`}>
                         <Tooltip direction={"right"} sticky={true}>
-                            <div>{formatMessage(Messages.locationAccuracy, { radius: radius })}</div>
+                            <div>{formatMessage(Messages.locationAccuracy, { radius: Math.round(radius) })}</div>
                         </Tooltip>
                     </Circle>
                 );
