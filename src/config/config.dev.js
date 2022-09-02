@@ -120,6 +120,27 @@ export default {
         //     "targetUri": "sip:{value}@sms.test.dec112.eu",
         // }
     ],
+    // Translation specifies resources necessary to enable translation service
+    //// Object
+    "translation": {
+        // Maximum number of translation items cached to browser storage
+        // This functionality should minimize the amount of requests needed
+        //// number
+        "maxCacheCount": 1000,
+        // Endpoint for translations
+        //// string
+        "translationEndpoint": 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0',
+        // Endpoint for fetching all available langugages
+        //// string
+        "languagesEndpoint": "https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation",
+        // API-Key for retreiving data
+        // If no API-Key is present, translation will be disabled
+        //// string | null
+        "apiKey": null,
+        // Azure region
+        //// string
+        "region": 'westeurope',
+    },
     //// Object
     "ui": {
         // Configuration concerning notifications about new calls
