@@ -427,6 +427,10 @@
     "id": "translation",
     "defaultMessage": "Übersetzung"
   },
+  "translationPlaceholder": {
+    "id": "translationPlaceholder",
+    "defaultMessage": "Automatische Übersetzung durch Klick auf \"{button}\" starten"
+  },
   "unauthorizedRequest": {
     "id": "unauthorizedRequest",
     "defaultMessage": "Request was unauthorized"

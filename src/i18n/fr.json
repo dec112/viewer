@@ -106,6 +106,7 @@
   "tel": "Téléphone",
   "translate": "",
   "translation": "",
+  "translationPlaceholder": "",
   "unauthorizedRequest": "Requête non authorisée",
   "unknown": "Inconnu",
   "username": "Nom d'utilisateur",

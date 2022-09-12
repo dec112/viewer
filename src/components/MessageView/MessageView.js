@@ -336,6 +336,7 @@ class MessageView extends Component {
         this.setState({
             message: '',
             messageTranslation: '',
+            isTranslationDirty: true,
         });
     };
 
@@ -376,6 +377,12 @@ class MessageView extends Component {
             isTranslationDirty: true,
         });
     };
+
+    handleMessageTranslationChange = (evt) => {
+        this.setState({
+            messageTranslation: evt.target.value,
+        });
+    }
 
     handleShowOnMapClick = () => {
         if (this.props.onShowLatestLocations)
@@ -504,10 +511,18 @@ class MessageView extends Component {
                         {
                             isTranslationActive ?
                                 <textarea
-                                    readOnly={true}
+                                    disabled={this.isUiDisabled()}
+                                    readOnly={isTranslationDirty}
                                     rows={3}
                                     className={classNames('form-control', style.TextInput)}
-                                    placeholder={isTranslating ? `${formatMessage(Messages.translation)}...` : ''}
+                                    placeholder={
+                                        isTranslating ?
+                                            `${formatMessage(Messages.translation)}...` :
+                                            formatMessage(Messages.translationPlaceholder, {
+                                                button: formatMessage(Messages.translate)
+                                            })
+                                    }
+                                    onChange={this.handleMessageTranslationChange}
                                     value={this.state.messageTranslation} />
                                 :
                                 undefined
