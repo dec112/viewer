@@ -429,7 +429,7 @@
   },
   "translationPlaceholder": {
     "id": "translationPlaceholder",
-    "defaultMessage": "Automatische Übersetzung durch Klick auf \"{button}\" starten"
+    "defaultMessage": "Automatische Übersetzung durch Klick auf \"{button}\" starten."
   },
   "unauthorizedRequest": {
     "id": "unauthorizedRequest",

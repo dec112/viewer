@@ -153,7 +153,7 @@ class MessageView extends Component {
     isCallActive = () => this.getCall().isActive;
     isUiDisabled = () => !this.isCallActive() || this.isReplay();
     isSendButtonDisabled = () => this.isUiDisabled() || !this.state.message;
-    isTranslateButtonDisabled = () => this.isSendButtonDisabled() || this.state.isTranslating;
+    isTranslateButtonDisabled = () => this.isSendButtonDisabled() || this.state.isTranslating || !this.state.isTranslationDirty;
     isReplay = () => this.getCall().isReplay;
     isShowCurrentLocationsDisabled = () => !this.props.currentLocations;
 
@@ -309,18 +309,22 @@ class MessageView extends Component {
             this.messageText.focus();
     }
 
-    handleSuccessButtonClick = () => {
+    handleEnterKey = () => {
         if (this.state.isTranslationActive && this.state.isTranslationDirty) {
-            this.handleTranslateMessageClick();
+            this.translateMessage();
         } else {
-            this.handleSendClick();
+            this.sendMessage();
         }
     }
 
-    handleSendClick = () => {
+    sendMessage = async () => {
         let msg = this.state.message.trim();
 
         if (this.state.isTranslationActive) {
+            if (this.state.isTranslationDirty) {
+                await this.translateMessage();
+            }
+
             const translatedMsg = this.state.messageTranslation.trim();
             // translated text is prepended -> so it's easier for the user to understand
             msg = `${translatedMsg}\n\n---\n\n${msg}`;
@@ -340,7 +344,7 @@ class MessageView extends Component {
         });
     };
 
-    handleTranslateMessageClick = async () => {
+    translateMessage = async () => {
         this.setState({
             isTranslating: true,
         })
@@ -392,7 +396,7 @@ class MessageView extends Component {
     handleMessageKeyDown = (event) => {
         if (event.key === 'Enter' && event.shiftKey !== true) {
             event.preventDefault();
-            this.handleSuccessButtonClick();
+            this.handleEnterKey();
         }
     };
 
@@ -644,12 +648,12 @@ class MessageView extends Component {
                                 }
 
                                 {
-                                    isTranslationActive && isTranslationDirty ?
+                                    isTranslationActive ?
                                         <button
                                             disabled={this.isTranslateButtonDisabled()}
                                             type="button"
                                             className={classNames("btn btn-warning", style.MessageButton)}
-                                            onClick={this.handleSuccessButtonClick}>
+                                            onClick={this.translateMessage}>
                                             <span className="glyphicon glyphicon-flag" /> {
                                                 isTranslating ?
                                                     `${formatMessage(Messages.translation)}...` :
@@ -657,14 +661,16 @@ class MessageView extends Component {
                                             }
                                         </button>
                                         :
-                                        <button
-                                            disabled={this.isSendButtonDisabled()}
-                                            type="button"
-                                            className={classNames("btn btn-success", style.MessageButton)}
-                                            onClick={this.handleSuccessButtonClick}>
-                                            <span className="glyphicon glyphicon-send" /> {formatMessage(Messages.send)}
-                                        </button>
+                                        null
                                 }
+
+                                <button
+                                    disabled={this.isSendButtonDisabled()}
+                                    type="button"
+                                    className={classNames("btn btn-success", style.MessageButton)}
+                                    onClick={this.sendMessage}>
+                                    <span className="glyphicon glyphicon-send" /> {formatMessage(Messages.send)}
+                                </button>
                             </span>
                         </div>
                     }

@@ -106,7 +106,7 @@
   "tel": "Phone",
   "translate": "Translate",
   "translation": "Translation",
-  "translationPlaceholder": "Trigger automated translation by clicking on \"{button}\"",
+  "translationPlaceholder": "Trigger automated translation by clicking on \"{button}\".",
   "unauthorizedRequest": "Request was unauthorized",
   "unknown": "Unknown",
   "username": "Username",
