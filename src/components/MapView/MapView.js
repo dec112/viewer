@@ -1,5 +1,6 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
+import './leaflet/leaflet.css';
 import style from './MapView.module.css';
 import classNames from 'classnames';
 import Messages from "../../i18n/Messages";

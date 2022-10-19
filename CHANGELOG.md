@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+* Added leaflet resources for offline use (to avoid additional firewall rules for fetching data from CDN)
+
 ## 3.9.0
 
 * Added possibility for Microsoft Azure translations to automatically translate messages
