@@ -203,6 +203,10 @@
     "id": "export",
     "defaultMessage": "Export"
   },
+  "first_name": {
+    "id": "first_name",
+    "defaultMessage": "Vorname"
+  },
   "forward": {
     "id": "forward",
     "defaultMessage": "Vorwärts"
@@ -214,6 +218,10 @@
   "information": {
     "id": "information",
     "defaultMessage": "Informationen"
+  },
+  "last_name": {
+    "id": "last_name",
+    "defaultMessage": "Nachname"
   },
   "latestSignal": {
     "id": "latestSignal",
