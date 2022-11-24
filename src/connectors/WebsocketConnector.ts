@@ -26,8 +26,16 @@ export class WebsocketConnector implements IConnector {
           this.onWebsocketStatusChanged(ConnectorState.ERROR, ConnectorStateReason.UNEXPECTED, evt);
         }
         this.connection.onclose = (evt: CloseEvent) => {
-          const reason = evt.wasClean ? ConnectorStateReason.EXPECTED : ConnectorStateReason.UNEXPECTED;
-          this.onWebsocketStatusChanged(ConnectorState.CLOSED, reason, evt);
+          // the server may provide status code 4401, indicating a 401 Unauthorized
+          // the problem here is that one can not read HTTP status codes from WebSocket connections
+          // therefore the server accepts the connection and instantly closes it with a corresponding
+          // close code.
+          if (evt.code === 4401)
+            this.onWebsocketStatusChanged(ConnectorState.ERROR, ConnectorStateReason.UNAUTHORIZED, evt);
+          else {
+            const reason = evt.wasClean ? ConnectorStateReason.EXPECTED : ConnectorStateReason.UNEXPECTED;
+            this.onWebsocketStatusChanged(ConnectorState.CLOSED, reason, evt);
+          }
         }
         this.connection.onmessage = (evt: MessageEvent) => this.onWebsocketMessage(evt);
       }

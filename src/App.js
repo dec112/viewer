@@ -11,7 +11,7 @@ import Snackbar from "./components/Snackbar/Snackbar";
 import style from './App.module.css';
 import UrlUtilities from "./utilities/UrlUtilities";
 import Overview from "./views/Overview/Overview";
-import { ConnectorState, ConnectorStateReason} from "./constant/ConnectorState";
+import { ConnectorState, ConnectorStateReason } from "./constant/ConnectorState";
 import Login from "./views/Login/Login";
 import { CenteredView } from './views/CenteredView/CenteredView';
 import ConfigService from './service/ConfigService';
@@ -102,7 +102,10 @@ class DEC112 extends Component {
                 case ConnectorState.OPEN:
                     break;
                 case ConnectorState.ERROR:
-                    ModalDialog.alert(formatMessage(Messages['connectionState.error']));
+                    if (reason === ConnectorStateReason.UNAUTHORIZED)
+                        ModalDialog.alert(formatMessage(Messages['connectionState.unauthorized']));
+                    else
+                        ModalDialog.alert(formatMessage(Messages['connectionState.error']));
                     break;
                 case ConnectorState.CLOSED:
                     if (reason === ConnectorStateReason.UNEXPECTED) {

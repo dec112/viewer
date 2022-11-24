@@ -32,6 +32,7 @@
   "connect": "Conectar",
   "connectionState.closed": "Sin conexión al servidor.",
   "connectionState.error": "Ocurrió un error al conectarse al servidor.",
+  "connectionState.unauthorized": "Ocurrió un error al conectarse al servidor.",
   "connectionState.unknown": "Ocurrió un error inesperado al conectarse al servidor.",
   "contact": "",
   "copyToClipboard": "",

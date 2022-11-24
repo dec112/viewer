@@ -125,15 +125,19 @@
   },
   "connectionState.closed": {
     "id": "connectionState.closed",
-    "defaultMessage": "Die Verbindung zum Server wurde beendet."
+    "defaultMessage": "Keine Verbindung zum Server."
   },
   "connectionState.error": {
     "id": "connectionState.error",
-    "defaultMessage": "Mit dem angegebenen API Key konnte keine Verbindung zum Server hergestellt werden"
+    "defaultMessage": "Der Server konnte nicht erreicht werden."
+  },
+  "connectionState.unauthorized": {
+    "id": "connectionState.unauthorized",
+    "defaultMessage": "Der verwendete API Key ist nicht gültig."
   },
   "connectionState.unknown": {
     "id": "connectionState.unknown",
-    "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten"
+    "defaultMessage": "Beim Herstellen der Verbindung ist ein unerwarteter Fehler aufgetreten."
   },
   "contact": {
     "id": "contact",

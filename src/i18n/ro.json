@@ -32,6 +32,7 @@
   "connect": "Conectat",
   "connectionState.closed": "Nici o conexiunea la server",
   "connectionState.error": "A aparut o eroare la conecterea la server",
+  "connectionState.unauthorized": "A aparut o eroare la conecterea la server",
   "connectionState.unknown": "La conectarea la server a aparut o eroare neasteptata",
   "contact": "",
   "copyToClipboard": "",

@@ -7,4 +7,5 @@ export enum ConnectorState {
 export enum ConnectorStateReason {
   EXPECTED = 'expected',
   UNEXPECTED = 'unexpected',
+  UNAUTHORIZED = 'unauthorized',
 }
