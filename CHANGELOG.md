@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
+---
+
+## 3.9.1
+
 * Added leaflet resources for offline use (to avoid additional firewall rules for fetching data from CDN)
+* Improved handling of unauthorized websocket requests
+* Updated translations
 
 ## 3.9.0
 
