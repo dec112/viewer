@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
----
+* Updated translation management
+* Added many new translations
 
 ## 3.9.1
 
