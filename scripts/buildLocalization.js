@@ -1,80 +1,57 @@
-const fs = require('fs');
 const path = require('path');
 const findRoot = require('find-root');
 const args = require("args-parser")(process.argv);
-const rootDirectory = findRoot(__dirname);
-let languages = [];
-let outputDirectory = [];
-let defaultLanguage = '';
-let defaultMessagesPath = '';
+const root = findRoot(__dirname);
+const { promises: fs } = require('fs');
 
-readCommandLineArguments();
-reorderDefaultMessages();
-createLanguageFiles();
+const langPath = path.join(root, 'src', 'i18n');
 
-var defaultMessages = null;
-
-function reorderDefaultMessages() {
-    const newDefaultMessages = {};
-
-    Object.keys(defaultMessages).sort().forEach(function(key) {
-        newDefaultMessages[key] = defaultMessages[key];
-    });
-    
-    defaultMessages = newDefaultMessages;
-    fs.writeFileSync(path.join(rootDirectory, defaultMessagesPath), JSON.stringify(defaultMessages, null, 2));
+const readJson = async (path) => {
+  return JSON.parse(await fs.readFile(path))
 }
 
-function createLanguageFiles() {
-    for (var i = 0; i < languages.length; i++) {
-        let messages = {};
-        const currentMessageDirectory = path.join(rootDirectory, outputDirectory, `${languages[i]}.json`);
-        let existingMessages = null;
-        if (fs.existsSync(currentMessageDirectory)) {
-            existingMessages = JSON.parse(fs.readFileSync(currentMessageDirectory));
-        }
-        Object.keys(defaultMessages).forEach(function (key) {
-            let currentMessage = defaultMessages[key];
-            if (existingMessages && existingMessages[currentMessage.id]) {
-                messages[currentMessage.id] = existingMessages[currentMessage.id];
-            } else {
-                if (languages[i] === defaultLanguage) {
-                    messages[currentMessage.id] = currentMessage.defaultMessage;
-                } else {
-                    messages[currentMessage.id] = "";
-                }
-            }
-        });
-        fs.writeFileSync(path.join(rootDirectory, outputDirectory, `${languages[i]}.json`), JSON.stringify(messages, null, 2));
-    }
+const writeJson = async (path, json) => {
+  return await fs.writeFile(path, JSON.stringify(json, null, 2));
 }
 
-function readCommandLineArguments() {
-    if (args['d']) {
-        defaultLanguage = args['d'];
-    } else {
-        throw new Error("No default language specified");
-    }
-    if (args['o']) {
-        outputDirectory = args['o'];
-        if (!fs.existsSync(outputDirectory)) {
-            fs.mkdirSync(outputDirectory);
-        }
-    } else {
-        throw new Error("No output directory specified");
-    }
-    if (args['l']) {
-        languages = args['l'].split(',');
-    } else {
-        throw new Error("No languages specified");
-    }
-    if (args['s']) {
-        if (!fs.existsSync(args['s'])) {
-            throw new Error("No such file or directory");
-        }
-        defaultMessagesPath = args['s'];
-        defaultMessages = JSON.parse(fs.readFileSync(path.join(rootDirectory, defaultMessagesPath)));
-    } else {
-        throw new Error("No template file specified");
-    }
-}
+(async () => {
+  const defaultLanguage = args['d'];
+
+  if (!defaultLanguage)
+    throw new Error("No default language specified");
+
+  const defaultLangName = `${defaultLanguage}.json`;
+  const defaultLangPath = path.join(langPath, defaultLangName);
+
+  let langKeys = await readJson(defaultLangPath);
+  // sorting the keys
+  langKeys = Object.keys(langKeys).sort().reduce((acc, key) => {
+    acc[key] = langKeys[key];
+    return acc;
+  }, {});
+
+  await writeJson(defaultLangPath, langKeys);
+
+  const langFiles = (await fs.readdir(langPath))
+    .filter(x =>
+      // only consider json files
+      x.endsWith('.json') &&
+      // don't include our main file
+      !x.endsWith(defaultLangName)
+    );
+
+  for (const f of langFiles) {
+    const translationPath = path.join(langPath, f);
+    const file = await readJson(translationPath);
+
+    await writeJson(
+      translationPath,
+      // only copy keys that are also present in our default language file
+      // if a new key is found, initialize it with an empty string
+      Object.keys(langKeys).reduce((acc, key) => {
+        acc[key] = file[key] || '';
+        return acc;
+      }, {})
+    );
+  }
+})();

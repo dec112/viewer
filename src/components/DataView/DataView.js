@@ -20,8 +20,16 @@ class DataView extends Component {
         this.intl = LocalizationService.getInstance();
     }
 
-    _tryTranslate(key) {
-        let messageKeyToTranslate = Messages[key];
+    _tryTranslateTitle(key) {
+        return this._tryTranslate('title', key);
+    }
+
+    _tryTranslateProp(key) {
+        return this._tryTranslate('prop', key);
+    }
+
+    _tryTranslate(prefix, key) {
+        let messageKeyToTranslate = Messages[`data.${prefix}.${key}`];
         // if key cannot be found in messages, it will be used as is
         return messageKeyToTranslate ? this.intl.formatMessage(messageKeyToTranslate) : key
     }
@@ -37,7 +45,7 @@ class DataView extends Component {
         if (this._isHiddenKey(key))
             return obj;
 
-        obj[this._tryTranslate(key)] = data;
+        obj[this._tryTranslateProp(key)] = data;
 
         return obj;
     }
@@ -76,7 +84,7 @@ class DataView extends Component {
         }
 
         return sort(Object.keys(infoObjects), x => Object.keys(infoObjects[x]).length, true)
-            .map(key => this.getInfoTableItem(this._tryTranslate(key), infoObjects[key], key))
+            .map(key => this.getInfoTableItem(this._tryTranslateTitle(key), infoObjects[key], key))
     }
 
     getInfoTableItem(title, data, key) {

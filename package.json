@@ -32,7 +32,7 @@
     "docker": "yarn docker-build && docker run -p 8080:80 --rm dec112/viewer",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "extract-intl": "node scripts/buildLocalization.js -l=en,de,fr,ro,es -o=src/i18n/ -d=de -s=src/i18n/DefaultMessages.json"
+    "i18n": "node scripts/buildLocalization.js -d=de"
   },
   "eslintConfig": {
     "extends": "react-app"
