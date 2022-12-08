@@ -2,8 +2,9 @@
 
 ## [Unreleased]
 
-* Updated translation management
+* Added display of user language in chat view
 * Added many new translations
+* Updated translation management
 
 ## 3.9.1
 

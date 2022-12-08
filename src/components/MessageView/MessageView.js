@@ -168,7 +168,7 @@ class MessageView extends Component {
         const latestMessage = CoreUtil.sort(this.getMessages().filter(x => x.origin === Origin.REMOTE), x => x.received, true)[0];
 
         const call = this.getCall();
-        const { stateId, displayName } = call;
+        const { stateId, displayName, language } = call;
         let warning;
 
         switch (stateId) {
@@ -208,10 +208,18 @@ class MessageView extends Component {
                                 <div>{formatMessage(Messages.contact)}: {displayName}</div>
                                 : undefined
                         }
-                        <div>{formatMessage(Messages.callIdentifier)}: {call.callId}</div>
+                        {
+                            language ?
+                                <div>
+                                    {formatMessage(Messages.userLanguage)}:&nbsp;
+                                    {formatMessage(Messages[`language.${language}`]) || language}
+                                </div>
+                                : undefined
+                        }
                     </strong>
                     <div>
-                        {latestComponent}
+                        <div>{latestComponent}</div>
+                        <div>{formatMessage(Messages.callIdentifier)}: {call.callId}</div>
                     </div>
                 </div>
                 {

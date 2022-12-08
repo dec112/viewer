@@ -47,6 +47,8 @@ export abstract class AbstractCall {
 }
 
 export class Call extends AbstractCall {
+    public language?: string;
+    
     constructor(
         public callId: string,
         public callerName: string,
@@ -90,6 +92,7 @@ export class Call extends AbstractCall {
         call.did = json.did;
         call.stateId = json.state;
         call.isTest = json.is_test;
+        call.language = json.lang;
 
         switch (json.id_type) {
             case IdType.DEVICE_ID:
