@@ -64,6 +64,24 @@ class MapView extends Component {
         }
     }
 
+    _getIcon(type) {
+        const isMain = type === 'main';
+
+        const iconUrl = isMain ?
+            ImageFile.MAP_MAIN_MARKER :
+            ImageFile.MAP_DEFAULT_MARKER;
+        const iconRetinaUrl = isMain ?
+            ImageFile.MAP_MAIN_MARKER_RETINA :
+            ImageFile.MAP_DEFAULT_MARKER_RETINA;
+
+        return L.icon({
+            iconUrl: UrlUtilities.getAbsoluteUrl(iconUrl),
+            iconRetinaUrl: UrlUtilities.getAbsoluteUrl(iconRetinaUrl),
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+        })
+    }
+
     getZoomLevel() {
         return this.props.defaultZoomLevel || this.defaultZoomLevel;
     }
@@ -96,7 +114,7 @@ class MapView extends Component {
 
     getLatestLocation() {
         let locations = this.getMapLocations();
-        if(locations && locations.length > 0)
+        if (locations && locations.length > 0)
             return locations[0];
     }
 
@@ -121,7 +139,9 @@ class MapView extends Component {
         return <Marker
             position={location}
             key={key}
-            opacity={opacity} >
+            opacity={opacity}
+            icon={this._getIcon()}
+        >
             {children}
         </Marker>
     }
@@ -185,12 +205,7 @@ class MapView extends Component {
                     position={firstLatLng}
                     key={`main-marker`}
                     opacity={1}
-                    icon={L.icon({
-                        iconUrl: UrlUtilities.getAbsoluteUrl(ImageFile.MAP_MAIN_MARKER),
-                        iconRetinaUrl: UrlUtilities.getAbsoluteUrl(ImageFile.MAP_MAIN_MARKER_RETINA),
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                    })}
+                    icon={this._getIcon('main')}
                 >
                     {
                         markerTooltip ?
