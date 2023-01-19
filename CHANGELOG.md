@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+
+## 3.10.0
+
+* Fixed issues with map markers not displayed correctly
 * Added display of user language in chat view
 * Added many new translations
 * Updated translation management
