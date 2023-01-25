@@ -2,8 +2,8 @@ import { Message } from "./MessageModel";
 
 export class Coordinates {
   constructor(
-    public longitude: number,
-    public latitude: number,
+    public longitude?: number,
+    public latitude?: number,
   ) { }
 
   static fromJson(json: any): Coordinates {
@@ -17,17 +17,21 @@ export class Coordinates {
 export class Location {
   constructor(
     public coords: Coordinates,
-    public radius: number,
-    public method: string,
     public message: Message,
+    public radius?: number,
+    public method?: string,
+    public timestamp?: Date,
   ) { }
 
   static fromJson(json: any, message: Message): Location {
+    const { timestamp } = json;
+
     return new Location(
       Coordinates.fromJson(json),
+      message,
       json.rad,
       json.method,
-      message,
+      timestamp ? new Date(timestamp) : undefined,
     );
   }
 }

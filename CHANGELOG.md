@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## 3.11.0
+
+* Added location timestamp visualisation
 
 ## 3.10.0
 

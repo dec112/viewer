@@ -13,6 +13,7 @@ import { LocalizationService } from '../../service/LocalizationService';
 import { UiService } from '../../service';
 import ImageFile from '../../constant/ImageFile';
 import UrlUtilities from '../../utilities/UrlUtilities';
+import DateTimeService from '../../service/DateTimeService';
 
 class MapView extends Component {
 
@@ -31,6 +32,7 @@ class MapView extends Component {
     constructor() {
         super();
         this.intl = LocalizationService.getInstance();
+        this.dateTimeService = DateTimeService.getInstance();
     }
 
     componentDidMount() {
@@ -123,13 +125,18 @@ class MapView extends Component {
     getLocationToClipboardContent = () => {
         const loc = this.getLatestLocation();
 
-        if (!loc)
+        if (false === (
+            loc &&
+            loc.coords &&
+            loc.coords.latitude &&
+            loc.coords.longitude
+        ))
             return;
 
         let text = ConfigService.get('ui', 'mapView', 'clipboardLocationTemplate');
 
-        text = text.replace('{{latitude}}', loc.coords.latitude);
-        text = text.replace('{{longitude}}', loc.coords.longitude);
+        text = text.replace('{{latitude}}', loc.coords.latitude.toFixed(7));
+        text = text.replace('{{longitude}}', loc.coords.longitude.toFixed(7));
         text = text.replace('{{radius}}', loc.radius || '');
 
         return text;
@@ -200,6 +207,22 @@ class MapView extends Component {
                 }
             }
 
+            const firstLocation = locations[0];
+            let toolTipContent = markerTooltip;
+            if (!toolTipContent)
+                toolTipContent = <>
+                    {
+                        formatMessage(Messages.showLatestLocation)
+                    }
+                    {
+                        firstLocation.timestamp ?
+                            <div>
+                                {this.dateTimeService.toDateTime(firstLocation.timestamp)}
+                            </div> :
+                            undefined
+                    }
+                </>;
+
             elements.push(
                 <Marker
                     position={firstLatLng}
@@ -207,18 +230,11 @@ class MapView extends Component {
                     opacity={1}
                     icon={this._getIcon('main')}
                 >
-                    {
-                        markerTooltip ?
-                            <Tooltip permanent className={style.MarkerTooltip}>
-                                {markerTooltip}
-                            </Tooltip>
-                            : <Tooltip className={style.MarkerTooltip}>
-                                {formatMessage(Messages.showLatestLocation)}
-                            </Tooltip>
-                    }
+                    <Tooltip permanent className={style.MarkerTooltip}>
+                        {toolTipContent}
+                    </Tooltip>
                 </Marker>);
 
-            const firstLocation = locations[0];
             const radius = firstLocation.radius;
             if (radius) {
                 elements.push(
