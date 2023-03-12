@@ -4,9 +4,9 @@ A lightweight viewer for [DEC112](https://www.dec112.at) PSAP integration powere
 
 <img alt="DEC112 Viewer Screenshot, showing additional data, map and chat window." src="./res/dec112-viewer-screenshot.png" />
 
-Many thanks to [Netidee](https://www.netidee.at) who founded this software project in call #12 (DEC112) and #14 (DEC112 2.0).
+Many thanks to [Netidee](https://www.netidee.at) who funded this software project in call #12 (DEC112) and #14 (DEC112 2.0)!
 
-[https://www.dec112.at](https://www.dec112.at)
+Find more information on NG112 and accessible emergency calls on our webpage: [https://www.dec112.at](https://www.dec112.at)
 
 ## First run
 
@@ -37,30 +37,24 @@ yarn release
 
 ## Docker support
 
-If you want to run the viewer as a docker container just execute
+If you just want to build the docker image you need to provide a file `docker-build.js` in folder `scripts` that specifies how your docker image should be built and where it should be pushed to.
+
+After that you can run:
 
 `yarn docker`
 
-It will build a release version of the builder and run a nginx web server on port 8080.
-
-If you just want to build the docker image (without running it immediately) execute
-
-`yarn docker-build`
-
-For further configuration of the underlying nginx server, run the script `yarn docker-release` once. It will create a default configuration file `nginx.conf` in your project root, which you can use to configure your the nginx server running inside the docker container. This is especially important for adding your certificate and key in order to use SSL.
+For further configuration of the underlying nginx server, run the script `yarn docker` once. It will create a default configuration file `nginx.conf` in your project root, which you can use to configure your the nginx server running inside the docker container. This is especially important for adding your certificate and key in order to use SSL.
 
 Alternatively, you can also mount an external `nginx.conf` as a docker volume and overwrite the internal one.
 
-Certificates should be mounted into the container via a docker volume.
-
 ## Compatibility
 
-### DEC112 Border
+### PSAP backend
 
-DEC112 Border is the main endpoint DEC112 Viewer connects to.
+DEC112 Viewer needs a compatible PSAP backend to fetch data from. Compatible backends are:
 
-Minimun version: 1.1.2  (can be checked in info.html)
-Supported API version: v1 and v2
+* DEC112 PSAP
+* DEC112 Border (minimum version: 1.1.2)
 
 ### Semantic Container for Call Replays (Chat Bot)
 
