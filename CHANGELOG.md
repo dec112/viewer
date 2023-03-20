@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 3.11.1
+
+* Updated german translation for "snippets"
+
 ## 3.11.0
 
 * Added location timestamp visualisation
