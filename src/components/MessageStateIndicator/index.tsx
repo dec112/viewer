@@ -4,7 +4,7 @@ import { Message } from '../../model/MessageModel';
 import { Icon, IconType } from '../Icon';
 import styles from './styles.module.css';
 import classNames from 'classnames';
-import { RELAY_ERROR } from '../../constant/MessageStateCode';
+import { NOT_FOUND_ERROR, RELAY_ERROR } from '../../constant/MessageStateCode';
 import { LocalizationService } from '../../service';
 import Messages from '../../i18n/Messages';
 
@@ -21,7 +21,10 @@ const getErrorContent = (message: Message): JSX.Element => {
     let errorMsg: string | undefined;
 
     switch (message.stateCode) {
+      // catching both errors with the same case
+      // as the error message fits both very well
       case RELAY_ERROR:
+      case NOT_FOUND_ERROR:
         errorMsg = l10n.formatMessage(Messages['messageError.relayError']);
         break;
       default:
