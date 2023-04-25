@@ -1,12 +1,12 @@
-.copyToClipboardColumn {
+.CopyToClipboardColumn {
   /* lowest possible width */
   width: 1px;
 }
 
-th {
+.Table th {
   font-weight: bold;
 }
 
-td {
+.Table td {
   word-break: break-all;
 }

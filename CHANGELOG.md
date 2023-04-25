@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 3.11.2
+
+* Improved error text for messages that could not be sent
+* Minor UI fixes
+
 ## 3.11.1
 
 * Updated german translation for "snippets"

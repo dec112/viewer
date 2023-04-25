@@ -193,7 +193,7 @@ class Overview extends Component {
                                         but as there are nested click handlers, I think this is the only correct solution
                                         */}
                                         <td onClick={() => this.handleCallClick(call)}>{getCalledService(call, this.intl)}</td>
-                                        <td onClick={() => this.handleCallClick(call)}>{call.callerName}</td>
+                                        <td className={style.BreakAll} onClick={() => this.handleCallClick(call)}>{call.callerName}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.dateTimeService.toDateTime(call.created)}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.getState(call)}</td>

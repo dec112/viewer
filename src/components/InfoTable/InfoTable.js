@@ -33,7 +33,7 @@ class InfoTable extends Component {
       return <td />;
 
     return (
-      <td className={style.copyToClipboardColumn}>
+      <td className={style.CopyToClipboardColumn}>
         <span
           onClick={() => this.copyToClipboard(dataToCopy)}
           className="glyphicon glyphicon-copy glyphicon--btn">
@@ -46,7 +46,7 @@ class InfoTable extends Component {
     return (
       <div className={classNames('panel', this.props.className)}>
         <div className="panel-heading">{this.props.title}</div>
-        <table className={classNames("panel-body table table-striped table-hover table-bordered table-sm")}>
+        <table className={classNames(style.Table, "panel-body table table-striped table-hover table-bordered table-sm")}>
           <tbody>
             {Object.keys(this.props.data).sort().map(key => {
               let value, visibleValue;

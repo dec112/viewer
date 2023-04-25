@@ -5,6 +5,11 @@
     font-weight: bold;
 }
 
+.Table th,
+.Table td {
+    max-width: 300px;
+}
+
 .CallRow {
     cursor: pointer;
     transition: background-color 0.2s;
@@ -32,4 +37,8 @@
 
 .Center {
     text-align: center;
+}
+
+.BreakAll {
+    word-break: break-all;
 }
