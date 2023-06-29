@@ -4,9 +4,11 @@ A lightweight viewer for [DEC112](https://www.dec112.at) PSAP integration powere
 
 <img alt="DEC112 Viewer Screenshot, showing additional data, map and chat window." src="./res/dec112-viewer-screenshot.png" />
 
-Many thanks to [Netidee](https://www.netidee.at) who funded this software project in call #12 (DEC112) and #14 (DEC112 2.0)!
-
 Find more information on NG112 and accessible emergency calls on our webpage: [https://www.dec112.at](https://www.dec112.at)
+
+Many thanks to [Netidee](https://www.netidee.at) who funded this software project in call #12 (DEC112), #14 (DEC112 2.0) and #17 (DEC4IoT)!
+
+<img align="right" src="https://raw.githubusercontent.com/dec112/viewer/master/assets/netidee.jpeg" height="150" />
 
 ## First run
 
