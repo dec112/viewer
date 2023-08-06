@@ -86,6 +86,8 @@ export default (state: ICallState = {
         case Action.UPDATE_DATA:
             tryGetCallById(state, payload.callId, (call) => {
                 call.updateData(payload.data);
+                if (payload.cap)
+                    call.updateCap(payload.cap);
             });
             break;
         case Action.SET_DID_STATE:

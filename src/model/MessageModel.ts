@@ -50,6 +50,10 @@ export class Message {
         return json.data;
     }
 
+    static getCapFromJson(json: any): Array<any> {
+        return json.cap;
+    }
+
     get text(): string {
         return this.texts.join('\r\n');
     }

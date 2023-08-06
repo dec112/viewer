@@ -13,6 +13,7 @@ import { LocalizationService } from '../../service';
 import Messages from '../../i18n/Messages';
 import Snackbar from '../../components/Snackbar/Snackbar';
 import { DIDState } from '../../constant/DIDState';
+import InfoTable from '../../components/InfoTable/InfoTable';
 
 class MainGrid extends Component {
 
@@ -123,12 +124,11 @@ class MainGrid extends Component {
         if (!this.getSelectedCall())
             return null;
 
-        const call = this.getSelectedCall();
-
+        const { cap, didState } = this.getSelectedCall();;
         const isDataColumnEnabled = this.isDataViewEnabled() || this.isMapViewEnabled();
 
         let didMsg;
-        switch (call.didState) {
+        switch (didState) {
             case DIDState.CAN_NOT_RESOLVE:
                 didMsg = Messages['didState.canNotResolve'];
                 break;
@@ -171,10 +171,19 @@ class MainGrid extends Component {
                                 onExecuteTrigger={this.executeTrigger}
                             />
                             : null}
-                        {(this.isDataViewEnabled()) ?
-                            <DataView
-                                placeholder={didMsg ? this.intl.formatMessage(didMsg) : null}
-                                data={data} /> : ''}
+                        {
+                            this.isDataViewEnabled() && cap ?
+                                // TODO: translate
+                                <InfoTable
+                                    title={"CAP-Data"}
+                                    data={cap} /> : ''
+                        }
+                        {
+                            this.isDataViewEnabled() ?
+                                <DataView
+                                    placeholder={didMsg ? this.intl.formatMessage(didMsg) : null}
+                                    data={data} /> : ''
+                        }
                     </div> : ''
                 }
                 {(this.isMessageViewEnabled()) ?

@@ -1,7 +1,7 @@
 import * as CallState from "../constant/CallState";
 import { Message } from "./MessageModel";
 import { Location } from "./LocationModel";
-import { flattenObject, sort } from "../utilities";
+import { flattenObject, unnestObject, sort } from "../utilities";
 import * as CommonUtilities from "../utilities/CommonUtilities";
 import { IdType } from "../constant";
 import { DIDState } from "../constant/DIDState";
@@ -48,7 +48,7 @@ export abstract class AbstractCall {
 
 export class Call extends AbstractCall {
     public language?: string;
-    
+
     constructor(
         public callId: string,
         public callerName: string,
@@ -71,6 +71,7 @@ export class Call extends AbstractCall {
         public isTest: boolean = false,
         public messages: Array<Message> = [],
         private _data?: any,
+        private _cap?: any,
     ) {
         super(
             callId,
@@ -114,7 +115,9 @@ export class Call extends AbstractCall {
                     message.state = MessageState.RECEIVED;
 
                 call.messages.push(message);
+
                 call.updateData(Message.getDataFromJson(msg));
+                call.updateCap(Message.getCapFromJson(msg));
             }
         }
 
@@ -122,10 +125,17 @@ export class Call extends AbstractCall {
     }
 
     get data(): any {
-        if (this._data)
-            return flattenObject(this._data, false);
+        if (this._data) 
+            return unnestObject(this._data);
 
         return this._data;
+    }
+
+    get cap(): any {
+        if (this._cap)
+            return flattenObject(this._cap, true);
+
+        return this._cap;
     }
 
     get messageLocations(): Array<Location> {
@@ -170,19 +180,28 @@ export class Call extends AbstractCall {
         return undefined;
     }
 
-    updateData(dataObjects: Array<any>) {
+    private updateGeneral(dataObjects: Array<any>, defaultVal: any, setter: (val: any) => unknown) {
         if (!Array.isArray(dataObjects) || dataObjects.length === 0)
             return;
 
-        this._data = dataObjects.reduce((obj: any, curr: any) => (
+        setter(dataObjects.reduce((obj: any, curr: any) => (
             CommonUtilities.deepAssign(obj, curr)
-        ), this._data || {});
+        ), defaultVal || {}))
+    }
+
+    updateData(dataObjects: Array<any>) {
+        this.updateGeneral(dataObjects, this._data, (val) => this._data = val);
+    }
+
+    updateCap(dataObjects: Array<any>) {
+        this.updateGeneral(dataObjects, this._cap, (val) => this._cap = val);
     }
 
     erase() {
         this.stateId = CallState.UNDEFINED;
         this.didState = DIDState.UNRESOLVED;
         this._data = undefined;
+        this._cap = undefined;
         this.messages = [];
     }
 

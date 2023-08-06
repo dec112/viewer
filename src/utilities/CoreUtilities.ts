@@ -1,8 +1,18 @@
 import * as CommonUtilities from "./CommonUtilities";
 
-export function flattenObject(
+/**
+ * this function brings everything down to a maximum
+ * object depth of 2
+ * So objects will eventually look like: {a: {x1: 1, x2: 2, x3: 3}, b: {y1: 4, y2: 5, y3: 6}}
+ * 
+ * it is is basically a redundant version of
+ * flattenObject with a kind of weird behaviour.
+ * but is still needed for rendering data tables correctly
+ * 
+ * @deprecated
+ */
+export function unnestObject(
   toFlatten: any,
-  preservePaths = true,
   target: any = {},
   level = 0,
   keys: Array<string> = []
@@ -18,7 +28,7 @@ export function flattenObject(
     // this is why we also check on the object itself
     const isObject = !!source && type === 'object';
     if (isObject) {
-      flattenObject(source, preservePaths, target, level + 1, keys.concat([key]));
+      unnestObject(source, target, level + 1, keys.concat([key]));
     }
 
     // level 0 properties have to be moved to the new object
@@ -27,13 +37,53 @@ export function flattenObject(
       delete toFlatten[key];
       // we only want to keep properties and non-empty objects
       if (!isObject || (isObject && Object.keys(toMove).length > 0)) {
-        const tmpKey = preservePaths ? keys.concat(key).join('.') : key;
-        target[tmpKey] = toMove;
+        target[key] = toMove;
       }
     }
   }
 
   return target;
+}
+
+function _flattenObject(
+  toFlatten: any,
+  preservePaths: boolean,
+  target: any,
+  keys: Array<string>,
+) {
+  for (const key in toFlatten) {
+    const source = toFlatten[key];
+    const type = typeof source;
+    // null is also identified as "object", weird
+    // this is why we also check on the object itself
+    const isObject = !!source && type === 'object';
+    if (isObject) {
+      _flattenObject(source, preservePaths, target, keys.concat([key]));
+    }
+
+    if (!isObject) {
+      const toMove = toFlatten[key];
+      const tmpKey = preservePaths ? keys.concat(key).join('.') : key;
+      target[tmpKey] = toMove;
+    }
+  }
+
+  return target;
+}
+
+// this function is just here to provide default values
+export function flattenObject(
+  toFlatten: any,
+  preservePaths = true,
+  target: any = {},
+  keys: Array<string> = []
+) {
+  return _flattenObject(
+    CommonUtilities.deepCopy(toFlatten),
+    preservePaths,
+    target,
+    keys,
+  );
 }
 
 // Thanks to https://codeburst.io/throttling-and-debouncing-in-javascript-b01cad5c8edf
@@ -86,7 +136,7 @@ export function tryGet(obj: any, ...path: Array<string>) {
   }, obj);
 }
 
-export function minmax(min: number, value: number, max: number) : number {
+export function minmax(min: number, value: number, max: number): number {
   return Math.min(Math.max(min, value), max);
 }
 

@@ -29,10 +29,11 @@ export const setCallsInitialized = (initialized) => {
   };
 };
 
-export const updateData = (callId, data) => ({
+export const updateData = (callId, data, cap) => ({
   type: Action.UPDATE_DATA,
   callId,
   data,
+  cap,
 });
 
 export const updateCall = (call) => ({
