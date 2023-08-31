@@ -1,7 +1,7 @@
 {
   "name": "dec112-viewer",
   "homepage": "./",
-  "version": "3.11.2",
+  "version": "3.11.2-cap.1",
   "license": "GPL-3.0-only",
   "dependencies": {
     "@types/classnames": "^2.2.11",
