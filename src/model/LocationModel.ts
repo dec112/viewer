@@ -1,4 +1,5 @@
 import { Message } from "./MessageModel";
+import type { CivicAddress } from "pidf-lo";
 
 export class Coordinates {
   constructor(
@@ -18,6 +19,7 @@ export class Location {
   constructor(
     public coords: Coordinates,
     public message: Message,
+    public civic: CivicAddress,
     public radius?: number,
     public method?: string,
     public timestamp?: Date,
@@ -29,6 +31,7 @@ export class Location {
     return new Location(
       Coordinates.fromJson(json),
       message,
+      json.civic,
       json.rad,
       json.method,
       timestamp ? new Date(timestamp) : undefined,

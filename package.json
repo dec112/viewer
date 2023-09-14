@@ -44,6 +44,7 @@
   ],
   "devDependencies": {
     "args-parser": "^1.1.0",
-    "find-root": "^1.1.0"
+    "find-root": "^1.1.0",
+    "pidf-lo": "^1.1.0"
   }
 }

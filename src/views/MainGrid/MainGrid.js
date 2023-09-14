@@ -155,6 +155,9 @@ class MainGrid extends Component {
             </span>;
         }
 
+        const locations = this.getLocations();
+        const civicLocation = locations.find(x => x.civic !== undefined);
+
         return (<div className={classNames('container-fluid', style.Column, this.getMessageOnlyCssClass())}>
             <div className={classNames('row', style.Row)}>
                 {isDataColumnEnabled ?
@@ -164,7 +167,7 @@ class MainGrid extends Component {
                             <MapView
                                 markerTooltip={mapMarkerTooltip}
                                 currentLocations={this.state.currentLocations}
-                                locations={this.getLocations()} /> : ''}
+                                locations={locations} /> : ''}
                         {this.triggers.length > 0 ?
                             <TriggerPanel
                                 triggers={this.triggers}
@@ -176,7 +179,16 @@ class MainGrid extends Component {
                                 // TODO: translate
                                 <InfoTable
                                     title={"CAP-Data"}
+                                    className={'panel-info'}
                                     data={cap} /> : ''
+                        }
+                        {
+                            civicLocation ?
+                                // TODO: translate
+                                <InfoTable
+                                    title={"Civic Location"}
+                                    className={'panel-info'}
+                                    data={civicLocation.civic} /> : ''
                         }
                         {
                             this.isDataViewEnabled() ?
