@@ -466,7 +466,7 @@ class ServerService {
     }
 
     handleNewMessage(json: any) {
-        const { message, call_id, tag: messageId } = json;
+        const { message, call_id, tag } = json;
         const call = getCallById(store.getState().call, call_id);
 
         if (call) {
@@ -475,7 +475,7 @@ class ServerService {
             // either they were sent by the border automatically, or they have already be sent to the user
             messageObj.state = MessageState.RECEIVED;
 
-            store.dispatch(addOrUpdateMessage(call_id, messageObj, messageId));
+            store.dispatch(addOrUpdateMessage(call_id, messageObj, tag ?? messageObj.messageId));
             store.dispatch(updateData(
                 call_id,
                 Message.getDataFromJson(message),

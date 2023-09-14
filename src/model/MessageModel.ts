@@ -37,8 +37,8 @@ export class Message {
         if (json.locations)
             message.locations = json.locations.map((x: any) => Location.fromJson(x, message));
 
-        if (json.tag)
-            message.messageId = json.tag;
+        if (json.message_id)
+            message.messageId = json.message_id;
 
         if (json.target_uri)
             message.targetUri = json.target_uri;

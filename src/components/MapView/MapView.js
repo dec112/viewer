@@ -105,6 +105,8 @@ class MapView extends Component {
                 locs = this.props.currentLocations;
         }
 
+        // only accept locations that have both latitude and longitude available
+        locs = locs.filter(x => x.coords.latitude !== undefined && x.coords.longitude !== undefined);
         locs = distinctBy(locs, (x, y) => {
             return x.coords.longitude === y.coords.longitude
                 && x.coords.latitude === y.coords.latitude;
