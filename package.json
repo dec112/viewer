@@ -2,7 +2,7 @@
   "name": "dec112-viewer",
   "homepage": "./",
   "version": "3.11.2",
-  "license": "GPL-3.0-only",
+  "license": "AGPL-3.0-only",
   "dependencies": {
     "@types/classnames": "^2.2.11",
     "bootstrap": "^3.3.7",
