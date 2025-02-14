@@ -77,7 +77,7 @@ export default {
                     },
                     "shortcut": "F2",
                     "text": {
-                        "de": "Wie viele Verletzte Personen gibt es?",
+                        "de": "Wie viele verletzte Personen gibt es?",
                         "en": "How many injured people are there?",
                     },
                 },
