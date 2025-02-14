@@ -26,6 +26,7 @@ import { TranslationService } from "./service/TranslationService";
 ConfigService.fetchExternalConfig().then(externalConfig => {
   const url = new URL(window.location);
   const callId = url.searchParams.get(QueryParam.CALL_ID);
+  const apiKey = url.searchParams.get(QueryParam.API_KEY);
   const reuseSession = url.searchParams.get(QueryParam.REUSE_SESSION) === 'true';
   const clientId = url.searchParams.get(QueryParam.CLIENT_ID);
 
@@ -59,6 +60,7 @@ ConfigService.fetchExternalConfig().then(externalConfig => {
         <RawIntlProvider value={intl}>
           <App
             callId={callId}
+            apiKey={apiKey}
             reuseSession={reuseSession} />
         </RawIntlProvider>
       </Router>

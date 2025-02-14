@@ -44,6 +44,7 @@ class DEC112 extends Component {
 
         /* real props */
         callId: PropTypes.string,
+        apiKey: PropTypes.string,
         reuseSession: PropTypes.bool,
     };
 
@@ -123,12 +124,12 @@ class DEC112 extends Component {
         serv.addErrorListener(this.handleError);
         serv.addMessageListener(this.handleServerMessage);
 
-        const { callId, reuseSession } = this.props;
+        const { callId, apiKey, reuseSession } = this.props;
         // if there is a callId and we should not reuse the last session
         // (ergo, viewer is started by a border trigger)
         // we do want to restore our connection with config data
         // as we don't want to rely on what's in the storage
-        const useConfigEndpoint = !!(callId && reuseSession !== true);
+        const useConfigEndpoint = !!(callId && reuseSession !== true) || !!apiKey;
 
         try {
             await serv.tryRestoreConnection(useConfigEndpoint);
