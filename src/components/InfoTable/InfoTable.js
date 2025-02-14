@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { LocalizationService } from '../../service/LocalizationService';
 import { Icon, IconType } from '../Icon';
 import { UiService } from '../../service';
+import Messages from '../../i18n/Messages';
 
 class InfoTable extends Component {
 
@@ -42,6 +43,8 @@ class InfoTable extends Component {
     );
   }
 
+  combineTitleAndValue = (title, value) => `${title}: ${value}`;
+
   render() {
     return (
       <div className={classNames('panel', this.props.className)}>
@@ -53,9 +56,15 @@ class InfoTable extends Component {
               value = this.props.data[key];
               value = visibleValue = value === undefined || value === null ? value : value.toString();
 
-              switch(value) {
-                case 'true': visibleValue = <Icon type={IconType.OK} />; break;
-                case 'false': visibleValue = <Icon type={IconType.REMOVE} />; break;
+              switch (value) {
+                case 'true':
+                  visibleValue = <Icon type={IconType.OK} />;
+                  value = this.combineTitleAndValue(key, this.intl.formatMessage(Messages.yes));
+                  break;
+                case 'false':
+                  visibleValue = <Icon type={IconType.REMOVE} />;
+                  value = this.combineTitleAndValue(key, this.intl.formatMessage(Messages.no));
+                  break;
                 default:
               }
 
