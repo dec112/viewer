@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 3.12.0
+
+* Allow automated login, if API key is provided in URL
+* Improved copy to clipboard for boolean values
+* Fixed some spelling errors
+
 ## 3.11.2
 
 * Improved error text for messages that could not be sent
