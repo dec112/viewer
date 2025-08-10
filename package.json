@@ -38,7 +38,10 @@
     "i18n": "node scripts/buildLocalization.js -d=de"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "import/no-anonymous-default-export": "off"
+    }
   },
   "browserslist": [
     ">0.2%",

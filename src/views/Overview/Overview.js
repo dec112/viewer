@@ -198,10 +198,10 @@ class Overview extends Component {
                                         <td onClick={() => this.handleCallClick(call)}>{call.callId}</td>
                                         <td onClick={() => this.handleCallClick(call)}>{this.getState(call)}</td>
                                         <td className={style.Center}>
+                                            {/* we need referrer details, as otherwise our session might be erased */}
+                                            {/* eslint-disable-next-line react/jsx-no-target-blank */}
                                             <a
                                                 href={this.getQueryString(call.callId)}
-                                                // we need referrer details, as otherwise our session might be erased
-                                                // eslint-disable-next-line react/jsx-no-target-blank
                                                 target="_blank">
                                                 <span className="glyphicon glyphicon-new-window" />
                                             </a>
