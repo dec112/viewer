@@ -413,7 +413,7 @@ class ServerService {
             response = mapper.convertResponse(url, response, securityProvider, method);
             body = response.body;
         }
-        catch (e) {
+        catch (e: any) {
             this.handleError(e);
             return;
         }
