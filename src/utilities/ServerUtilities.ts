@@ -7,7 +7,6 @@ import { CustomSessionProvider } from "../security-provider/custom-session-provi
 import { StorageService } from "../service";
 import { OAuthProvider } from "../security-provider/oauth-provider/OAuthProvider";
 import { ApiKeyProvider } from "../security-provider/api-key-provider";
-import Messages from "../i18n/Messages";
 
 function isHttp(url: string): boolean {
   return /^https?:/.test(url) && testUrl(url);
@@ -114,14 +113,6 @@ export function getQueryString(parameters?: any): string {
   }
 
   return queryString;
-}
-
-export function getUsernameMessage(url: string) {
-  return isWebsocket(url) ? Messages.username : Messages.appKey;
-}
-
-export function getPasswordMessage(url: string) {
-  return isWebsocket(url) ? Messages.password : Messages.appSecret;
 }
 
 export function isUrlValid(url: string, includeConfig: boolean = false): boolean {

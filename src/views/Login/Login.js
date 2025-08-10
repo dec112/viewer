@@ -67,8 +67,7 @@ class Login extends Component {
         const { serverUrl } = this.state;
         return ServerUtil.isUrlValid(serverUrl) ? serverUrl : ServerUtil.getEndpoint();
     }
-    getUsernameText = () => this.intl.formatMessage(ServerUtil.getUsernameMessage(this.getUrl()));
-    getPasswordText = () => this.intl.formatMessage(ServerUtil.getPasswordMessage(this.getUrl()));
+    getUsernameText = () => this.intl.formatMessage(Messages.apiKey);
     getLoginText() {
         const { formatMessage } = this.intl;
         let message = Messages.connect;
@@ -81,7 +80,7 @@ class Login extends Component {
 
     render() {
         const { formatMessage } = this.intl;
-        const { serverUrl, userName, password } = this.state;
+        const { serverUrl, userName } = this.state;
 
         const urlValid = this.isUrlValid();
 
@@ -101,22 +100,17 @@ class Login extends Component {
                     </div>
                     <div className="form-group">
                         <Label text={this.getUsernameText()} />
-                        <TextField inputType={'text'} text={userName}
+                        <TextField inputType={'password'} text={userName}
                             onChange={(val) => this.updateField('userName', val)}
                             autoFocus id="userName"
                             disabled={!this.isCredentialsEnabled()}
                             placeholder={this.getUsernameText()}
                             onKeyUp={this.handleKeyUp} />
                     </div>
-                    <div className="form-group">
-                        <Label text={this.getPasswordText()} />
-                        <TextField inputType={'password'} text={password}
-                            onChange={(val) => this.updateField('password', val)} type="password"
-                            disabled={!this.isCredentialsEnabled()}
-                            className="form-control"
-                            id="password" placeholder={this.getPasswordText()}
-                            onKeyUp={(e) => this.handleKeyUp(e)} />
-                    </div>
+                    {/* Previously we had separated username and password fields here */}
+                    {/* But as we don't want to continue container backend */}
+                    {/* We only need to support API key based authentication */}
+                    {/* And therefore no separate password field exists here */}
                     <Button
                         disabled={!this.isLoginEnabled()}
                         onClick={this.performLogin}>
