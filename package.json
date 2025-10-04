@@ -31,8 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && node scripts/release.js",
-    "release": "GENERATE_SOURCEMAP=false npm build",
-    "docker": "npm release && node scripts/docker-init.js && node scripts/docker-build.js",
+    "docker": "npm run build && node scripts/docker-build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "i18n": "node scripts/buildLocalization.js -d=de"
