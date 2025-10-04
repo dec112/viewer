@@ -100,12 +100,17 @@ class Login extends Component {
                     </div>
                     <div className="form-group">
                         <Label text={this.getUsernameText()} />
-                        <TextField inputType={'password'} text={userName}
+                        <TextField
+                            inputType="password"
+                            text={userName}
                             onChange={(val) => this.updateField('userName', val)}
-                            autoFocus id="userName"
+                            autoFocus
+                            autoComplete="off"
+                            id="userName"
                             disabled={!this.isCredentialsEnabled()}
                             placeholder={this.getUsernameText()}
-                            onKeyUp={this.handleKeyUp} />
+                            onKeyUp={this.handleKeyUp}
+                        />
                     </div>
                     {/* Previously we had separated username and password fields here */}
                     {/* But as we don't want to continue container backend */}

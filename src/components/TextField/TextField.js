@@ -6,6 +6,7 @@ class TextField extends Component {
         text: PropTypes.string,
         onChange: PropTypes.func,
         autoFocus: PropTypes.bool,
+        autoComplete: PropTypes.string,
         id: PropTypes.string,
         placeholder: PropTypes.string,
         readOnly: PropTypes.bool,
@@ -36,6 +37,7 @@ class TextField extends Component {
             id={this.props.id}
             className="form-control"
             autoFocus={this.props.autoFocus}
+            autoComplete={this.props.autoComplete}
             onChange={this.handleChange}
             onKeyPress={this.handlekeyUp}
             value={this.props.text ? this.props.text : ''}
