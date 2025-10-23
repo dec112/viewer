@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 3.13.0
+
+* Disallow autocomplete for API key text field
+* Added security headers for docker build
+* Removed username/password login in favor of API key based login
+
 ## 3.12.0
 
 * Allow automated login, if API key is provided in URL
