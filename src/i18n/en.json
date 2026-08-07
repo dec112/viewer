@@ -39,6 +39,7 @@
   "data.prop.batteryPlugged": "Charging",
   "data.prop.batteryStatus": "Status",
   "data.prop.biologicalSex": "Biological sex",
+  "data.prop.birthday": "Date of birth",
   "data.prop.bloodType": "Blood type",
   "data.prop.cancer": "Cancer",
   "data.prop.code": "ZIP",
