@@ -70,9 +70,12 @@ class DataView extends Component {
 
             const item = infos[key];
 
+            if (Array.isArray(item)) {
+                infoObjects[key] = item.reduce((prev, curr) => this._tryAddDataToObject(prev, curr, true), {});
+            }
             // null is also identified as "object", weird
             // this is why we also check on the object itself
-            if (!!item && typeof item === 'object') {
+            else if (!!item && typeof item === 'object') {
                 infoObjects[key] = Object.keys(item).reduce((obj, subKey) => this._tryAddDataToObject(obj, subKey, item[subKey]), {});
             }
             else {

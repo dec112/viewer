@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 3.14.0
+
+* Handle arrays for additional data
+
 ## 3.13.0
 
 * Disallow autocomplete for API key text field
