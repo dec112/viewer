@@ -14,16 +14,15 @@ Many thanks to [Netidee](https://www.netidee.at) who funded this software projec
 
 ### Prerequisites
 
-*  [Node.js](https://nodejs.org/en/) installed
-*  [yarn](https://yarnpkg.com/en/) package manager installed
+*  [Node.js](https://nodejs.org/en/) installed with `npm` package manager installed
 
 ### Installation
 
 ```sh
 # install dependencies with
-yarn install
+npm install
 # run DEC112 Viewer with
-yarn start
+npm start
 ```
 
 Development server will be started on port 3000 and your default browser will be opened.
@@ -32,9 +31,9 @@ Development server will be started on port 3000 and your default browser will be
 
 ```sh
 # production build INCLUDING source maps
-yarn build
+npm run build
 # production build WITHOUT source maps
-yarn release
+npm run release
 ```
 
 ## Docker support
@@ -43,9 +42,9 @@ If you just want to build the docker image you need to provide a file `docker-bu
 
 After that you can run:
 
-`yarn docker`
+`npm docker`
 
-For further configuration of the underlying nginx server, run the script `yarn docker` once. It will create a default configuration file `nginx.conf` in your project root, which you can use to configure your the nginx server running inside the docker container. This is especially important for adding your certificate and key in order to use SSL.
+For further configuration of the underlying nginx server, run the script `npm run docker` once. It will create a default configuration file `nginx.conf` in your project root, which you can use to configure your the nginx server running inside the docker container. This is especially important for adding your certificate and key in order to use SSL.
 
 Alternatively, you can also mount an external `nginx.conf` as a docker volume and overwrite the internal one.
 
@@ -68,9 +67,6 @@ Currently, the following UI languages are supported:
 
 * German (de)
 * English (en)
-* French (fr)
-* Romanian (ro)
-* Spanish (es)
 
 ## Terms
 
@@ -142,8 +138,7 @@ LanguageObject type is used to provide internationalization (i18n) within *confi
 ```json
 {
   "de": "Hallo Welt",
-  "en": "Hello world",
-  "es": "Hola mundo"
+  "en": "Hello world"
 }
 ```
 
@@ -158,28 +153,6 @@ Debug mode can always be forced by issuing `DEC112Debug.enable()` in the browser
 To get a list with all already logged logs, issue `DEC112Debug.print()` in the browser's console.
 
 ## UI specialities
-
-### Login
-
-The login form provides three fields. Server, Username and Password.
-
-#### Server
-
-The placeholder within this field describes the endpoint, DEC112 viewer connects to by default, if no other value is provided.
-
-The input only accepts valid URLs. 
-
-If a URL with protocol `ws` or `wss` is provided, Username and Password fields will be available, as DEC112 viewer assumes the server behind this URL is a border gateway, used for normal call taking.
-
-If a URL with protocol `http` or `https` is provided, Username and Password fields will be disabled, as DEC112 viewer assumes the server behind this URL is a semantic container, used for call replays. In this case, no username or password is needed.
-
-#### Username
-
-The input in this field is, of course, used for authentication, but also as *client* for *config*.
-
-#### Password
-
-This value may or may not be needed. This depends on border gateway configuration
 
 ### Call overview
 
@@ -243,44 +216,3 @@ If data is available, the respective value can be copied to the user's clipboard
 ___
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.  
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.  
-You will also see any lint errors in the console.
-
-### `yarn release`
-
-Builds the app for production to the `build` folder.  
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.  
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn build`
-
-Same as `yarn build`, but including source maps.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
