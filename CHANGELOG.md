@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 3.14.1
+
+* Updated nginx base image
+
 ## 3.14.0
 
 * Handle arrays for additional data
